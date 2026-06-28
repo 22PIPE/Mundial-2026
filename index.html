@@ -38,10 +38,9 @@
   }
   .bracket {
     display: flex;
-    gap: 28px;
+    gap: 30px;
     background: #ffffff;
-    padding: 24px;
-    padding-left: 20px;   /* Margen para mostrar bandera al inicio */
+    padding: 24px 20px 24px 20px;
     border-radius: 12px;
     box-shadow: 0 8px 24px rgba(0,0,0,0.12);
     overflow-x: auto;
@@ -49,18 +48,18 @@
     scrollbar-width: thin;
   }
   .bracket::-webkit-scrollbar {
-    height: 8px;
+    height: 10px;
   }
   .bracket::-webkit-scrollbar-thumb {
     background-color: rgba(0,0,0,0.2);
-    border-radius: 4px;
+    border-radius: 5px;
   }
   .round {
     flex-shrink: 0;
     display: flex;
     flex-direction: column;
-    gap: 18px;
-    min-width: 240px; /* más ancho para banderas y texto */
+    gap: 20px;
+    min-width: 260px;
   }
   .round h2 {
     text-align: center;
@@ -210,7 +209,7 @@
     .bracket {
       flex-direction: column;
       gap: 40px;
-      overflow-x: unset;
+      overflow-x: visible;
       padding-left: 10px;
     }
     .round {
@@ -227,6 +226,7 @@
       <h1>Copa Mundial de Fútbol 2026</h1>
     </div>
 
+    <div class="notice">Haz clic en cualquier partido para ingresar o modificar su resultado. Puedes ingresar resultados de penales si el partido termina empatado.</div>
 
     <div class="bracket">
 
