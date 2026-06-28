@@ -2,24 +2,32 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8" />
-<title>Copa Mundial 2026 con Control de Edición</title>
+<title>Copa Mundial 2026 con Control de Edición y Modal de Login</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
   body {
+    overflow-x:auto;
     font-family: 'Roboto', sans-serif;
-    background: #f9fafb;
+    background: #121212;
     margin: 20px;
-    display: flex;
-    justify-content: center;
+    display:block;
     min-width: 320px;
   }
   .container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 100%;
-    max-width: 1300px;
-  }
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    width:100%;
+    max-width:100%;
+} 
+.bracket-wrapper{
+ width:100%;
+ max-width:100vw;
+ overflow-x:auto;
+ overflow-y:hidden;
+ -webkit-overflow-scrolling:touch;
+}
+
   .title-section {
     text-align: center;
     margin-bottom: 30px;
@@ -32,15 +40,18 @@
   .title-section h1 {
     font-weight: 700;
     font-size: 3rem;
-    color: #2c3e50;
+    color: #f5f5f5;
     margin: 0;
     user-select: none;
   }
   .bracket {
-    display: flex;
+    display:flex;
+    width:max-content;
+    min-width:max-content;
     gap: 30px;
-    background: #ffffff;
+    background: #1b1b1b;
     padding: 24px 20px 24px 20px;
+    padding-left: 20px;
     border-radius: 12px;
     box-shadow: 0 8px 24px rgba(0,0,0,0.12);
     overflow-x: auto;
@@ -65,7 +76,7 @@
     text-align: center;
     margin-bottom: 14px;
     font-size: 1.4rem;
-    color: #2c3e50;
+    color: #f5f5f5;
     border-bottom: 3px solid #3498db;
     padding-bottom: 8px;
     font-weight: 700;
@@ -73,23 +84,23 @@
     user-select: none;
   }
   .match {
-    background: #ecf0f1;
+    background: #2b2b2b;
     border-radius: 10px;
     padding: 14px 16px;
     text-align: center;
     box-shadow: inset 0 0 12px rgba(0,0,0,0.08);
     position: relative;
-    cursor: pointer;
     user-select: none;
     transition: box-shadow 0.3s ease, background-color 0.3s ease;
+    cursor: pointer;
   }
   .match.disabled {
     cursor: default;
-    background-color: #f5f5f5;
+    background-color: #333333;
     box-shadow: none;
   }
   .match:hover:not(.disabled) {
-    background-color: #dfe6e9;
+    background-color: #3a3a3a;
     box-shadow: 0 4px 14px rgba(52, 152, 219, 0.3);
   }
   .team {
@@ -104,7 +115,7 @@
     text-align: left;
     margin-left: 10px;
     font-size: 1.05rem;
-    color: #34495e;
+    color: #f0f0f0;
   }
   .flag {
     width: 32px;
@@ -118,13 +129,13 @@
   .score {
     font-weight: 700;
     width: 36px;
-    background: white;
+    background: #2a2a2a;
     border-radius: 50%;
     box-shadow: 0 0 8px rgba(0,0,0,0.15);
     line-height: 36px;
     font-size: 1.3rem;
     text-align: center;
-    color: #2c3e50;
+    color: #f5f5f5;
     margin-left: 6px;
   }
   .score-pen {
@@ -134,39 +145,50 @@
     margin-left: 6px;
     font-style: italic;
   }
-  #resultForm {
+  #resultModal {
     display: none;
-    background: white;
-    max-width: 420px;
-    margin: 28px auto;
-    padding: 24px 30px;
+    position: fixed;
+    top: 0; left: 0; right:0; bottom: 0;
+    background: rgba(0,0,0,0.5);
+    z-index: 10000;
+    justify-content: center;
+    align-items: center;
+  }
+  #resultModal.active {
+    display: flex;
+  }
+  #resultForm {
+    background: #2a2a2a;
+    max-width: 400px;
+    width: 90%;
+    padding: 25px 30px;
     border-radius: 12px;
-    border: 1px solid #95a5a6;
-    box-shadow: 0 10px 28px rgba(0,0,0,0.18);
+    box-shadow: 0 0 28px rgba(0,0,0,0.25);
     user-select: text;
+    position: relative;
   }
   #resultForm h2 {
     margin-top: 0;
-    margin-bottom: 22px;
+    margin-bottom: 20px;
     text-align: center;
     font-weight: 700;
-    color: #34495e;
+    color: #f0f0f0;
     font-size: 1.8rem;
     letter-spacing: 0.02em;
   }
   #resultForm label {
     font-weight: 700;
     display: block;
-    margin-top: 18px;
+    margin-top: 16px;
     font-size: 1rem;
-    color: #2c3e50;
+    color: #f5f5f5;
   }
   #resultForm input[type="number"] {
-    width: 80px;
+    width: 75px;
     height: 38px;
     margin-top: 8px;
     font-size: 18px;
-    padding-left: 10px;
+    padding-left: 8px;
     box-sizing: border-box;
     border: 1.5px solid #bdc3c7;
     border-radius: 6px;
@@ -177,8 +199,8 @@
     outline: none;
   }
   #resultForm button {
-    margin-top: 30px;
-    margin-right: 18px;
+    margin-top: 24px;
+    margin-right: 15px;
     padding: 12px 26px;
     font-size: 1.1rem;
     font-weight: 700;
@@ -188,14 +210,14 @@
     transition: background-color 0.3s ease;
   }
   #resultForm button.save {
-    background-color: #27ae60;
+    background-color: #27ae60; 
     color: white;
   }
   #resultForm button.save:hover {
     background-color: #229954;
   }
   #resultForm button.cancel {
-    background-color: #c0392b;
+    background-color: #c0392b; 
     color: white;
   }
   #resultForm button.cancel:hover {
@@ -209,18 +231,185 @@
     font-weight: 600;
     user-select: none;
   }
+
+  /* Modal login */
+  #loginModal {
+    position: fixed;
+    top:0; left:0; width:100vw; height:100vh;
+    background: rgba(0,0,0,0.6);
+    display:block;
+    align-items: center;
+    z-index: 15000;
+  }
+  #loginModal.hidden {
+    display: none;
+  }
+  #loginModal .modal-content {
+    background: #2a2a2a;
+    padding: 25px 30px;
+    border-radius: 10px;
+    max-width: 340px;
+    width: 90%;
+    text-align: center;
+  }
+  #loginModal input[type="password"] {
+    width: 100%;
+    height: 36px;
+    font-size: 16px;
+    padding: 6px;
+    margin-top: 10px;
+    box-sizing: border-box;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+  }
+  #loginModal button {
+    margin-top: 20px;
+    padding: 10px;
+    width: 100%;
+    font-size: 16px;
+    font-weight: 700;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    background-color: #2980b9;
+    color: white;
+  }
+  #loginModal button.guest {
+    background-color: #95a5a6;
+    margin-top: 10px;
+  }
+  #loginModal .error-msg {
+    color: red;
+    margin-top: 12px;
+    display: none;
+  }
+  @media (max-width: 768px) {
+    body{
+      margin:0;
+      display:block;
+      overflow-x:auto;
+    }
+    .container{
+      max-width:none;
+      width:max-content;
+      min-width:100%;
+      padding:12px;
+      box-sizing:border-box;
+    }
+    .bracket{
+      width:max-content;
+      min-width:max-content;
+      flex-direction:row;
+      flex-wrap:nowrap;
+      gap:20px;
+      overflow-x:auto;
+      overflow-y:hidden;
+      padding:16px;
+      -webkit-overflow-scrolling:touch;
+    }
+    .round{
+      flex:0 0 260px;
+      min-width:260px;
+      width:260px;
+    }
+}
+
+.admin-btn{position:fixed;top:12px;right:12px;z-index:16000;background:#2c3e50;color:#fff;border:none;border-radius:20px;padding:14px 18px 12px;cursor:pointer}
+.admin-menu{position:fixed;top:50px;right:12px;background:#fff;border:1px solid #ccc;border-radius:8px;padding:14px 18px;display:none;z-index:16000;box-shadow:0 4px 12px rgba(0,0,0,.2)}
+.admin-menu button{display:block;width:100%;margin:6px 0}
+.hidden{display:none!important}
+
+
+  .title-section h1{color:#fff!important;}
+  .notice{color:#ddd;}
+  .score{color:#fff;}
+  .team-name{color:#f1f1f1;}
+  #adminMenu,.admin-menu{background:#1f1f1f;color:#fff;}
+.title-section h1{
+    color:#fff !important;
+}
+
+.notice{
+    color:#ddd;
+}
+
+.score{
+    color:#fff;
+}
+
+.team-name{
+    color:#f1f1f1;
+}
+
+#adminMenu,
+.admin-menu{
+    background:#1f1f1f;
+    color:#fff;
+}
+
+/* ======= PEGA ESTO DEBAJO ======= */
+
+.title-section{
+    text-align:center;
+    margin-bottom:25px;
+}
+
+.title-section img{
+    width:140px;
+    height:auto;
+    display:block;
+    margin:0 auto 20px auto;
+    filter:drop-shadow(0 0 12px rgba(255,215,0,.5));
+}
+
+.title-section h1{
+    margin:0;
+    font-size:3rem;
+}
+
+
+
+
+.groups-section{margin-top:40px;width:100%}
+.groups-section h2{text-align:center;color:#fff;margin-bottom:20px}
+.groups-scroll{overflow-x:auto;padding-bottom:10px;-webkit-overflow-scrolling:touch}
+.groups-row{display:flex;gap:18px;width:max-content;padding:0 10px 10px}
+.group-card{background:#242424;border-radius:10px;padding:10px 14px;min-width:190px;color:#fff;box-shadow:0 2px 8px rgba(0,0,0,.35)}
+.group-card h3{text-align:center;color:#3fa9ff;margin:0 0 10px}
+.group-card table{width:100%;border-collapse:collapse;font-size:13px}
+.group-card th,.group-card td{padding:3px;border-bottom:1px solid #3b3b3b}
+.group-card th:last-child,.group-card td:last-child{text-align:right}
+
 </style>
 </head>
 <body>
-<div class="container">
+
+<button id="adminToggle" class="admin-btn">⚙️</button>
+<div id="adminMenu" class="admin-menu">
+<button id="openLogin">🔒 Iniciar sesión</button>
+<button id="resetBtn" class="hidden">🔄 Reiniciar Mundial</button>
+<button id="logoutBtn" class="hidden">🔓 Cerrar sesión</button>
+</div>
+
+
+<div id="loginModal" class="modal hidden">
+  <div class="modal-content">
+    <h2>Acceso a Edición</h2>
+    <input type="password" id="passwordInput" placeholder="Ingresa contraseña" autocomplete="off" />
+    <button id="loginBtn">Entrar</button>
+    <button id="guestBtn" class="guest">Entrar como invitado</button>
+    <div id="loginError" class="error-msg">Contraseña incorrecta, intenta de nuevo.</div>
+  </div>
+</div>
+
+<div class="container" id="mainContainer" >
   <div class="title-section">
-    <img src="https://upload.wikimedia.org/wikipedia/commons/e/e3/FIFA_World_Cup_Trophy.svg" alt="Copa Mundial" />
+    <img src="Copa.png" alt="Copa Mundial">
     <h1>Copa Mundial de Fútbol 2026</h1>
   </div>
 
-  <div class="notice">Haz clic en cualquier partido para ingresar o modificar su resultado. Puedes ingresar resultados de penales si el partido termina empatado.</div>
 
-  <div class="bracket">
+  <div class="content-layout"><div class="bracket-wrapper"><div class="bracket">
     <div class="round" id="round32"><h2>Dieciseisavos</h2></div>
     <div class="round" id="round16"><h2>Octavos</h2></div>
     <div class="round" id="quarterfinals"><h2>Cuartos</h2></div>
@@ -228,17 +417,19 @@
     <div class="round" id="thirdPlace"><h2>Tercer Puesto</h2></div>
     <div class="round" id="final"><h2>Final</h2></div>
   </div>
-
-  <div id="resultForm">
+</div></div>
+<section class="groups-section">
+<div id="resultModal" style="display:none; position:fixed; top:0; left:0; right:0; bottom:0; background: rgba(0,0,0,0.5); z-index:10000; justify-content:center; align-items:center;">
+  <div id="resultForm" style="background:white; max-width:400px; width:90%; padding:25px 30px; border-radius:12px; box-shadow:0 0 28px rgba(0,0,0,0.25); user-select:text; position:relative;">
     <h2>Ingresar Resultado</h2>
     <form id="form">
-      <label for="team1Score"><span id="team1Name"></span> - Goles Tiempo Regular/Extra</label>
+      <label><span id="team1Name"></span> - Goles Tiempo Regular/Extra</label>
       <input type="number" min="0" id="team1Score" required />
-      <label for="team2Score"><span id="team2Name"></span> - Goles Tiempo Regular/Extra</label>
+      <label><span id="team2Name"></span> - Goles Tiempo Regular/Extra</label>
       <input type="number" min="0" id="team2Score" required />
-      <label for="team1Penalties"><span id="team1Name"></span> - Goles en Penales (opcional)</label>
+      <label><span id="team1Name"></span> - Goles en Penales (opcional)</label>
       <input type="number" min="0" id="team1Penalties" />
-      <label for="team2Penalties"><span id="team2Name"></span> - Goles en Penales (opcional)</label>
+      <label><span id="team2Name"></span> - Goles en Penales (opcional)</label>
       <input type="number" min="0" id="team2Penalties" />
       <div style="text-align:center;">
         <button type="submit" class="save">Guardar Resultado</button>
@@ -249,7 +440,11 @@
 </div>
 
 <script>
-  // Tus datos de partidos (dieciseisavos, octavos, etc.) incluyendo banderas, marcadores y penales
+  const CONTRASENA = '2208';  // Cambia la contraseña segura aquí
+
+  let modoEdicion = false;
+  let currentMatch = null;
+
   const dieciseisavos = [
     {id:1, team1:'México', flag1:'https://flagcdn.com/w40/mx.png', team2:'Ecuador', flag2:'https://flagcdn.com/w40/ec.png', score1:null, score2:null, pen1:null, pen2:null},
     {id:2, team1:'España', flag1:'https://flagcdn.com/w40/es.png', team2:'Austria', flag2:'https://flagcdn.com/w40/at.png', score1:null, score2:null, pen1:null, pen2:null},
@@ -270,265 +465,35 @@
   ];
 
   const octavos = [
-    { id: 101, srcMatches: [11, 4], team1: null, flag1: null, team2: null, flag2: null, score1:null, score2:null, pen1:null, pen2:null },
-    { id: 102, srcMatches: [9, 7],  team1: null, flag1: null, team2: null, flag2: null, score1:null, score2:null, pen1:null, pen2:null },
-    { id: 103, srcMatches: [10, 2], team1: null, flag1: null, team2: null, flag2: null, score1:null, score2:null, pen1:null, pen2:null },
-    { id: 104, srcMatches: [8, 12], team1: null, flag1: null, team2: null, flag2: null, score1:null, score2:null, pen1:null, pen2:null },
-    { id: 105, srcMatches: [5, 15], team1: null, flag1: null, team2: null, flag2: null, score1:null, score2:null, pen1:null, pen2:null },
-    { id: 106, srcMatches: [1, 6],  team1: null, flag1: null, team2: null, flag2: null, score1:null, score2:null, pen1:null, pen2:null },
-    { id: 107, srcMatches: [3, 16], team1: null, flag1: null, team2: null, flag2: null, score1:null, score2:null, pen1:null, pen2:null },
-    { id: 108, srcMatches: [14, 13],team1: null, flag1: null, team2: null, flag2: null, score1:null, score2:null, pen1:null, pen2:null }
+    { id: 101, srcMatches: [11, 4], team1: null, flag1: null, team2: null, flag2: null, score1: null, score2: null, pen1: null, pen2: null },
+    { id: 102, srcMatches: [9, 7], team1: null, flag1: null, team2: null, flag2: null, score1: null, score2: null, pen1: null, pen2: null },
+    { id: 103, srcMatches: [10, 2], team1: null, flag1: null, team2: null, flag2: null, score1: null, score2: null, pen1: null, pen2: null },
+    { id: 104, srcMatches: [8, 12], team1: null, flag1: null, team2: null, flag2: null, score1: null, score2: null, pen1: null, pen2: null },
+    { id: 105, srcMatches: [5, 15], team1: null, flag1: null, team2: null, flag2: null, score1: null, score2: null, pen1: null, pen2: null },
+    { id: 106, srcMatches: [1, 6], team1: null, flag1: null, team2: null, flag2: null, score1: null, score2: null, pen1: null, pen2: null },
+    { id: 107, srcMatches: [3, 16], team1: null, flag1: null, team2: null, flag2: null, score1: null, score2: null, pen1: null, pen2: null },
+    { id: 108, srcMatches: [14, 13], team1: null, flag1: null, team2: null, flag2: null, score1: null, score2: null, pen1: null, pen2: null }
   ];
 
   const cuartos = [
-    {id:201, team1:null, flag1:null, team2:null, flag2:null, score1:null, score2:null, pen1:null, pen2:null, srcMatches:[101,102]},
-    {id:202, team1:null, flag1:null, team2:null, flag2:null, score1:null, score2:null, pen1:null, pen2:null, srcMatches:[103,104]},
-    {id:203, team1:null, flag1:null, team2:null, flag2:null, score1:null, score2:null, pen1:null, pen2:null, srcMatches:[105,106]},
-    {id:204, team1:null, flag1:null, team2:null, flag2:null, score1:null, score2:null, pen1:null, pen2:null, srcMatches:[107,108]}
+    { id: 201, team1: null, flag1: null, team2: null, flag2: null, score1: null, score2: null, pen1: null, pen2: null, srcMatches: [101, 102] },
+    { id: 202, team1: null, flag1: null, team2: null, flag2: null, score1: null, score2: null, pen1: null, pen2: null, srcMatches: [103, 104] },
+    { id: 203, team1: null, flag1: null, team2: null, flag2: null, score1: null, score2: null, pen1: null, pen2: null, srcMatches: [105, 106] },
+    { id: 204, team1: null, flag1: null, team2: null, flag2: null, score1: null, score2: null, pen1: null, pen2: null, srcMatches: [107, 108] }
   ];
 
   const semifinales = [
-    {id:301, team1:null, flag1:null, team2:null, flag2:null, score1:null, score2:null, pen1:null, pen2:null, srcMatches:[201,202]},
-    {id:302, team1:null, flag1:null, team2:null, flag2:null, score1:null, score2:null, pen1:null, pen2:null, srcMatches:[203,204]}
+    { id: 301, team1: null, flag1: null, team2: null, flag2: null, score1: null, score2: null, pen1: null, pen2: null, srcMatches: [201, 202] },
+    { id: 302, team1: null, flag1: null, team2: null, flag2: null, score1: null, score2: null, pen1: null, pen2: null, srcMatches: [203, 204] }
   ];
 
   const tercerPuesto = [
-    {id:401, team1:null, flag1:null, team2:null, flag2:null, score1:null, score2:null, pen1:null, pen2:null, srcMatches:[301,302], type:'perdedor'}
+    { id: 401, team1: null, flag1: null, team2: null, flag2: null, score1: null, score2: null, pen1: null, pen2: null, srcMatches: [301, 302], type: 'perdedor' }
   ];
 
   const final = [
-    {id:501, team1:null, flag1:null, team2:null, flag2:null, score1:null, score2:null, pen1:null, pen2:null, srcMatches:[301,302], type:'ganador'}
+    { id: 501, team1: null, flag1: null, team2: null, flag2: null, score1: null, score2: null, pen1: null, pen2: null, srcMatches: [301, 302], type: 'ganador' }
   ];
-
-  const round32Div = document.getElementById('round32');
-  const round16Div = document.getElementById('round16');
-  const quartersDiv = document.getElementById('quarterfinals');
-  const semifinalsDiv = document.getElementById('semifinals');
-  const thirdPlaceDiv = document.getElementById('thirdPlace');
-  const finalDiv = document.getElementById('final');
-
-  const resultForm = document.getElementById('resultForm');
-  const form = document.getElementById('form');
-  const team1Name = document.getElementById('team1Name');
-  const team2Name = document.getElementById('team2Name');
-  const team1Score = document.getElementById('team1Score');
-  const team2Score = document.getElementById('team2Score');
-  const team1Penalties = document.getElementById('team1Penalties');
-  const team2Penalties = document.getElementById('team2Penalties');
-  const cancelBtn = document.getElementById('cancelBtn');
-
-  let currentMatch = null;
-
-  const STORAGE_KEY = 'mundial2026Penales';
-
-  function saveData() {
-    const data = { dieciseisavos, octavos, cuartos, semifinales, tercerPuesto, final };
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
-  }
-
-  function loadData() {
-    const raw = localStorage.getItem(STORAGE_KEY);
-    if (raw) {
-      try {
-        const data = JSON.parse(raw);
-        ['dieciseisavos', 'octavos', 'cuartos', 'semifinales', 'tercerPuesto', 'final'].forEach(key => {
-          if (Array.isArray(data[key])) {
-            data[key].forEach(savedMatch => {
-              const arr = eval(key);
-              const m = arr.find(x => x.id === savedMatch.id);
-              if (m) {
-                m.team1 = savedMatch.team1 ?? m.team1;
-                m.flag1 = savedMatch.flag1 ?? m.flag1;
-                m.team2 = savedMatch.team2 ?? m.team2;
-                m.flag2 = savedMatch.flag2 ?? m.flag2;
-                m.score1 = savedMatch.score1;
-                m.score2 = savedMatch.score2;
-                m.pen1 = savedMatch.pen1 ?? null;
-                m.pen2 = savedMatch.pen2 ?? null;
-              }
-            });
-          }
-        });
-      } catch (e) {
-        console.warn('Error cargando datos:', e);
-      }
-    }
-  }
-
-  function getAdvancing(match, type = 'ganador') {
-    if (match.score1 === null || match.score2 === null) return null;
-    if (match.score1 > match.score2) return { team: match.team1, flag: match.flag1 };
-    if (match.score2 > match.score1) return { team: match.team2, flag: match.flag2 };
-    // Empate en tiempo regular/extra, verificar penales
-    if (type === 'ganador') {
-      if (match.pen1 !== null && match.pen2 !== null) {
-        if (match.pen1 > match.pen2) return { team: match.team1, flag: match.flag1 };
-        if (match.pen2 > match.pen1) return { team: match.team2, flag: match.flag2 };
-      }
-      return null; // empate si no hay penales
-    } else if (type === 'perdedor') {
-      if (match.pen1 !== null && match.pen2 !== null) {
-        if (match.pen1 < match.pen2) return { team: match.team1, flag: match.flag1 };
-        if (match.pen2 < match.pen1) return { team: match.team2, flag: match.flag2 };
-      }
-      return null;
-    }
-    return null;
-  }
-
-  function updateNextRound(nextRound, prevRound) {
-    nextRound.forEach(nextMatch => {
-      const [src1, src2] = nextMatch.srcMatches;
-      const m1 = prevRound.find(m => m.id === src1);
-      const m2 = prevRound.find(m => m.id === src2);
-      const adv1 = getAdvancing(m1, nextMatch.type || 'ganador');
-      const adv2 = getAdvancing(m2, nextMatch.type || 'ganador');
-      if (adv1) {
-        nextMatch.team1 = adv1.team;
-        nextMatch.flag1 = adv1.flag;
-      } else {
-        nextMatch.team1 = null;
-        nextMatch.flag1 = null;
-      }
-      if (adv2) {
-        nextMatch.team2 = adv2.team;
-        nextMatch.flag2 = adv2.flag;
-      } else {
-        nextMatch.team2 = null;
-        nextMatch.flag2 = null;
-      }
-      if (!nextMatch.team1 || !nextMatch.team2) {
-        nextMatch.score1 = null;
-        nextMatch.score2 = null;
-        nextMatch.pen1 = null;
-        nextMatch.pen2 = null;
-      }
-    });
-  }
-
-  function renderMatches(container, matches) {
-    container.querySelectorAll('.match').forEach(el => el.remove());
-    matches.forEach(m => {
-      const div = document.createElement('div');
-      div.className = 'match';
-      div.dataset.id = m.id;
-      let s1 = m.score1 !== null ? m.score1 : '-';
-      let s2 = m.score2 !== null ? m.score2 : '-';
-      if (!m.team1) s1 = '-';
-      if (!m.team2) s2 = '-';
-      let penInfo1 = '';
-      let penInfo2 = '';
-      if (m.pen1 !== null && m.pen2 !== null) {
-        penInfo1 = `<span class="score-pen">(${m.pen1})</span>`;
-        penInfo2 = `<span class="score-pen">(${m.pen2})</span>`;
-      }
-      div.innerHTML = `
-        <div class="team">
-          ${m.flag1 ? `<img class="flag" src="${m.flag1}" alt="${m.team1}">` : ''}
-          <span class="team-name">${m.team1 || 'Por definir'}</span>
-          <span class="score">${s1}</span>${penInfo1}
-        </div>
-        <div class="team">
-          ${m.flag2 ? `<img class="flag" src="${m.flag2}" alt="${m.team2}">` : ''}
-          <span class="team-name">${m.team2 || 'Por definir'}</span>
-          <span class="score">${s2}</span>${penInfo2}
-        </div>
-      `;
-      if (modoEdicion && m.team1 && m.team2) {
-        div.style.cursor = 'pointer';
-        div.addEventListener('click', () => openResultForm(m, container));
-      } else {
-        div.style.cursor = 'default';
-      }
-      container.appendChild(div);
-    });
-  }
-
-  function openResultForm(match, container) {
-    currentMatch = { match, container };
-    team1Name.textContent = match.team1;
-    team2Name.textContent = match.team2;
-    team1Score.value = match.score1 !== null ? match.score1 : '';
-    team2Score.value = match.score2 !== null ? match.score2 : '';
-    team1Penalties.value = match.pen1 !== null ? match.pen1 : '';
-    team2Penalties.value = match.pen2 !== null ? match.pen2 : '';
-    resultForm.style.display = 'block';
-  }
-
-  let modoEdicion = false;
-  const CONTRASENA = '1234'; // Cambia aquí tu contraseña
-
-  window.addEventListener('load', () => {
-    const pwd = prompt('Ingrese contraseña para editar resultados:');
-    if (pwd === CONTRASENA) {
-      modoEdicion = true;
-      alert('Modo edición activado.');
-    } else {
-      modoEdicion = false;
-      alert('Modo solo lectura activado.');
-    }
-    renderAll();
-  });
-
-  form.addEventListener('submit', e => {
-    e.preventDefault();
-    if (!modoEdicion) return;
-
-    let s1 = parseInt(team1Score.value);
-    let s2 = parseInt(team2Score.value);
-    let p1 = team1Penalties.value === '' ? null : parseInt(team1Penalties.value);
-    let p2 = team2Penalties.value === '' ? null : parseInt(team2Penalties.value);
-
-    if (isNaN(s1) || isNaN(s2)) {
-      alert('Ingresa goles válidos para el tiempo normal.');
-      return;
-    }
-    if ((p1 !== null && isNaN(p1)) || (p2 !== null && isNaN(p2))) {
-      alert('Ingresa goles válidos para penales o deja vacío.');
-      return;
-    }
-    currentMatch.match.score1 = s1;
-    currentMatch.match.score2 = s2;
-    currentMatch.match.pen1 = p1;
-    currentMatch.match.pen2 = p2;
-
-    const c = currentMatch.container;
-    if (c === round32Div) {
-      updateNextRound(octavos, dieciseisavos);
-      updateNextRound(cuartos, octavos);
-      updateNextRound(semifinales, cuartos);
-      updateNextRound(tercerPuesto, semifinales);
-      updateNextRound(final, semifinales);
-    } else if (c === round16Div) {
-      updateNextRound(cuartos, octavos);
-      updateNextRound(semifinales, cuartos);
-      updateNextRound(tercerPuesto, semifinales);
-      updateNextRound(final, semifinales);
-    } else if (c === quartersDiv) {
-      updateNextRound(semifinales, cuartos);
-      updateNextRound(tercerPuesto, semifinales);
-      updateNextRound(final, semifinales);
-    } else if (c === semifinalsDiv) {
-      updateNextRound(tercerPuesto, semifinales);
-      updateNextRound(final, semifinales);
-    }
-    saveData();
-    renderAll();
-    resultForm.style.display = 'none';
-  });
-
-  cancelBtn.addEventListener('click', () => {
-    resultForm.style.display = 'none';
-  });
-
-  function renderAll() {
-    renderMatches(round32Div, dieciseisavos);
-    renderMatches(round16Div, octavos);
-    renderMatches(quartersDiv, cuartos);
-    renderMatches(semifinalsDiv, semifinales);
-    renderMatches(thirdPlaceDiv, tercerPuesto);
-    renderMatches(finalDiv, final);
-  }
 
   function saveData() {
     const data = { dieciseisavos, octavos, cuartos, semifinales, tercerPuesto, final };
@@ -564,7 +529,228 @@
     }
   }
 
+  const round32Div = document.getElementById('round32');
+  const round16Div = document.getElementById('round16');
+  const quartersDiv = document.getElementById('quarterfinals');
+  const semifinalsDiv = document.getElementById('semifinals');
+  const thirdPlaceDiv = document.getElementById('thirdPlace');
+  const finalDiv = document.getElementById('final');
+
+  const loginModal = document.getElementById('loginModal');
+  const passwordInput = document.getElementById('passwordInput');
+  const loginBtn = document.getElementById('loginBtn');
+  const guestBtn = document.getElementById('guestBtn');
+  const loginError = document.getElementById('loginError');
+  const mainContainer = document.getElementById('mainContainer');
+
+  const resultModal = document.getElementById('resultModal');
+  const form = document.getElementById('form');
+  const team1Name = document.getElementById('team1Name');
+  const team2Name = document.getElementById('team2Name');
+  const team1Score = document.getElementById('team1Score');
+  const team2Score = document.getElementById('team2Score');
+  const team1Penalties = document.getElementById('team1Penalties');
+  const team2Penalties = document.getElementById('team2Penalties');
+  const cancelBtn = document.getElementById('cancelBtn');
+
+  function habilitarEdicion(valor) {
+    modoEdicion = valor;
+    renderAll();
+  }
+
+  loginBtn.addEventListener('click', () => {
+    if (passwordInput.value === CONTRASENA) {
+      loginError.style.display = 'none';
+      loginModal.style.display = 'none';
+      mainContainer.style.display = 'flex';
+      habilitarEdicion(true);
+    } else {
+      loginError.style.display = 'block';
+    }
+  });
+
+  guestBtn.addEventListener('click', () => {
+    loginError.style.display = 'none';
+    loginModal.style.display = 'none';
+    mainContainer.style.display = 'flex';
+    habilitarEdicion(false);
+  });
+
+  function getAdvancing(match, type = 'ganador') {
+    if (match.score1 === null || match.score2 === null) return null;
+    if (match.score1 > match.score2) return { team: match.team1, flag: match.flag1 };
+    if (match.score2 > match.score1) return { team: match.team2, flag: match.flag2 };
+    if (type === 'ganador') {
+      if (match.pen1 !== null && match.pen2 !== null) {
+        if (match.pen1 > match.pen2) return { team: match.team1, flag: match.flag1 };
+        if (match.pen2 > match.pen1) return { team: match.team2, flag: match.flag2 };
+      }
+      return null;
+    } else if (type === 'perdedor') {
+      if (match.pen1 !== null && match.pen2 !== null) {
+        if (match.pen1 < match.pen2) return { team: match.team1, flag: match.flag1 };
+        if (match.pen2 < match.pen1) return { team: match.team2, flag: match.flag2 };
+      }
+      return null;
+    }
+    return null;
+  }
+
+  function updateNextRound(nextRound, prevRound) {
+    nextRound.forEach(nextMatch => {
+      const [src1, src2] = nextMatch.srcMatches;
+      const m1 = prevRound.find(m => m.id === src1);
+      const m2 = prevRound.find(m => m.id === src2);
+      const adv1 = getAdvancing(m1, nextMatch.type || 'ganador');
+      const adv2 = getAdvancing(m2, nextMatch.type || 'ganador');
+      nextMatch.team1 = adv1 ? adv1.team : null;
+      nextMatch.flag1 = adv1 ? adv1.flag : null;
+      nextMatch.team2 = adv2 ? adv2.team : null;
+      nextMatch.flag2 = adv2 ? adv2.flag : null;
+      if (!nextMatch.team1 || !nextMatch.team2) {
+        nextMatch.score1 = null;
+        nextMatch.score2 = null;
+        nextMatch.pen1 = null;
+        nextMatch.pen2 = null;
+      }
+    });
+  }
+
+  function renderMatches(container, matches) {
+    container.querySelectorAll('.match').forEach(el => el.remove());
+    matches.forEach(match => {
+      const div = document.createElement('div');
+      div.className = 'match' + (modoEdicion ? '' : ' disabled');
+      div.dataset.id = match.id;
+      let s1 = match.score1 !== null ? match.score1 : '-';
+      let s2 = match.score2 !== null ? match.score2 : '-';
+      if (!match.team1) s1 = '-';
+      if (!match.team2) s2 = '-';
+      let penInfo1 = '';
+      let penInfo2 = '';
+      if (match.pen1 !== null && match.pen2 !== null) {
+        penInfo1 = `<span class="score-pen">(${match.pen1})</span>`;
+        penInfo2 = `<span class="score-pen">(${match.pen2})</span>`;
+      }
+      div.innerHTML = `
+        <div class="team">
+          ${match.flag1 ? `<img class="flag" src="${match.flag1}" alt="${match.team1}"/>` : ''}
+          <span class="team-name">${match.team1 || 'Por definir'}</span>
+          <span class="score">${s1}</span>${penInfo1}
+        </div>
+        <div class="team">
+          ${match.flag2 ? `<img class="flag" src="${match.flag2}" alt="${match.team2}"/>` : ''}
+          <span class="team-name">${match.team2 || 'Por definir'}</span>
+          <span class="score">${s2}</span>${penInfo2}
+        </div>
+      `;
+      if (modoEdicion && match.team1 && match.team2) {
+        div.style.cursor = 'pointer';
+        div.addEventListener('click', () => openResultForm(match, container));
+      } else {
+        div.style.cursor = 'default';
+      }
+      container.appendChild(div);
+    });
+  }
+
+  function openResultForm(match, container) {
+    currentMatch = { match, container };
+    team1Name.textContent = match.team1;
+    team2Name.textContent = match.team2;
+    team1Score.value = match.score1 !== null ? match.score1 : '';
+    team2Score.value = match.score2 !== null ? match.score2 : '';
+    team1Penalties.value = match.pen1 !== null ? match.pen1 : '';
+    team2Penalties.value = match.pen2 !== null ? match.pen2 : '';
+    resultModal.style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeResultForm() {
+    resultModal.style.display = 'none';
+    document.body.style.overflow = 'auto';
+  }
+
+  form.addEventListener('submit', e => {
+    e.preventDefault();
+    if (!modoEdicion) return;
+    let s1 = parseInt(team1Score.value);
+    let s2 = parseInt(team2Score.value);
+    let p1 = team1Penalties.value === '' ? null : parseInt(team1Penalties.value);
+    let p2 = team2Penalties.value === '' ? null : parseInt(team2Penalties.value);
+
+    if (isNaN(s1) || isNaN(s2)) {
+      alert('Ingresa goles válidos para el tiempo normal.');
+      return;
+    }
+    if ((p1 !== null && isNaN(p1)) || (p2 !== null && isNaN(p2))) {
+      alert('Ingresa goles válidos para penales o deja vacío.');
+      return;
+    }
+    currentMatch.match.score1 = s1;
+    currentMatch.match.score2 = s2;
+    currentMatch.match.pen1 = p1;
+    currentMatch.match.pen2 = p2;
+
+    const container = currentMatch.container;
+    if (container === round32Div) {
+      updateNextRound(octavos, dieciseisavos);
+      updateNextRound(cuartos, octavos);
+      updateNextRound(semifinales, cuartos);
+      updateNextRound(tercerPuesto, semifinales);
+      updateNextRound(final, semifinales);
+    } else if (container === round16Div) {
+      updateNextRound(cuartos, octavos);
+      updateNextRound(semifinales, cuartos);
+      updateNextRound(tercerPuesto, semifinales);
+      updateNextRound(final, semifinales);
+    } else if (container === quartersDiv) {
+      updateNextRound(semifinales, cuartos);
+      updateNextRound(tercerPuesto, semifinales);
+      updateNextRound(final, semifinales);
+    } else if (container === semifinalsDiv) {
+      updateNextRound(tercerPuesto, semifinales);
+      updateNextRound(final, semifinales);
+    }
+    saveData();
+    renderAll();
+    closeResultForm();
+  });
+
+  cancelBtn.addEventListener('click', closeResultForm);
+
+  resultModal.addEventListener('click', e => {
+    if (e.target === resultModal) {
+      closeResultForm();
+    }
+  });
+
+  function renderAll() {
+    renderMatches(round32Div, dieciseisavos);
+    renderMatches(round16Div, octavos);
+    renderMatches(quartersDiv, cuartos);
+    renderMatches(semifinalsDiv, semifinales);
+    renderMatches(thirdPlaceDiv, tercerPuesto);
+    renderMatches(finalDiv, final);
+  }
+
   loadData();
+
+  
+document.getElementById('adminToggle').onclick=()=>{const m=document.getElementById('adminMenu');m.style.display=m.style.display==='block'?'none':'block';};
+document.getElementById('openLogin').onclick=()=>{loginModal.classList.remove('hidden');};
+loginBtn.addEventListener('click',()=>{if(passwordInput.value===CONTRASENA){document.getElementById('resetBtn').classList.remove('hidden');document.getElementById('logoutBtn').classList.remove('hidden');document.getElementById('openLogin').classList.add('hidden');}});
+document.getElementById('logoutBtn').onclick=()=>{habilitarEdicion(false);document.getElementById('resetBtn').classList.add('hidden');document.getElementById('logoutBtn').classList.add('hidden');document.getElementById('openLogin').classList.remove('hidden');};
+document.getElementById('resetBtn').onclick=()=>{if(confirm('¿Reiniciar Mundial?')){localStorage.removeItem('mundialDatos');location.reload();}};
+mainContainer.style.display='flex';
+renderAll();
+
 </script>
+
+
+<div class="groups-section">
+<h2>Fase de Grupos</h2>
+<div class="groups-scroll"><div class="groups-row">
+<div class="group-card"><h3>Grupo A</h3><table><tr><th>Equipo</th><th>PTS</th></tr><tr><td>México</td><td>9</td></tr><tr><td>Suecia</td><td>4</td></tr><tr><td>Corea del Sur</td><td>3</td></tr><tr><td>Rep. Checa</td><td>1</td></tr></table></div><div class="group-card"><h3>Grupo B</h3><table><tr><th>Equipo</th><th>PTS</th></tr><tr><td>Suiza</td><td>7</td></tr><tr><td>Canadá</td><td>4</td></tr><tr><td>Bosnia</td><td>4</td></tr><tr><td>Catar</td><td>1</td></tr></table></div><div class="group-card"><h3>Grupo C</h3><table><tr><th>Equipo</th><th>PTS</th></tr><tr><td>Brasil</td><td>7</td></tr><tr><td>Marruecos</td><td>7</td></tr><tr><td>Escocia</td><td>3</td></tr><tr><td>Haití</td><td>0</td></tr></table></div><div class="group-card"><h3>Grupo D</h3><table><tr><th>Equipo</th><th>PTS</th></tr><tr><td>EE. UU.</td><td>6</td></tr><tr><td>Austria</td><td>4</td></tr><tr><td>Paraguay</td><td>4</td></tr><tr><td>Túnez</td><td>3</td></tr></table></div><div class="group-card"><h3>Grupo E</h3><table><tr><th>Equipo</th><th>PTS</th></tr><tr><td>Alemania</td><td>6</td></tr><tr><td>Costa de Marfil</td><td>6</td></tr><tr><td>Ecuador</td><td>4</td></tr><tr><td>Curazao</td><td>1</td></tr></table></div><div class="group-card"><h3>Grupo F</h3><table><tr><th>Equipo</th><th>PTS</th></tr><tr><td>Países Bajos</td><td>7</td></tr><tr><td>Japón</td><td>5</td></tr><tr><td>Suecia</td><td>4</td></tr><tr><td>Túnez</td><td>0</td></tr></table></div><div class="group-card"><h3>Grupo G</h3><table><tr><th>Equipo</th><th>PTS</th></tr><tr><td>Bélgica</td><td>5</td></tr><tr><td>Egipto</td><td>5</td></tr><tr><td>Irán</td><td>5</td></tr><tr><td>NZ</td><td>1</td></tr></table></div><div class="group-card"><h3>Grupo H</h3><table><tr><th>Equipo</th><th>PTS</th></tr><tr><td>España</td><td>7</td></tr><tr><td>Cabo Verde</td><td>3</td></tr><tr><td>Uruguay</td><td>2</td></tr><tr><td>Arabia</td><td>2</td></tr></table></div><div class="group-card"><h3>Grupo I</h3><table><tr><th>Equipo</th><th>PTS</th></tr><tr><td>Francia</td><td>9</td></tr><tr><td>Noruega</td><td>6</td></tr><tr><td>Senegal</td><td>3</td></tr><tr><td>Irak</td><td>0</td></tr></table></div><div class="group-card"><h3>Grupo J</h3><table><tr><th>Equipo</th><th>PTS</th></tr><tr><td>Argentina</td><td>9</td></tr><tr><td>Austria</td><td>4</td></tr><tr><td>Argelia</td><td>4</td></tr><tr><td>Jordania</td><td>0</td></tr></table></div><div class="group-card"><h3>Grupo K</h3><table><tr><th>Equipo</th><th>PTS</th></tr><tr><td>Colombia</td><td>7</td></tr><tr><td>Portugal</td><td>5</td></tr><tr><td>RD Congo</td><td>4</td></tr><tr><td>Uzbekistán</td><td>0</td></tr></table></div><div class="group-card"><h3>Grupo L</h3><table><tr><th>Equipo</th><th>PTS</th></tr><tr><td>Inglaterra</td><td>7</td></tr><tr><td>Croacia</td><td>6</td></tr><tr><td>Ghana</td><td>4</td></tr><tr><td>Panamá</td><td>1</td></tr></table></div></div></div></div>
 </body>
 </html>
