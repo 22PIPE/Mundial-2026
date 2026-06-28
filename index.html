@@ -2,15 +2,13 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Copa Mundial de Fútbol 2026 - Resultados y Bracket</title>
+<title>Copa Mundial 2026 con Control de Edición</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
   body {
     font-family: 'Roboto', sans-serif;
     background: #f9fafb;
     margin: 20px;
-    overflow-x:hidden;
     display: flex;
     justify-content: center;
     min-width: 320px;
@@ -21,7 +19,6 @@
     align-items: center;
     width: 100%;
     max-width: 1300px;
-    overflow:hidden;
   }
   .title-section {
     text-align: center;
@@ -30,6 +27,7 @@
   .title-section img {
     height: 80px;
     margin-bottom: 10px;
+    user-select: none;
   }
   .title-section h1 {
     font-weight: 700;
@@ -38,22 +36,14 @@
     margin: 0;
     user-select: none;
   }
-  .bracket-wrapper {
-    width:100%;
-    overflow-x:auto;
-    overflow-y:hidden;
-    -webkit-overflow-scrolling:touch;
-}
   .bracket {
     display: flex;
     gap: 30px;
     background: #ffffff;
     padding: 24px 20px 24px 20px;
-    padding-left: 20px; /* Márgen para que veas la bandera */
     border-radius: 12px;
     box-shadow: 0 8px 24px rgba(0,0,0,0.12);
-    width:max-content;
-    min-width:100%;
+    overflow-x: auto;
     -webkit-overflow-scrolling: touch;
     scrollbar-width: thin;
   }
@@ -69,7 +59,7 @@
     display: flex;
     flex-direction: column;
     gap: 20px;
-    width:260px;
+    min-width: 260px;
   }
   .round h2 {
     text-align: center;
@@ -88,13 +78,19 @@
     padding: 14px 16px;
     text-align: center;
     box-shadow: inset 0 0 12px rgba(0,0,0,0.08);
+    position: relative;
     cursor: pointer;
     user-select: none;
     transition: box-shadow 0.3s ease, background-color 0.3s ease;
   }
-  .match:hover {
+  .match.disabled {
+    cursor: default;
+    background-color: #f5f5f5;
+    box-shadow: none;
+  }
+  .match:hover:not(.disabled) {
     background-color: #dfe6e9;
-    box-shadow: 0 4px 14px rgba(52,152,219,0.3);
+    box-shadow: 0 4px 14px rgba(52, 152, 219, 0.3);
   }
   .team {
     display: flex;
@@ -213,76 +209,64 @@
     font-weight: 600;
     user-select: none;
   }
-  @media (max-width: 480px) {
-    .bracket {
-      flex-direction: column;
-      gap: 40px;
-      overflow-x: visible;
-      padding-left: 10px;
-    }
-    .round {
-      min-width: auto;
-      width: 100%;
-    }
-  }
 </style>
 </head>
 <body>
-  <div class="container">
-    <div class="title-section">
-      <img src="https://upload.wikimedia.org/wikipedia/commons/e/e3/FIFA_World_Cup_Trophy.svg" alt="Copa Mundial" />
-      <h1>Copa Mundial de Fútbol 2026</h1>
-    </div>
-
-
-    <div class="bracket-wrapper"><div class="bracket">
-
-      <div class="round" id="round32"><h2>Dieciseisavos</h2></div>
-      <div class="round" id="round16"><h2>Octavos</h2></div>
-      <div class="round" id="quarterfinals"><h2>Cuartos</h2></div>
-      <div class="round" id="semifinals"><h2>Semifinales</h2></div>
-      <div class="round" id="thirdPlace"><h2>Tercer Puesto</h2></div>
-      <div class="round" id="final"><h2>Final</h2></div>
-
-    </div>
-
-    <div id="resultForm">
-      <h2>Ingresar Resultado</h2>
-      <form id="form">
-        <label for="team1Score"><span id="team1Name"></span> - Goles Tiempo Regular/Extra</label>
-        <input type="number" min="0" id="team1Score" required />
-        <label for="team2Score"><span id="team2Name"></span> - Goles Tiempo Regular/Extra</label>
-        <input type="number" min="0" id="team2Score" required />
-        <label for="team1Penalties"><span id="team1Name"></span> - Goles en Penales (opcional)</label>
-        <input type="number" min="0" id="team1Penalties" />
-        <label for="team2Penalties"><span id="team2Name"></span> - Goles en Penales (opcional)</label>
-        <input type="number" min="0" id="team2Penalties" />
-        <div style="text-align:center;">
-          <button type="submit" class="save">Guardar Resultado</button>
-          <button type="button" id="cancelBtn" class="cancel">Cancelar</button>
-        </div>
-      </form>
-    </div>
+<div class="container">
+  <div class="title-section">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/e/e3/FIFA_World_Cup_Trophy.svg" alt="Copa Mundial" />
+    <h1>Copa Mundial de Fútbol 2026</h1>
   </div>
 
+  <div class="notice">Haz clic en cualquier partido para ingresar o modificar su resultado. Puedes ingresar resultados de penales si el partido termina empatado.</div>
+
+  <div class="bracket">
+    <div class="round" id="round32"><h2>Dieciseisavos</h2></div>
+    <div class="round" id="round16"><h2>Octavos</h2></div>
+    <div class="round" id="quarterfinals"><h2>Cuartos</h2></div>
+    <div class="round" id="semifinals"><h2>Semifinales</h2></div>
+    <div class="round" id="thirdPlace"><h2>Tercer Puesto</h2></div>
+    <div class="round" id="final"><h2>Final</h2></div>
+  </div>
+
+  <div id="resultForm">
+    <h2>Ingresar Resultado</h2>
+    <form id="form">
+      <label for="team1Score"><span id="team1Name"></span> - Goles Tiempo Regular/Extra</label>
+      <input type="number" min="0" id="team1Score" required />
+      <label for="team2Score"><span id="team2Name"></span> - Goles Tiempo Regular/Extra</label>
+      <input type="number" min="0" id="team2Score" required />
+      <label for="team1Penalties"><span id="team1Name"></span> - Goles en Penales (opcional)</label>
+      <input type="number" min="0" id="team1Penalties" />
+      <label for="team2Penalties"><span id="team2Name"></span> - Goles en Penales (opcional)</label>
+      <input type="number" min="0" id="team2Penalties" />
+      <div style="text-align:center;">
+        <button type="submit" class="save">Guardar Resultado</button>
+        <button type="button" id="cancelBtn" class="cancel">Cancelar</button>
+      </div>
+    </form>
+  </div>
+</div>
+
 <script>
+  // Tus datos de partidos (dieciseisavos, octavos, etc.) incluyendo banderas, marcadores y penales
   const dieciseisavos = [
-    {id:1,team1:'México',flag1:'https://flagcdn.com/w40/mx.png',team2:'Ecuador',flag2:'https://flagcdn.com/w40/ec.png',score1:null,score2:null,pen1:null,pen2:null},
-    {id:2,team1:'España',flag1:'https://flagcdn.com/w40/es.png',team2:'Austria',flag2:'https://flagcdn.com/w40/at.png',score1:null,score2:null,pen1:null,pen2:null},
-    {id:3,team1:'Argentina',flag1:'https://flagcdn.com/w40/ar.png',team2:'Cabo Verde',flag2:'https://flagcdn.com/w40/cv.png',score1:null,score2:null,pen1:null,pen2:null},
-    {id:4,team1:'Francia',flag1:'https://flagcdn.com/w40/fr.png',team2:'Suecia',flag2:'https://flagcdn.com/w40/se.png',score1:null,score2:null,pen1:null,pen2:null},
-    {id:5,team1:'Brasil',flag1:'https://flagcdn.com/w40/br.png',team2:'Japón',flag2:'https://flagcdn.com/w40/jp.png',score1:null,score2:null,pen1:null,pen2:null},
-    {id:6,team1:'Inglaterra',flag1:'https://flagcdn.com/w40/gb-eng.png',team2:'RD Congo',flag2:'https://flagcdn.com/w40/cd.png',score1:null,score2:null,pen1:null,pen2:null},
-    {id:7,team1:'Países Bajos',flag1:'https://flagcdn.com/w40/nl.png',team2:'Marruecos',flag2:'https://flagcdn.com/w40/ma.png',score1:null,score2:null,pen1:null,pen2:null},
-    {id:8,team1:'EE. UU.',flag1:'https://flagcdn.com/w40/us.png',team2:'Bosnia-Herzegovina',flag2:'https://flagcdn.com/w40/ba.png',score1:null,score2:null,pen1:null,pen2:null},
-    {id:9,team1:'Sudáfrica',flag1:'https://flagcdn.com/w40/za.png',team2:'Canadá',flag2:'https://flagcdn.com/w40/ca.png',score1:null,score2:null,pen1:null,pen2:null},
-    {id:10,team1:'Portugal',flag1:'https://flagcdn.com/w40/pt.png',team2:'Croacia',flag2:'https://flagcdn.com/w40/hr.png',score1:null,score2:null,pen1:null,pen2:null},
-    {id:11,team1:'Alemania',flag1:'https://flagcdn.com/w40/de.png',team2:'Paraguay',flag2:'https://flagcdn.com/w40/py.png',score1:null,score2:null,pen1:null,pen2:null},
-    {id:12,team1:'Bélgica',flag1:'https://flagcdn.com/w40/be.png',team2:'Senegal',flag2:'https://flagcdn.com/w40/sn.png',score1:null,score2:null,pen1:null,pen2:null},
-    {id:13,team1:'Colombia',flag1:'https://flagcdn.com/w40/co.png',team2:'Ghana',flag2:'https://flagcdn.com/w40/gh.png',score1:null,score2:null,pen1:null,pen2:null},
-    {id:14,team1:'Suiza',flag1:'https://flagcdn.com/w40/ch.png',team2:'Argelia',flag2:'https://flagcdn.com/w40/dz.png',score1:null,score2:null,pen1:null,pen2:null},
-    {id:15,team1:'Noruega',flag1:'https://flagcdn.com/w40/no.png',team2:'Costa de Marfil',flag2:'https://flagcdn.com/w40/ci.png',score1:null,score2:null,pen1:null,pen2:null},
-    {id:16,team1:'Australia',flag1:'https://flagcdn.com/w40/au.png',team2:'Egipto',flag2:'https://flagcdn.com/w40/eg.png',score1:null,score2:null,pen1:null,pen2:null}
+    {id:1, team1:'México', flag1:'https://flagcdn.com/w40/mx.png', team2:'Ecuador', flag2:'https://flagcdn.com/w40/ec.png', score1:null, score2:null, pen1:null, pen2:null},
+    {id:2, team1:'España', flag1:'https://flagcdn.com/w40/es.png', team2:'Austria', flag2:'https://flagcdn.com/w40/at.png', score1:null, score2:null, pen1:null, pen2:null},
+    {id:3, team1:'Argentina', flag1:'https://flagcdn.com/w40/ar.png', team2:'Cabo Verde', flag2:'https://flagcdn.com/w40/cv.png', score1:null, score2:null, pen1:null, pen2:null},
+    {id:4, team1:'Francia', flag1:'https://flagcdn.com/w40/fr.png', team2:'Suecia', flag2:'https://flagcdn.com/w40/se.png', score1:null, score2:null, pen1:null, pen2:null},
+    {id:5, team1:'Brasil', flag1:'https://flagcdn.com/w40/br.png', team2:'Japón', flag2:'https://flagcdn.com/w40/jp.png', score1:null, score2:null, pen1:null, pen2:null},
+    {id:6, team1:'Inglaterra', flag1:'https://flagcdn.com/w40/gb-eng.png', team2:'RD Congo', flag2:'https://flagcdn.com/w40/cd.png', score1:null, score2:null, pen1:null, pen2:null},
+    {id:7, team1:'Países Bajos', flag1:'https://flagcdn.com/w40/nl.png', team2:'Marruecos', flag2:'https://flagcdn.com/w40/ma.png', score1:null, score2:null, pen1:null, pen2:null},
+    {id:8, team1:'EE. UU.', flag1:'https://flagcdn.com/w40/us.png', team2:'Bosnia-Herzegovina', flag2:'https://flagcdn.com/w40/ba.png', score1:null, score2:null, pen1:null, pen2:null},
+    {id:9, team1:'Sudáfrica', flag1:'https://flagcdn.com/w40/za.png', team2:'Canadá', flag2:'https://flagcdn.com/w40/ca.png', score1:null, score2:null, pen1:null, pen2:null},
+    {id:10, team1:'Portugal', flag1:'https://flagcdn.com/w40/pt.png', team2:'Croacia', flag2:'https://flagcdn.com/w40/hr.png', score1:null, score2:null, pen1:null, pen2:null},
+    {id:11, team1:'Alemania', flag1:'https://flagcdn.com/w40/de.png', team2:'Paraguay', flag2:'https://flagcdn.com/w40/py.png', score1:null, score2:null, pen1:null, pen2:null},
+    {id:12, team1:'Bélgica', flag1:'https://flagcdn.com/w40/be.png', team2:'Senegal', flag2:'https://flagcdn.com/w40/sn.png', score1:null, score2:null, pen1:null, pen2:null},
+    {id:13, team1:'Colombia', flag1:'https://flagcdn.com/w40/co.png', team2:'Ghana', flag2:'https://flagcdn.com/w40/gh.png', score1:null, score2:null, pen1:null, pen2:null},
+    {id:14, team1:'Suiza', flag1:'https://flagcdn.com/w40/ch.png', team2:'Argelia', flag2:'https://flagcdn.com/w40/dz.png', score1:null, score2:null, pen1:null, pen2:null},
+    {id:15, team1:'Noruega', flag1:'https://flagcdn.com/w40/no.png', team2:'Costa de Marfil', flag2:'https://flagcdn.com/w40/ci.png', score1:null, score2:null, pen1:null, pen2:null},
+    {id:16, team1:'Australia', flag1:'https://flagcdn.com/w40/au.png', team2:'Egipto', flag2:'https://flagcdn.com/w40/eg.png', score1:null, score2:null, pen1:null, pen2:null}
   ];
 
   const octavos = [
@@ -450,7 +434,7 @@
           <span class="score">${s2}</span>${penInfo2}
         </div>
       `;
-      if (m.team1 && m.team2) {
+      if (modoEdicion && m.team1 && m.team2) {
         div.style.cursor = 'pointer';
         div.addEventListener('click', () => openResultForm(m, container));
       } else {
@@ -471,8 +455,25 @@
     resultForm.style.display = 'block';
   }
 
+  let modoEdicion = false;
+  const CONTRASENA = '1234'; // Cambia aquí tu contraseña
+
+  window.addEventListener('load', () => {
+    const pwd = prompt('Ingrese contraseña para editar resultados:');
+    if (pwd === CONTRASENA) {
+      modoEdicion = true;
+      alert('Modo edición activado.');
+    } else {
+      modoEdicion = false;
+      alert('Modo solo lectura activado.');
+    }
+    renderAll();
+  });
+
   form.addEventListener('submit', e => {
     e.preventDefault();
+    if (!modoEdicion) return;
+
     let s1 = parseInt(team1Score.value);
     let s2 = parseInt(team2Score.value);
     let p1 = team1Penalties.value === '' ? null : parseInt(team1Penalties.value);
@@ -529,13 +530,41 @@
     renderMatches(finalDiv, final);
   }
 
+  function saveData() {
+    const data = { dieciseisavos, octavos, cuartos, semifinales, tercerPuesto, final };
+    localStorage.setItem('mundialDatos', JSON.stringify(data));
+  }
+
+  function loadData() {
+    const raw = localStorage.getItem('mundialDatos');
+    if (raw) {
+      try {
+        const data = JSON.parse(raw);
+        ['dieciseisavos', 'octavos', 'cuartos', 'semifinales', 'tercerPuesto', 'final'].forEach(key => {
+          if (Array.isArray(data[key])) {
+            data[key].forEach(savedMatch => {
+              const arr = eval(key);
+              const m = arr.find(x => x.id === savedMatch.id);
+              if (m) {
+                m.team1 = savedMatch.team1 ?? m.team1;
+                m.flag1 = savedMatch.flag1 ?? m.flag1;
+                m.team2 = savedMatch.team2 ?? m.team2;
+                m.flag2 = savedMatch.flag2 ?? m.flag2;
+                m.score1 = savedMatch.score1;
+                m.score2 = savedMatch.score2;
+                m.pen1 = savedMatch.pen1 ?? null;
+                m.pen2 = savedMatch.pen2 ?? null;
+              }
+            });
+          }
+        });
+      } catch (e) {
+        console.warn('Error cargando datos:', e);
+      }
+    }
+  }
+
   loadData();
-  updateNextRound(octavos, dieciseisavos);
-  updateNextRound(cuartos, octavos);
-  updateNextRound(semifinales, cuartos);
-  updateNextRound(tercerPuesto, semifinales);
-  updateNextRound(final, semifinales);
-  renderAll();
 </script>
 </body>
 </html>
