@@ -47,7 +47,7 @@
     user-select: none;
   }
 
-  /* ── Indicador de conexión Firebase ── */
+  /* ── Indicador sync ── */
   #syncStatus {
     display: flex;
     align-items: center;
@@ -59,8 +59,7 @@
     user-select: none;
   }
   #syncDot {
-    width: 10px;
-    height: 10px;
+    width: 10px; height: 10px;
     border-radius: 50%;
     background: #555;
     transition: background 0.4s;
@@ -69,54 +68,30 @@
   #syncDot.saving  { background: #f39c12; box-shadow: 0 0 6px #f39c12; }
   #syncDot.offline { background: #e74c3c; box-shadow: 0 0 6px #e74c3c; }
 
+  /* ── Bracket ── */
   .bracket {
-    display:flex;
-    width:max-content;
-    min-width:max-content;
-    gap: 30px;
-    background: #1b1b1b;
-    padding: 24px 20px;
-    border-radius: 12px;
+    display:flex; width:max-content; min-width:max-content;
+    gap: 30px; background: #1b1b1b;
+    padding: 24px 20px; border-radius: 12px;
     box-shadow: 0 8px 24px rgba(0,0,0,0.12);
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: thin;
+    overflow-x: auto; -webkit-overflow-scrolling: touch; scrollbar-width: thin;
   }
   .bracket::-webkit-scrollbar { height: 10px; }
   .bracket::-webkit-scrollbar-thumb { background-color: rgba(0,0,0,0.2); border-radius: 5px; }
-
-  .round {
-    flex-shrink: 0;
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-    min-width: 260px;
-  }
+  .round { flex-shrink: 0; display: flex; flex-direction: column; gap: 20px; min-width: 260px; }
   .round h2 {
-    text-align: center;
-    margin-bottom: 14px;
-    font-size: 1.4rem;
-    color: #f5f5f5;
-    border-bottom: 3px solid #3498db;
-    padding-bottom: 8px;
-    font-weight: 700;
-    letter-spacing: 0.04em;
-    user-select: none;
+    text-align: center; margin-bottom: 14px; font-size: 1.4rem;
+    color: #f5f5f5; border-bottom: 3px solid #3498db; padding-bottom: 8px;
+    font-weight: 700; letter-spacing: 0.04em; user-select: none;
   }
   .match {
-    background: #2b2b2b;
-    border-radius: 10px;
-    padding: 14px 16px;
-    text-align: center;
-    box-shadow: inset 0 0 12px rgba(0,0,0,0.08);
-    position: relative;
-    user-select: none;
-    transition: box-shadow 0.3s ease, background-color 0.3s ease;
-    cursor: pointer;
+    background: #2b2b2b; border-radius: 10px; padding: 14px 16px;
+    text-align: center; box-shadow: inset 0 0 12px rgba(0,0,0,0.08);
+    position: relative; user-select: none;
+    transition: box-shadow 0.3s ease, background-color 0.3s ease; cursor: pointer;
   }
   .match.disabled { cursor: default; background-color: #333333; box-shadow: none; }
   .match:hover:not(.disabled) { background-color: #3a3a3a; box-shadow: 0 4px 14px rgba(52,152,219,0.3); }
-
   .team { display: flex; align-items: center; justify-content: space-between; margin: 8px 0; }
   .team-name { font-weight: 700; flex-grow: 1; text-align: left; margin-left: 10px; font-size: 1.05rem; color: #f0f0f0; }
   .flag { width: 32px; height: 20px; border: 1.2px solid #bdc3c7; object-fit: cover; border-radius: 4px; min-width: 32px; min-height: 20px; }
@@ -125,23 +100,13 @@
 
   /* ── Modal resultado ── */
   #resultModal {
-    display: none;
-    position: fixed;
-    top:0; left:0; right:0; bottom:0;
-    background: rgba(0,0,0,0.5);
-    z-index: 10000;
-    justify-content: center;
-    align-items: center;
+    display: none; position: fixed; top:0; left:0; right:0; bottom:0;
+    background: rgba(0,0,0,0.5); z-index: 10000; justify-content: center; align-items: center;
   }
   #resultModal.active { display: flex; }
   #resultForm {
-    background: #2a2a2a;
-    max-width: 400px;
-    width: 90%;
-    padding: 25px 30px;
-    border-radius: 12px;
-    box-shadow: 0 0 28px rgba(0,0,0,0.25);
-    position: relative;
+    background: #2a2a2a; max-width: 400px; width: 90%;
+    padding: 25px 30px; border-radius: 12px; box-shadow: 0 0 28px rgba(0,0,0,0.25); position: relative;
   }
   #resultForm h2 { margin-top:0; margin-bottom:20px; text-align:center; font-weight:700; color:#f0f0f0; font-size:1.8rem; }
   #resultForm label { font-weight:700; display:block; margin-top:16px; font-size:1rem; color:#f5f5f5; }
@@ -153,34 +118,83 @@
   #resultForm button.cancel { background-color:#c0392b; color:white; }
   #resultForm button.cancel:hover { background-color:#962d22; }
 
-  /* ── Modal login ── */
+  /* ── Modal login Google ── */
   #loginModal {
-    position: fixed;
-    top:0; left:0; width:100vw; height:100vh;
-    background: rgba(0,0,0,0.6);
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    position: fixed; top:0; left:0; width:100vw; height:100vh;
+    background: rgba(0,0,0,0.7);
+    display: flex; align-items: center; justify-content: center;
     z-index: 15000;
   }
   #loginModal.hidden { display: none; }
-  #loginModal .modal-content { background:#2a2a2a; padding:25px 30px; border-radius:10px; max-width:340px; width:90%; text-align:center; }
-  #loginModal h2 { color:#f0f0f0; margin-top:0; }
-  #loginModal input[type="password"] { width:100%; height:36px; font-size:16px; padding:6px; margin-top:10px; box-sizing:border-box; border-radius:6px; border:1px solid #ccc; }
-  #loginModal button { margin-top:20px; padding:10px; width:100%; font-size:16px; font-weight:700; border:none; border-radius:6px; cursor:pointer; background-color:#2980b9; color:white; }
-  #loginModal button.guest { background-color:#95a5a6; margin-top:10px; }
-  #loginModal .error-msg { color:red; margin-top:12px; display:none; }
+  #loginModal .modal-content {
+    background:#1e1e1e; padding:36px 32px; border-radius:14px;
+    max-width:340px; width:90%; text-align:center;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+  }
+  #loginModal h2 { color:#f0f0f0; margin-top:0; margin-bottom:8px; font-size:1.5rem; }
+  #loginModal p  { color:#aaa; font-size:0.9rem; margin-bottom:24px; }
+
+  /* Botón Google */
+  #googleLoginBtn {
+    display: flex; align-items: center; justify-content: center; gap: 12px;
+    width: 100%; padding: 12px 16px;
+    background: #fff; color: #333;
+    border: none; border-radius: 8px;
+    font-size: 1rem; font-weight: 700; cursor: pointer;
+    transition: background 0.2s, box-shadow 0.2s;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+  }
+  #googleLoginBtn:hover { background: #f0f0f0; box-shadow: 0 4px 14px rgba(0,0,0,0.4); }
+  #googleLoginBtn svg  { flex-shrink: 0; }
+
+  #guestBtn {
+    display: block; width: 100%; margin-top: 12px; padding: 10px;
+    background: #2c2c2c; color: #aaa;
+    border: 1px solid #444; border-radius: 8px;
+    font-size: 0.95rem; font-weight: 600; cursor: pointer;
+    transition: background 0.2s;
+  }
+  #guestBtn:hover { background: #383838; }
+
+  #loginError { color:#e74c3c; margin-top:14px; font-size:0.88rem; display:none; }
+
+  /* ── Chip usuario ── */
+  #userChip {
+    display: none;
+    align-items: center; gap: 8px;
+    background: #1e1e1e; border: 1px solid #333;
+    border-radius: 20px; padding: 5px 12px 5px 6px;
+    color: #f0f0f0; font-size: 0.85rem;
+  }
+  #userChip.visible { display: flex; }
+  #userChip img { width:24px; height:24px; border-radius:50%; }
 
   /* ── Admin ── */
-  .admin-btn { position:fixed; top:12px; right:12px; z-index:16000; background:#2c3e50; color:#fff; border:none; border-radius:20px; padding:14px 18px 12px; cursor:pointer; font-size:1rem; }
-  .admin-menu { position:fixed; top:50px; right:12px; background:#1f1f1f; color:#fff; border:1px solid #444; border-radius:8px; padding:14px 18px; display:none; z-index:16000; box-shadow:0 4px 12px rgba(0,0,0,.4); }
-  .admin-menu button { display:block; width:100%; margin:6px 0; padding:8px 14px; border:none; border-radius:6px; cursor:pointer; background:#2c3e50; color:#fff; font-size:0.95rem; }
+  .admin-btn {
+    position:fixed; top:12px; right:12px; z-index:16000;
+    background:#2c3e50; color:#fff; border:none;
+    border-radius:20px; padding:10px 16px; cursor:pointer; font-size:1rem;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .admin-menu {
+    position:fixed; top:52px; right:12px; background:#1f1f1f; color:#fff;
+    border:1px solid #444; border-radius:8px; padding:14px 18px;
+    display:none; z-index:16000; box-shadow:0 4px 12px rgba(0,0,0,.4);
+    min-width: 200px;
+  }
+  .admin-menu button {
+    display:block; width:100%; margin:6px 0; padding:8px 14px;
+    border:none; border-radius:6px; cursor:pointer;
+    background:#2c3e50; color:#fff; font-size:0.95rem;
+    text-align: left;
+  }
   .admin-menu button:hover { background:#3d5166; }
+  .admin-menu hr { border-color: #333; margin: 8px 0; }
   .hidden { display:none !important; }
 
   /* ── Grupos ── */
   .groups-section { margin-top:40px; width:100%; }
-  .groups-section h2 { text-align:center; color:#fff; margin-bottom:20px; }
+  .groups-section > h2 { text-align:center; color:#fff; margin-bottom:20px; }
   .groups-scroll { overflow-x:auto; padding-bottom:10px; -webkit-overflow-scrolling:touch; }
   .groups-row { display:flex; gap:18px; width:max-content; padding:0 10px 10px; }
   .group-card { background:#242424; border-radius:10px; padding:10px 14px; min-width:190px; color:#fff; box-shadow:0 2px 8px rgba(0,0,0,.35); }
@@ -200,21 +214,44 @@
 <body>
 
 <!-- ══ Botón admin ══ -->
-<button id="adminToggle" class="admin-btn">⚙️</button>
+<button id="adminToggle" class="admin-btn">⚙️ <span id="adminLabel">Admin</span></button>
 <div id="adminMenu" class="admin-menu">
-  <button id="openLogin">🔒 Iniciar sesión</button>
-  <button id="resetBtn" class="hidden">🔄 Reiniciar Mundial</button>
-  <button id="logoutBtn" class="hidden">🔓 Cerrar sesión</button>
+  <!-- Estado: no logueado -->
+  <div id="menuGuest">
+    <button id="openLogin">🔑 Iniciar sesión con Google</button>
+  </div>
+  <!-- Estado: logueado como admin -->
+  <div id="menuAdmin" class="hidden">
+    <div id="userChip" class="visible" style="margin-bottom:10px;">
+      <img id="userPhoto" src="" alt="foto"/>
+      <span id="userName"></span>
+    </div>
+    <hr>
+    <button id="resetBtn">🔄 Reiniciar Mundial</button>
+    <button id="logoutBtn">🔓 Cerrar sesión</button>
+  </div>
 </div>
 
 <!-- ══ Modal login ══ -->
 <div id="loginModal" class="hidden">
   <div class="modal-content">
-    <h2>Acceso a Edición</h2>
-    <input type="password" id="passwordInput" placeholder="Ingresa contraseña" autocomplete="off" />
-    <button id="loginBtn">Entrar</button>
-    <button id="guestBtn" class="guest">Entrar como invitado</button>
-    <div id="loginError" class="error-msg">Contraseña incorrecta, intenta de nuevo.</div>
+    <h2>👋 Acceso al Mundial</h2>
+    <p>Inicia sesión con Google para editar resultados,<br>o entra como invitado para solo ver.</p>
+
+    <!-- Botón Google con logo SVG oficial -->
+    <button id="googleLoginBtn">
+      <svg width="20" height="20" viewBox="0 0 48 48">
+        <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
+        <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
+        <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/>
+        <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.18 1.48-4.97 2.35-8.16 2.35-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>
+        <path fill="none" d="M0 0h48v48H0z"/>
+      </svg>
+      Continuar con Google
+    </button>
+
+    <button id="guestBtn">👁️ Ver como invitado</button>
+    <div id="loginError">No tienes permisos de edición con esa cuenta.</div>
   </div>
 </div>
 
@@ -225,7 +262,6 @@
     <h1>Copa Mundial de Fútbol 2026</h1>
   </div>
 
-  <!-- Indicador de sincronización -->
   <div id="syncStatus">
     <div id="syncDot"></div>
     <span id="syncLabel">Conectando con Firebase…</span>
@@ -284,16 +320,17 @@
 </div>
 
 <!-- ══════════════════════════════════════════
-     FIREBASE (módulos ESM via CDN)
-     ══════════════════════════════════════════ -->
+     FIREBASE
+══════════════════════════════════════════ -->
 <script type="module">
-import { initializeApp }                        from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import { getFirestore, doc, getDoc, setDoc,
-         onSnapshot, deleteDoc }                from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+import { initializeApp }
+  from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getFirestore, doc, setDoc, onSnapshot, deleteDoc }
+  from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged }
+  from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
-// ─────────────────────────────────────────────
-//  Config Firebase (la tuya)
-// ─────────────────────────────────────────────
+// ─── Config ───────────────────────────────────
 const firebaseConfig = {
   apiKey:            "AIzaSyDk-Www1xEr56x52aGqwpng6djWF6KaU-g",
   authDomain:        "mundial-2026-6fb2d.firebaseapp.com",
@@ -304,44 +341,39 @@ const firebaseConfig = {
   measurementId:     "G-NM32SK2BH9"
 };
 
-const app = initializeApp(firebaseConfig);
-const db  = initializeApp && getFirestore(app);
+// ─── Único correo autorizado para editar ──────
+const ADMIN_EMAIL = "pipedevia22@gmail.com";
 
-// Ruta en Firestore: mundial2026 → datos → <ronda>
-// Usamos un solo documento "datos" con todos los arrays adentro
-// Estructura: mundial2026/datos  { dieciseisavos:[…], octavos:[…], … }
-const DOCREF = doc(db, "mundial2026", "datos");
+const app      = initializeApp(firebaseConfig);
+const db       = getFirestore(app);
+const auth     = getAuth(app);
+const provider = new GoogleAuthProvider();
+const DOCREF   = doc(db, "mundial2026", "datos");
 
-// ─────────────────────────────────────────────
-//  Constantes / estado
-// ─────────────────────────────────────────────
-const CONTRASENA = '2208';
-let modoEdicion  = false;
-let currentMatch = null;
-let ignorarSnapshot = false;   // evita re-render cuando YO mismo guardo
+// ─── Estado ───────────────────────────────────
+let modoEdicion     = false;
+let currentMatch    = null;
+let ignorarSnapshot = false;
 
-// ─────────────────────────────────────────────
-//  Datos iniciales
-// ─────────────────────────────────────────────
+// ─── Datos iniciales ──────────────────────────
 let dieciseisavos = [
-  {id:1,  team1:'México',        flag1:'https://flagcdn.com/w40/mx.png',    team2:'Ecuador',          flag2:'https://flagcdn.com/w40/ec.png',    score1:null,score2:null,pen1:null,pen2:null},
-  {id:2,  team1:'España',        flag1:'https://flagcdn.com/w40/es.png',    team2:'Austria',          flag2:'https://flagcdn.com/w40/at.png',    score1:null,score2:null,pen1:null,pen2:null},
-  {id:3,  team1:'Argentina',     flag1:'https://flagcdn.com/w40/ar.png',    team2:'Cabo Verde',       flag2:'https://flagcdn.com/w40/cv.png',    score1:null,score2:null,pen1:null,pen2:null},
-  {id:4,  team1:'Francia',       flag1:'https://flagcdn.com/w40/fr.png',    team2:'Suecia',           flag2:'https://flagcdn.com/w40/se.png',    score1:null,score2:null,pen1:null,pen2:null},
-  {id:5,  team1:'Brasil',        flag1:'https://flagcdn.com/w40/br.png',    team2:'Japón',            flag2:'https://flagcdn.com/w40/jp.png',    score1:null,score2:null,pen1:null,pen2:null},
-  {id:6,  team1:'Inglaterra',    flag1:'https://flagcdn.com/w40/gb-eng.png',team2:'RD Congo',         flag2:'https://flagcdn.com/w40/cd.png',    score1:null,score2:null,pen1:null,pen2:null},
-  {id:7,  team1:'Países Bajos',  flag1:'https://flagcdn.com/w40/nl.png',    team2:'Marruecos',        flag2:'https://flagcdn.com/w40/ma.png',    score1:null,score2:null,pen1:null,pen2:null},
-  {id:8,  team1:'EE. UU.',       flag1:'https://flagcdn.com/w40/us.png',    team2:'Bosnia-Herzegovina',flag2:'https://flagcdn.com/w40/ba.png',  score1:null,score2:null,pen1:null,pen2:null},
-  {id:9,  team1:'Sudáfrica',     flag1:'https://flagcdn.com/w40/za.png',    team2:'Canadá',           flag2:'https://flagcdn.com/w40/ca.png',    score1:null,score2:null,pen1:null,pen2:null},
-  {id:10, team1:'Portugal',      flag1:'https://flagcdn.com/w40/pt.png',    team2:'Croacia',          flag2:'https://flagcdn.com/w40/hr.png',    score1:null,score2:null,pen1:null,pen2:null},
-  {id:11, team1:'Alemania',      flag1:'https://flagcdn.com/w40/de.png',    team2:'Paraguay',         flag2:'https://flagcdn.com/w40/py.png',    score1:null,score2:null,pen1:null,pen2:null},
-  {id:12, team1:'Bélgica',       flag1:'https://flagcdn.com/w40/be.png',    team2:'Senegal',          flag2:'https://flagcdn.com/w40/sn.png',    score1:null,score2:null,pen1:null,pen2:null},
-  {id:13, team1:'Colombia',      flag1:'https://flagcdn.com/w40/co.png',    team2:'Ghana',            flag2:'https://flagcdn.com/w40/gh.png',    score1:null,score2:null,pen1:null,pen2:null},
-  {id:14, team1:'Suiza',         flag1:'https://flagcdn.com/w40/ch.png',    team2:'Argelia',          flag2:'https://flagcdn.com/w40/dz.png',    score1:null,score2:null,pen1:null,pen2:null},
-  {id:15, team1:'Noruega',       flag1:'https://flagcdn.com/w40/no.png',    team2:'Costa de Marfil',  flag2:'https://flagcdn.com/w40/ci.png',    score1:null,score2:null,pen1:null,pen2:null},
-  {id:16, team1:'Australia',     flag1:'https://flagcdn.com/w40/au.png',    team2:'Egipto',           flag2:'https://flagcdn.com/w40/eg.png',    score1:null,score2:null,pen1:null,pen2:null}
+  {id:1,  team1:'México',        flag1:'https://flagcdn.com/w40/mx.png',     team2:'Ecuador',           flag2:'https://flagcdn.com/w40/ec.png',   score1:null,score2:null,pen1:null,pen2:null},
+  {id:2,  team1:'España',        flag1:'https://flagcdn.com/w40/es.png',     team2:'Austria',           flag2:'https://flagcdn.com/w40/at.png',   score1:null,score2:null,pen1:null,pen2:null},
+  {id:3,  team1:'Argentina',     flag1:'https://flagcdn.com/w40/ar.png',     team2:'Cabo Verde',        flag2:'https://flagcdn.com/w40/cv.png',   score1:null,score2:null,pen1:null,pen2:null},
+  {id:4,  team1:'Francia',       flag1:'https://flagcdn.com/w40/fr.png',     team2:'Suecia',            flag2:'https://flagcdn.com/w40/se.png',   score1:null,score2:null,pen1:null,pen2:null},
+  {id:5,  team1:'Brasil',        flag1:'https://flagcdn.com/w40/br.png',     team2:'Japón',             flag2:'https://flagcdn.com/w40/jp.png',   score1:null,score2:null,pen1:null,pen2:null},
+  {id:6,  team1:'Inglaterra',    flag1:'https://flagcdn.com/w40/gb-eng.png', team2:'RD Congo',          flag2:'https://flagcdn.com/w40/cd.png',   score1:null,score2:null,pen1:null,pen2:null},
+  {id:7,  team1:'Países Bajos',  flag1:'https://flagcdn.com/w40/nl.png',     team2:'Marruecos',         flag2:'https://flagcdn.com/w40/ma.png',   score1:null,score2:null,pen1:null,pen2:null},
+  {id:8,  team1:'EE. UU.',       flag1:'https://flagcdn.com/w40/us.png',     team2:'Bosnia-Herzegovina',flag2:'https://flagcdn.com/w40/ba.png',   score1:null,score2:null,pen1:null,pen2:null},
+  {id:9,  team1:'Sudáfrica',     flag1:'https://flagcdn.com/w40/za.png',     team2:'Canadá',            flag2:'https://flagcdn.com/w40/ca.png',   score1:null,score2:null,pen1:null,pen2:null},
+  {id:10, team1:'Portugal',      flag1:'https://flagcdn.com/w40/pt.png',     team2:'Croacia',           flag2:'https://flagcdn.com/w40/hr.png',   score1:null,score2:null,pen1:null,pen2:null},
+  {id:11, team1:'Alemania',      flag1:'https://flagcdn.com/w40/de.png',     team2:'Paraguay',          flag2:'https://flagcdn.com/w40/py.png',   score1:null,score2:null,pen1:null,pen2:null},
+  {id:12, team1:'Bélgica',       flag1:'https://flagcdn.com/w40/be.png',     team2:'Senegal',           flag2:'https://flagcdn.com/w40/sn.png',   score1:null,score2:null,pen1:null,pen2:null},
+  {id:13, team1:'Colombia',      flag1:'https://flagcdn.com/w40/co.png',     team2:'Ghana',             flag2:'https://flagcdn.com/w40/gh.png',   score1:null,score2:null,pen1:null,pen2:null},
+  {id:14, team1:'Suiza',         flag1:'https://flagcdn.com/w40/ch.png',     team2:'Argelia',           flag2:'https://flagcdn.com/w40/dz.png',   score1:null,score2:null,pen1:null,pen2:null},
+  {id:15, team1:'Noruega',       flag1:'https://flagcdn.com/w40/no.png',     team2:'Costa de Marfil',   flag2:'https://flagcdn.com/w40/ci.png',   score1:null,score2:null,pen1:null,pen2:null},
+  {id:16, team1:'Australia',     flag1:'https://flagcdn.com/w40/au.png',     team2:'Egipto',            flag2:'https://flagcdn.com/w40/eg.png',   score1:null,score2:null,pen1:null,pen2:null}
 ];
-
 let octavos = [
   {id:101,srcMatches:[11,4], team1:null,flag1:null,team2:null,flag2:null,score1:null,score2:null,pen1:null,pen2:null},
   {id:102,srcMatches:[9,7],  team1:null,flag1:null,team2:null,flag2:null,score1:null,score2:null,pen1:null,pen2:null},
@@ -352,219 +384,34 @@ let octavos = [
   {id:107,srcMatches:[3,16], team1:null,flag1:null,team2:null,flag2:null,score1:null,score2:null,pen1:null,pen2:null},
   {id:108,srcMatches:[14,13],team1:null,flag1:null,team2:null,flag2:null,score1:null,score2:null,pen1:null,pen2:null}
 ];
-
 let cuartos = [
   {id:201,srcMatches:[101,102],team1:null,flag1:null,team2:null,flag2:null,score1:null,score2:null,pen1:null,pen2:null},
   {id:202,srcMatches:[103,104],team1:null,flag1:null,team2:null,flag2:null,score1:null,score2:null,pen1:null,pen2:null},
   {id:203,srcMatches:[105,106],team1:null,flag1:null,team2:null,flag2:null,score1:null,score2:null,pen1:null,pen2:null},
   {id:204,srcMatches:[107,108],team1:null,flag1:null,team2:null,flag2:null,score1:null,score2:null,pen1:null,pen2:null}
 ];
-
 let semifinales = [
   {id:301,srcMatches:[201,202],team1:null,flag1:null,team2:null,flag2:null,score1:null,score2:null,pen1:null,pen2:null},
   {id:302,srcMatches:[203,204],team1:null,flag1:null,team2:null,flag2:null,score1:null,score2:null,pen1:null,pen2:null}
 ];
-
 let tercerPuesto = [
   {id:401,srcMatches:[301,302],type:'perdedor',team1:null,flag1:null,team2:null,flag2:null,score1:null,score2:null,pen1:null,pen2:null}
 ];
-
 let final = [
   {id:501,srcMatches:[301,302],type:'ganador',team1:null,flag1:null,team2:null,flag2:null,score1:null,score2:null,pen1:null,pen2:null}
 ];
 
-// ─────────────────────────────────────────────
-//  Indicador sync
-// ─────────────────────────────────────────────
-const dot   = document.getElementById('syncDot');
-const label = document.getElementById('syncLabel');
-
-function setSyncState(state) {
-  dot.className = state;
-  const msgs = { online:'Sincronizado', saving:'Guardando…', offline:'Sin conexión' };
-  label.textContent = msgs[state] ?? '';
-}
-
-// ─────────────────────────────────────────────
-//  Firebase: guardar
-// ─────────────────────────────────────────────
-async function saveToFirebase() {
-  setSyncState('saving');
-  ignorarSnapshot = true;
-  try {
-    await setDoc(DOCREF, {
-      dieciseisavos : dieciseisavos.map(cleanMatch),
-      octavos       : octavos.map(cleanMatch),
-      cuartos       : cuartos.map(cleanMatch),
-      semifinales   : semifinales.map(cleanMatch),
-      tercerPuesto  : tercerPuesto.map(cleanMatch),
-      final         : final.map(cleanMatch)
-    });
-    setSyncState('online');
-  } catch(e) {
-    console.error('Error guardando en Firebase:', e);
-    setSyncState('offline');
-  }
-  // Volver a escuchar después de un pequeño delay
-  setTimeout(() => { ignorarSnapshot = false; }, 1500);
-}
-
-// Elimina propiedades no serializables / undefined
-function cleanMatch(m) {
-  return {
-    id     : m.id,
-    team1  : m.team1  ?? null,
-    flag1  : m.flag1  ?? null,
-    team2  : m.team2  ?? null,
-    flag2  : m.flag2  ?? null,
-    score1 : m.score1 ?? null,
-    score2 : m.score2 ?? null,
-    pen1   : m.pen1   ?? null,
-    pen2   : m.pen2   ?? null,
-    ...(m.srcMatches ? { srcMatches: m.srcMatches } : {}),
-    ...(m.type       ? { type: m.type }             : {})
-  };
-}
-
-// ─────────────────────────────────────────────
-//  Firebase: escuchar cambios en tiempo real
-// ─────────────────────────────────────────────
-function mergeFromCloud(cloudArr, localArr) {
-  cloudArr.forEach(cm => {
-    const lm = localArr.find(x => x.id === cm.id);
-    if (!lm) return;
-    lm.team1  = cm.team1  ?? lm.team1;
-    lm.flag1  = cm.flag1  ?? lm.flag1;
-    lm.team2  = cm.team2  ?? lm.team2;
-    lm.flag2  = cm.flag2  ?? lm.flag2;
-    lm.score1 = cm.score1 ?? null;
-    lm.score2 = cm.score2 ?? null;
-    lm.pen1   = cm.pen1   ?? null;
-    lm.pen2   = cm.pen2   ?? null;
-  });
-}
-
-function startListening() {
-  onSnapshot(DOCREF, snap => {
-    if (ignorarSnapshot) return;
-    if (snap.exists()) {
-      const data = snap.data();
-      const keys = ['dieciseisavos','octavos','cuartos','semifinales','tercerPuesto','final'];
-      const locals = { dieciseisavos, octavos, cuartos, semifinales, tercerPuesto, final };
-      keys.forEach(k => {
-        if (Array.isArray(data[k])) mergeFromCloud(data[k], locals[k]);
-      });
-      renderAll();
-    }
-    setSyncState('online');
-  }, err => {
-    console.error('Snapshot error:', err);
-    setSyncState('offline');
-  });
-}
-
-// ─────────────────────────────────────────────
-//  Lógica de avance
-// ─────────────────────────────────────────────
-function getAdvancing(match, type = 'ganador') {
-  if (match.score1 === null || match.score2 === null) return null;
-  if (match.score1 > match.score2) return { team: match.team1, flag: match.flag1 };
-  if (match.score2 > match.score1) return { team: match.team2, flag: match.flag2 };
-  if (match.pen1 !== null && match.pen2 !== null) {
-    if (type === 'ganador') {
-      if (match.pen1 > match.pen2) return { team: match.team1, flag: match.flag1 };
-      if (match.pen2 > match.pen1) return { team: match.team2, flag: match.flag2 };
-    } else {
-      if (match.pen1 < match.pen2) return { team: match.team1, flag: match.flag1 };
-      if (match.pen2 < match.pen1) return { team: match.team2, flag: match.flag2 };
-    }
-  }
-  return null;
-}
-
-function updateNextRound(nextRound, prevRound) {
-  nextRound.forEach(nm => {
-    const [s1, s2] = nm.srcMatches;
-    const m1 = prevRound.find(m => m.id === s1);
-    const m2 = prevRound.find(m => m.id === s2);
-    const adv1 = getAdvancing(m1, nm.type || 'ganador');
-    const adv2 = getAdvancing(m2, nm.type || 'ganador');
-    nm.team1 = adv1?.team ?? null;
-    nm.flag1 = adv1?.flag ?? null;
-    nm.team2 = adv2?.team ?? null;
-    nm.flag2 = adv2?.flag ?? null;
-    if (!nm.team1 || !nm.team2) {
-      nm.score1 = null; nm.score2 = null;
-      nm.pen1   = null; nm.pen2   = null;
-    }
-  });
-}
-
-function propagateAll() {
-  updateNextRound(octavos,      dieciseisavos);
-  updateNextRound(cuartos,      octavos);
-  updateNextRound(semifinales,  cuartos);
-  updateNextRound(tercerPuesto, semifinales);
-  updateNextRound(final,        semifinales);
-}
-
-// ─────────────────────────────────────────────
-//  Render
-// ─────────────────────────────────────────────
-const round32Div    = document.getElementById('round32');
-const round16Div    = document.getElementById('round16');
-const quartersDiv   = document.getElementById('quarterfinals');
-const semifinalsDiv = document.getElementById('semifinals');
-const thirdPlaceDiv = document.getElementById('thirdPlace');
-const finalDiv      = document.getElementById('final');
-
-function renderMatches(container, matches) {
-  container.querySelectorAll('.match').forEach(el => el.remove());
-  matches.forEach(match => {
-    const div = document.createElement('div');
-    div.className = 'match' + (modoEdicion ? '' : ' disabled');
-    div.dataset.id = match.id;
-
-    const s1 = (match.score1 !== null && match.team1) ? match.score1 : '-';
-    const s2 = (match.score2 !== null && match.team2) ? match.score2 : '-';
-    const pen1 = (match.pen1 !== null && match.pen2 !== null)
-      ? `<span class="score-pen">(${match.pen1})</span>` : '';
-    const pen2 = (match.pen1 !== null && match.pen2 !== null)
-      ? `<span class="score-pen">(${match.pen2})</span>` : '';
-
-    div.innerHTML = `
-      <div class="team">
-        ${match.flag1 ? `<img class="flag" src="${match.flag1}" alt="${match.team1}"/>` : ''}
-        <span class="team-name">${match.team1 || 'Por definir'}</span>
-        <span class="score">${s1}</span>${pen1}
-      </div>
-      <div class="team">
-        ${match.flag2 ? `<img class="flag" src="${match.flag2}" alt="${match.team2}"/>` : ''}
-        <span class="team-name">${match.team2 || 'Por definir'}</span>
-        <span class="score">${s2}</span>${pen2}
-      </div>`;
-
-    if (modoEdicion && match.team1 && match.team2) {
-      div.style.cursor = 'pointer';
-      div.addEventListener('click', () => openResultForm(match, container));
-    }
-    container.appendChild(div);
-  });
-}
-
-function renderAll() {
-  propagateAll();
-  renderMatches(round32Div,    dieciseisavos);
-  renderMatches(round16Div,    octavos);
-  renderMatches(quartersDiv,   cuartos);
-  renderMatches(semifinalsDiv, semifinales);
-  renderMatches(thirdPlaceDiv, tercerPuesto);
-  renderMatches(finalDiv,      final);
-}
-
-// ─────────────────────────────────────────────
-//  Modal resultado
-// ─────────────────────────────────────────────
+// ─── UI refs ──────────────────────────────────
+const dot            = document.getElementById('syncDot');
+const label          = document.getElementById('syncLabel');
+const loginModal     = document.getElementById('loginModal');
+const loginError     = document.getElementById('loginError');
+const round32Div     = document.getElementById('round32');
+const round16Div     = document.getElementById('round16');
+const quartersDiv    = document.getElementById('quarterfinals');
+const semifinalsDiv  = document.getElementById('semifinals');
+const thirdPlaceDiv  = document.getElementById('thirdPlace');
+const finalDiv       = document.getElementById('final');
 const resultModal    = document.getElementById('resultModal');
 const form           = document.getElementById('form');
 const team1Name      = document.getElementById('team1Name');
@@ -577,102 +424,255 @@ const team1Penalties = document.getElementById('team1Penalties');
 const team2Penalties = document.getElementById('team2Penalties');
 const cancelBtn      = document.getElementById('cancelBtn');
 
+// ─── Sync indicator ───────────────────────────
+function setSyncState(state) {
+  dot.className = state;
+  label.textContent = { online:'Sincronizado', saving:'Guardando…', offline:'Sin conexión' }[state] ?? '';
+}
+
+// ─── Firestore: guardar ───────────────────────
+function cleanMatch(m) {
+  return {
+    id:m.id, team1:m.team1??null, flag1:m.flag1??null,
+    team2:m.team2??null, flag2:m.flag2??null,
+    score1:m.score1??null, score2:m.score2??null,
+    pen1:m.pen1??null, pen2:m.pen2??null,
+    ...(m.srcMatches?{srcMatches:m.srcMatches}:{}),
+    ...(m.type?{type:m.type}:{})
+  };
+}
+async function saveToFirebase() {
+  setSyncState('saving');
+  ignorarSnapshot = true;
+  try {
+    await setDoc(DOCREF, {
+      dieciseisavos: dieciseisavos.map(cleanMatch),
+      octavos:       octavos.map(cleanMatch),
+      cuartos:       cuartos.map(cleanMatch),
+      semifinales:   semifinales.map(cleanMatch),
+      tercerPuesto:  tercerPuesto.map(cleanMatch),
+      final:         final.map(cleanMatch)
+    });
+    setSyncState('online');
+  } catch(e) {
+    console.error('Error guardando:', e);
+    setSyncState('offline');
+  }
+  setTimeout(() => { ignorarSnapshot = false; }, 1500);
+}
+
+// ─── Firestore: escuchar ──────────────────────
+function mergeFromCloud(cloudArr, localArr) {
+  cloudArr.forEach(cm => {
+    const lm = localArr.find(x => x.id === cm.id);
+    if (!lm) return;
+    lm.team1=cm.team1??lm.team1; lm.flag1=cm.flag1??lm.flag1;
+    lm.team2=cm.team2??lm.team2; lm.flag2=cm.flag2??lm.flag2;
+    lm.score1=cm.score1??null;   lm.score2=cm.score2??null;
+    lm.pen1=cm.pen1??null;       lm.pen2=cm.pen2??null;
+  });
+}
+function startListening() {
+  onSnapshot(DOCREF, snap => {
+    if (ignorarSnapshot) return;
+    if (snap.exists()) {
+      const data = snap.data();
+      const map  = { dieciseisavos, octavos, cuartos, semifinales, tercerPuesto, final };
+      Object.keys(map).forEach(k => {
+        if (Array.isArray(data[k])) mergeFromCloud(data[k], map[k]);
+      });
+      renderAll();
+    }
+    setSyncState('online');
+  }, err => { console.error(err); setSyncState('offline'); });
+}
+
+// ─── Lógica de avance ─────────────────────────
+function getAdvancing(match, type='ganador') {
+  if (match.score1===null||match.score2===null) return null;
+  if (match.score1>match.score2) return {team:match.team1,flag:match.flag1};
+  if (match.score2>match.score1) return {team:match.team2,flag:match.flag2};
+  if (match.pen1!==null&&match.pen2!==null) {
+    if (type==='ganador') {
+      if (match.pen1>match.pen2) return {team:match.team1,flag:match.flag1};
+      if (match.pen2>match.pen1) return {team:match.team2,flag:match.flag2};
+    } else {
+      if (match.pen1<match.pen2) return {team:match.team1,flag:match.flag1};
+      if (match.pen2<match.pen1) return {team:match.team2,flag:match.flag2};
+    }
+  }
+  return null;
+}
+function updateNextRound(nextRound, prevRound) {
+  nextRound.forEach(nm => {
+    const [s1,s2] = nm.srcMatches;
+    const m1=prevRound.find(m=>m.id===s1);
+    const m2=prevRound.find(m=>m.id===s2);
+    const adv1=getAdvancing(m1,nm.type||'ganador');
+    const adv2=getAdvancing(m2,nm.type||'ganador');
+    nm.team1=adv1?.team??null; nm.flag1=adv1?.flag??null;
+    nm.team2=adv2?.team??null; nm.flag2=adv2?.flag??null;
+    if (!nm.team1||!nm.team2) { nm.score1=nm.score2=nm.pen1=nm.pen2=null; }
+  });
+}
+function propagateAll() {
+  updateNextRound(octavos,      dieciseisavos);
+  updateNextRound(cuartos,      octavos);
+  updateNextRound(semifinales,  cuartos);
+  updateNextRound(tercerPuesto, semifinales);
+  updateNextRound(final,        semifinales);
+}
+
+// ─── Render ───────────────────────────────────
+function renderMatches(container, matches) {
+  container.querySelectorAll('.match').forEach(el=>el.remove());
+  matches.forEach(match => {
+    const div = document.createElement('div');
+    div.className = 'match'+(modoEdicion?'':' disabled');
+    div.dataset.id = match.id;
+    const s1=(match.score1!==null&&match.team1)?match.score1:'-';
+    const s2=(match.score2!==null&&match.team2)?match.score2:'-';
+    const pen1=(match.pen1!==null&&match.pen2!==null)?`<span class="score-pen">(${match.pen1})</span>`:'';
+    const pen2=(match.pen1!==null&&match.pen2!==null)?`<span class="score-pen">(${match.pen2})</span>`:'';
+    div.innerHTML=`
+      <div class="team">
+        ${match.flag1?`<img class="flag" src="${match.flag1}" alt="${match.team1}"/>`:''}
+        <span class="team-name">${match.team1||'Por definir'}</span>
+        <span class="score">${s1}</span>${pen1}
+      </div>
+      <div class="team">
+        ${match.flag2?`<img class="flag" src="${match.flag2}" alt="${match.team2}"/>`:''}
+        <span class="team-name">${match.team2||'Por definir'}</span>
+        <span class="score">${s2}</span>${pen2}
+      </div>`;
+    if (modoEdicion&&match.team1&&match.team2) {
+      div.style.cursor='pointer';
+      div.addEventListener('click',()=>openResultForm(match,container));
+    }
+    container.appendChild(div);
+  });
+}
+function renderAll() {
+  propagateAll();
+  renderMatches(round32Div,    dieciseisavos);
+  renderMatches(round16Div,    octavos);
+  renderMatches(quartersDiv,   cuartos);
+  renderMatches(semifinalsDiv, semifinales);
+  renderMatches(thirdPlaceDiv, tercerPuesto);
+  renderMatches(finalDiv,      final);
+}
+
+// ─── Modal resultado ──────────────────────────
 function openResultForm(match, container) {
-  currentMatch = { match, container };
-  team1Name.textContent    = match.team1;
-  team2Name.textContent    = match.team2;
-  team1NamePen.textContent = match.team1;
-  team2NamePen.textContent = match.team2;
-  team1Score.value     = match.score1 !== null ? match.score1 : '';
-  team2Score.value     = match.score2 !== null ? match.score2 : '';
-  team1Penalties.value = match.pen1   !== null ? match.pen1   : '';
-  team2Penalties.value = match.pen2   !== null ? match.pen2   : '';
-  resultModal.style.display = 'flex';
-  document.body.style.overflow = 'hidden';
+  currentMatch={match,container};
+  team1Name.textContent=team1NamePen.textContent=match.team1;
+  team2Name.textContent=team2NamePen.textContent=match.team2;
+  team1Score.value    = match.score1!==null?match.score1:'';
+  team2Score.value    = match.score2!==null?match.score2:'';
+  team1Penalties.value= match.pen1!==null?match.pen1:'';
+  team2Penalties.value= match.pen2!==null?match.pen2:'';
+  resultModal.style.display='flex';
+  document.body.style.overflow='hidden';
 }
-
 function closeResultForm() {
-  resultModal.style.display = 'none';
-  document.body.style.overflow = 'auto';
+  resultModal.style.display='none';
+  document.body.style.overflow='auto';
 }
-
 form.addEventListener('submit', async e => {
   e.preventDefault();
   if (!modoEdicion) return;
-
-  const s1 = parseInt(team1Score.value);
-  const s2 = parseInt(team2Score.value);
-  const p1 = team1Penalties.value === '' ? null : parseInt(team1Penalties.value);
-  const p2 = team2Penalties.value === '' ? null : parseInt(team2Penalties.value);
-
-  if (isNaN(s1) || isNaN(s2)) { alert('Ingresa goles válidos.'); return; }
-
-  currentMatch.match.score1 = s1;
-  currentMatch.match.score2 = s2;
-  currentMatch.match.pen1   = p1;
-  currentMatch.match.pen2   = p2;
-
+  const s1=parseInt(team1Score.value);
+  const s2=parseInt(team2Score.value);
+  const p1=team1Penalties.value===''?null:parseInt(team1Penalties.value);
+  const p2=team2Penalties.value===''?null:parseInt(team2Penalties.value);
+  if (isNaN(s1)||isNaN(s2)) { alert('Ingresa goles válidos.'); return; }
+  currentMatch.match.score1=s1; currentMatch.match.score2=s2;
+  currentMatch.match.pen1=p1;   currentMatch.match.pen2=p2;
   renderAll();
   closeResultForm();
-  await saveToFirebase();   // ← guarda en la nube
+  await saveToFirebase();
 });
-
 cancelBtn.addEventListener('click', closeResultForm);
-resultModal.addEventListener('click', e => { if (e.target === resultModal) closeResultForm(); });
+resultModal.addEventListener('click', e=>{ if(e.target===resultModal) closeResultForm(); });
 
-// ─────────────────────────────────────────────
-//  Login / Admin
-// ─────────────────────────────────────────────
-const loginModal    = document.getElementById('loginModal');
-const passwordInput = document.getElementById('passwordInput');
-const loginBtn      = document.getElementById('loginBtn');
-const guestBtn      = document.getElementById('guestBtn');
-const loginError    = document.getElementById('loginError');
-
+// ─── Auth: estado del usuario ─────────────────
 function habilitarEdicion(valor) {
   modoEdicion = valor;
   renderAll();
 }
 
-loginBtn.addEventListener('click', () => {
-  if (passwordInput.value === CONTRASENA) {
-    loginError.style.display = 'none';
-    loginModal.classList.add('hidden');
+function actualizarMenuAdmin(user) {
+  const menuGuest = document.getElementById('menuGuest');
+  const menuAdmin = document.getElementById('menuAdmin');
+  const adminLabel= document.getElementById('adminLabel');
+
+  if (user && user.email === ADMIN_EMAIL) {
+    // Es el admin
+    menuGuest.classList.add('hidden');
+    menuAdmin.classList.remove('hidden');
+    document.getElementById('userPhoto').src = user.photoURL || '';
+    document.getElementById('userName').textContent = user.displayName || user.email;
+    adminLabel.textContent = '✏️ Admin';
     habilitarEdicion(true);
-    document.getElementById('resetBtn').classList.remove('hidden');
-    document.getElementById('logoutBtn').classList.remove('hidden');
-    document.getElementById('openLogin').classList.add('hidden');
   } else {
-    loginError.style.display = 'block';
+    // Invitado o no logueado
+    menuGuest.classList.remove('hidden');
+    menuAdmin.classList.add('hidden');
+    adminLabel.textContent = 'Admin';
+    habilitarEdicion(false);
+  }
+}
+
+// Escucha cambios de sesión automáticamente
+onAuthStateChanged(auth, user => {
+  actualizarMenuAdmin(user);
+  // Si el modal de login está visible y se logueó, cerrarlo
+  if (user) loginModal.classList.add('hidden');
+});
+
+// ─── Botón: iniciar sesión Google ─────────────
+document.getElementById('googleLoginBtn').addEventListener('click', async () => {
+  loginError.style.display = 'none';
+  try {
+    const result = await signInWithPopup(auth, provider);
+    const user   = result.user;
+    if (user.email !== ADMIN_EMAIL) {
+      // No es el admin: cerrar sesión y mostrar error
+      await signOut(auth);
+      loginError.style.display = 'block';
+      loginError.textContent   = `⛔ La cuenta ${user.email} no tiene permisos de edición.`;
+      return;
+    }
+    // Es el admin: cerrar modal
+    loginModal.classList.add('hidden');
+  } catch(e) {
+    if (e.code !== 'auth/popup-closed-by-user') {
+      loginError.style.display='block';
+      loginError.textContent='Error al iniciar sesión. Intenta de nuevo.';
+      console.error(e);
+    }
   }
 });
 
-guestBtn.addEventListener('click', () => {
-  loginError.style.display = 'none';
+// ─── Botón: invitado ──────────────────────────
+document.getElementById('guestBtn').addEventListener('click', () => {
   loginModal.classList.add('hidden');
   habilitarEdicion(false);
 });
 
-// Enter en campo contraseña
-passwordInput.addEventListener('keydown', e => { if (e.key === 'Enter') loginBtn.click(); });
-
+// ─── Admin toggle ─────────────────────────────
 document.getElementById('adminToggle').onclick = () => {
   const m = document.getElementById('adminMenu');
-  m.style.display = m.style.display === 'block' ? 'none' : 'block';
+  m.style.display = m.style.display==='block' ? 'none' : 'block';
 };
-
 document.getElementById('openLogin').onclick = () => {
   document.getElementById('adminMenu').style.display = 'none';
   loginModal.classList.remove('hidden');
 };
-
-document.getElementById('logoutBtn').onclick = () => {
-  habilitarEdicion(false);
-  document.getElementById('resetBtn').classList.add('hidden');
-  document.getElementById('logoutBtn').classList.add('hidden');
-  document.getElementById('openLogin').classList.remove('hidden');
+document.getElementById('logoutBtn').onclick = async () => {
+  await signOut(auth);
+  document.getElementById('adminMenu').style.display = 'none';
 };
-
 document.getElementById('resetBtn').onclick = async () => {
   if (!confirm('¿Reiniciar Mundial? Esto borrará todos los resultados en la nube.')) return;
   try {
@@ -684,12 +684,12 @@ document.getElementById('resetBtn').onclick = async () => {
   }
 };
 
-// ─────────────────────────────────────────────
-//  Arranque
-// ─────────────────────────────────────────────
-setSyncState('saving');          // "Conectando…"
-startListening();                // escucha cambios en tiempo real
-renderAll();                     // render inmediato con datos base
+// ─── Arranque ─────────────────────────────────
+setSyncState('saving');
+startListening();
+renderAll();
+// Mostrar modal de login al arrancar (el usuario elige Google o invitado)
+loginModal.classList.remove('hidden');
 </script>
 
 </body>
