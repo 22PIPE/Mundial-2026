@@ -2,6 +2,7 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Copa Mundial de Fútbol 2026 - Resultados y Bracket</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
@@ -9,6 +10,7 @@
     font-family: 'Roboto', sans-serif;
     background: #f9fafb;
     margin: 20px;
+    overflow-x:hidden;
     display: flex;
     justify-content: center;
     min-width: 320px;
@@ -19,6 +21,7 @@
     align-items: center;
     width: 100%;
     max-width: 1300px;
+    overflow:hidden;
   }
   .title-section {
     text-align: center;
@@ -35,6 +38,12 @@
     margin: 0;
     user-select: none;
   }
+  .bracket-wrapper {
+    width:100%;
+    overflow-x:auto;
+    overflow-y:hidden;
+    -webkit-overflow-scrolling:touch;
+}
   .bracket {
     display: flex;
     gap: 30px;
@@ -43,7 +52,8 @@
     padding-left: 20px; /* Márgen para que veas la bandera */
     border-radius: 12px;
     box-shadow: 0 8px 24px rgba(0,0,0,0.12);
-    overflow-x: auto;
+    width:max-content;
+    min-width:100%;
     -webkit-overflow-scrolling: touch;
     scrollbar-width: thin;
   }
@@ -59,7 +69,7 @@
     display: flex;
     flex-direction: column;
     gap: 20px;
-    min-width: 260px;
+    width:260px;
   }
   .round h2 {
     text-align: center;
@@ -224,9 +234,8 @@
       <h1>Copa Mundial de Fútbol 2026</h1>
     </div>
 
-    <div class="notice">Haz clic en cualquier partido para ingresar o modificar su resultado. Puedes ingresar resultados de penales si el partido termina empatado.</div>
 
-    <div class="bracket">
+    <div class="bracket-wrapper"><div class="bracket">
 
       <div class="round" id="round32"><h2>Dieciseisavos</h2></div>
       <div class="round" id="round16"><h2>Octavos</h2></div>
