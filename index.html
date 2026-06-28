@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8" />
-<title>Copa Mundial de Fútbol 2026 - Resultados y Bracket</title>
+<title>Copa Mundial de Fútbol 2026 - Resultados y Bracket Responsive</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
   body {
@@ -11,7 +11,7 @@
     margin: 20px;
     display: flex;
     justify-content: center;
-    min-width: 1200px;
+    min-width: 320px;
   }
   .container {
     display: flex;
@@ -43,8 +43,20 @@
     padding: 24px;
     border-radius: 12px;
     box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+
+    overflow-x: auto;             /* permite desplazamiento horizontal */
+    -webkit-overflow-scrolling: touch; /* mejor desplazamiento en iOS */
+    scrollbar-width: thin;        /* scroll delgado en Firefox */
+  }
+  .bracket::-webkit-scrollbar {
+    height: 8px;
+  }
+  .bracket::-webkit-scrollbar-thumb {
+    background-color: rgba(0,0,0,0.2);
+    border-radius: 4px;
   }
   .round {
+    flex-shrink: 0;              /* evita que las columnas se reduzcan */
     display: flex;
     flex-direction: column;
     gap: 18px;
@@ -74,7 +86,7 @@
   }
   .match:hover {
     background-color: #dfe6e9;
-    box-shadow: 0 4px 14px rgb(52 152 219 / 0.3);
+    box-shadow: 0 4px 14px rgba(52, 152, 219, 0.3);
   }
   .team {
     display: flex;
@@ -170,14 +182,14 @@
     transition: background-color 0.3s ease;
   }
   #resultForm button.save {
-    background-color: #27ae60; 
+    background-color: #27ae60;
     color: white;
   }
   #resultForm button.save:hover {
     background-color: #229954;
   }
   #resultForm button.cancel {
-    background-color: #c0392b; 
+    background-color: #c0392b;
     color: white;
   }
   #resultForm button.cancel:hover {
@@ -191,15 +203,27 @@
     font-weight: 600;
     user-select: none;
   }
+  @media (max-width: 480px) {
+    .bracket {
+      flex-direction: column;
+      gap: 40px;
+      overflow-x: unset;
+    }
+    .round {
+      min-width: auto;
+      width: 100%;
+    }
+  }
 </style>
 </head>
 <body>
   <div class="container">
-<div class="title-section" style="text-align:center; margin-bottom:30px;">
-  <img src="copa.png" alt="Copa Mundial" style="height:80px; margin-bottom:10px;">
-  <h1 style="font-family: 'Roboto', sans-serif; font-weight: 700; font-size: 3rem; color: #2c3e50; margin:0;">Copa Mundial de Fútbol 2026</h1>
-</div>
+    <div class="title-section">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/e/e3/FIFA_World_Cup_Trophy.svg" alt="Copa Mundial" />
+      <h1>Copa Mundial de Fútbol 2026</h1>
+    </div>
 
+    <div class="notice">Haz clic en cualquier partido para ingresar o modificar su resultado. Puedes ingresar resultados de penales si el partido termina empatado.</div>
 
     <div class="bracket">
 
@@ -300,24 +324,25 @@
   const cancelBtn = document.getElementById('cancelBtn');
 
   let currentMatch = null;
+
   const STORAGE_KEY = 'mundial2026Penales';
 
-  function saveData(){
-    const data = {dieciseisavos, octavos, cuartos, semifinales, tercerPuesto, final};
+  function saveData() {
+    const data = { dieciseisavos, octavos, cuartos, semifinales, tercerPuesto, final };
     localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
   }
 
-  function loadData(){
+  function loadData() {
     const raw = localStorage.getItem(STORAGE_KEY);
-    if(raw){
+    if (raw) {
       try {
         const data = JSON.parse(raw);
-        ['dieciseisavos', 'octavos', 'cuartos', 'semifinales', 'tercerPuesto', 'final'].forEach(key =>{
-          if(Array.isArray(data[key])){
+        ['dieciseisavos', 'octavos', 'cuartos', 'semifinales', 'tercerPuesto', 'final'].forEach(key => {
+          if (Array.isArray(data[key])) {
             data[key].forEach(savedMatch => {
               const arr = eval(key);
               const m = arr.find(x => x.id === savedMatch.id);
-              if(m){
+              if (m) {
                 m.team1 = savedMatch.team1 ?? m.team1;
                 m.flag1 = savedMatch.flag1 ?? m.flag1;
                 m.team2 = savedMatch.team2 ?? m.team2;
@@ -330,55 +355,55 @@
             });
           }
         });
-      } catch(e){
+      } catch (e) {
         console.warn('Error cargando datos:', e);
       }
     }
   }
 
-  function getAdvancing(match, type = 'ganador'){
-    if(match.score1 === null || match.score2 === null) return null;
-    if( match.score1 > match.score2 ) return {team: match.team1, flag: match.flag1};
-    if( match.score2 > match.score1 ) return {team: match.team2, flag: match.flag2};
+  function getAdvancing(match, type = 'ganador') {
+    if (match.score1 === null || match.score2 === null) return null;
+    if (match.score1 > match.score2) return { team: match.team1, flag: match.flag1 };
+    if (match.score2 > match.score1) return { team: match.team2, flag: match.flag2 };
     // Empate en tiempo regular/extra, verificar penales
-    if(type === 'ganador'){
-      if(match.pen1 !== null && match.pen2 !== null){
-        if(match.pen1 > match.pen2) return {team: match.team1, flag: match.flag1};
-        if(match.pen2 > match.pen1) return {team: match.team2, flag: match.flag2};
+    if (type === 'ganador') {
+      if (match.pen1 !== null && match.pen2 !== null) {
+        if (match.pen1 > match.pen2) return { team: match.team1, flag: match.flag1 };
+        if (match.pen2 > match.pen1) return { team: match.team2, flag: match.flag2 };
       }
       return null; // empate si no hay penales
-    } else if(type === 'perdedor'){
-      if(match.pen1 !== null && match.pen2 !== null){
-        if(match.pen1 < match.pen2) return {team: match.team1, flag: match.flag1};
-        if(match.pen2 < match.pen1) return {team: match.team2, flag: match.flag2};
+    } else if (type === 'perdedor') {
+      if (match.pen1 !== null && match.pen2 !== null) {
+        if (match.pen1 < match.pen2) return { team: match.team1, flag: match.flag1 };
+        if (match.pen2 < match.pen1) return { team: match.team2, flag: match.flag2 };
       }
       return null;
     }
     return null;
   }
 
-  function updateNextRound(nextRound, prevRound){
+  function updateNextRound(nextRound, prevRound) {
     nextRound.forEach(nextMatch => {
       const [src1, src2] = nextMatch.srcMatches;
-      const m1 = prevRound.find(m=>m.id === src1);
-      const m2 = prevRound.find(m=>m.id === src2);
+      const m1 = prevRound.find(m => m.id === src1);
+      const m2 = prevRound.find(m => m.id === src2);
       const adv1 = getAdvancing(m1, nextMatch.type || 'ganador');
       const adv2 = getAdvancing(m2, nextMatch.type || 'ganador');
-      if(adv1){
+      if (adv1) {
         nextMatch.team1 = adv1.team;
         nextMatch.flag1 = adv1.flag;
       } else {
         nextMatch.team1 = null;
         nextMatch.flag1 = null;
       }
-      if(adv2){
+      if (adv2) {
         nextMatch.team2 = adv2.team;
         nextMatch.flag2 = adv2.flag;
       } else {
         nextMatch.team2 = null;
         nextMatch.flag2 = null;
       }
-      if(!nextMatch.team1 || !nextMatch.team2){
+      if (!nextMatch.team1 || !nextMatch.team2) {
         nextMatch.score1 = null;
         nextMatch.score2 = null;
         nextMatch.pen1 = null;
@@ -387,19 +412,19 @@
     });
   }
 
-  function renderMatches(container, matches){
-    container.querySelectorAll('.match').forEach(el=>el.remove());
+  function renderMatches(container, matches) {
+    container.querySelectorAll('.match').forEach(el => el.remove());
     matches.forEach(m => {
       const div = document.createElement('div');
       div.className = 'match';
       div.dataset.id = m.id;
       let s1 = m.score1 !== null ? m.score1 : '-';
       let s2 = m.score2 !== null ? m.score2 : '-';
-      if(!m.team1) s1 = '-';
-      if(!m.team2) s2 = '-';
+      if (!m.team1) s1 = '-';
+      if (!m.team2) s2 = '-';
       let penInfo1 = '';
       let penInfo2 = '';
-      if(m.pen1 !== null && m.pen2 !== null){
+      if (m.pen1 !== null && m.pen2 !== null) {
         penInfo1 = `<span class="score-pen">(${m.pen1})</span>`;
         penInfo2 = `<span class="score-pen">(${m.pen2})</span>`;
       }
@@ -415,9 +440,9 @@
           <span class="score">${s2}</span>${penInfo2}
         </div>
       `;
-      if(m.team1 && m.team2){
+      if (m.team1 && m.team2) {
         div.style.cursor = 'pointer';
-        div.addEventListener('click',()=> openResultForm(m, container));
+        div.addEventListener('click', () => openResultForm(m, container));
       } else {
         div.style.cursor = 'default';
       }
@@ -425,8 +450,8 @@
     });
   }
 
-  function openResultForm(match, container){
-    currentMatch = {match, container};
+  function openResultForm(match, container) {
+    currentMatch = { match, container };
     team1Name.textContent = match.team1;
     team2Name.textContent = match.team2;
     team1Score.value = match.score1 !== null ? match.score1 : '';
@@ -443,11 +468,11 @@
     let p1 = team1Penalties.value === '' ? null : parseInt(team1Penalties.value);
     let p2 = team2Penalties.value === '' ? null : parseInt(team2Penalties.value);
 
-    if(isNaN(s1) || isNaN(s2)){
+    if (isNaN(s1) || isNaN(s2)) {
       alert('Ingresa goles válidos para el tiempo normal.');
       return;
     }
-    if( (p1 !== null && isNaN(p1)) || (p2 !== null && isNaN(p2)) ){
+    if ((p1 !== null && isNaN(p1)) || (p2 !== null && isNaN(p2))) {
       alert('Ingresa goles válidos para penales o deja vacío.');
       return;
     }
@@ -457,22 +482,22 @@
     currentMatch.match.pen2 = p2;
 
     const c = currentMatch.container;
-    if(c === round32Div){
+    if (c === round32Div) {
       updateNextRound(octavos, dieciseisavos);
       updateNextRound(cuartos, octavos);
       updateNextRound(semifinales, cuartos);
       updateNextRound(tercerPuesto, semifinales);
       updateNextRound(final, semifinales);
-    } else if(c === round16Div){
+    } else if (c === round16Div) {
       updateNextRound(cuartos, octavos);
       updateNextRound(semifinales, cuartos);
       updateNextRound(tercerPuesto, semifinales);
       updateNextRound(final, semifinales);
-    } else if(c === quartersDiv){
+    } else if (c === quartersDiv) {
       updateNextRound(semifinales, cuartos);
       updateNextRound(tercerPuesto, semifinales);
       updateNextRound(final, semifinales);
-    } else if(c === semifinalsDiv){
+    } else if (c === semifinalsDiv) {
       updateNextRound(tercerPuesto, semifinales);
       updateNextRound(final, semifinales);
     }
@@ -485,7 +510,7 @@
     resultForm.style.display = 'none';
   });
 
-  function renderAll(){
+  function renderAll() {
     renderMatches(round32Div, dieciseisavos);
     renderMatches(round16Div, octavos);
     renderMatches(quartersDiv, cuartos);
