@@ -29,10 +29,10 @@
   }
   .title-section {
     text-align: center;
-    margin-bottom: 30px;
+    margin-bottom: 40px;
   }
   .title-section img {
-    width:140px;
+    width:180px;
     height:auto;
     display:block;
     margin:0 auto 20px auto;
@@ -41,7 +41,7 @@
   }
   .title-section h1 {
     font-weight: 700;
-    font-size: 3rem;
+    font-size: 3.6rem;
     color: #f5f5f5;
     margin: 0;
     user-select: none;
@@ -92,9 +92,30 @@
   }
   .match.disabled { cursor: default; background-color: #333333; box-shadow: none; }
   .match:hover:not(.disabled) { background-color: #3a3a3a; box-shadow: 0 4px 14px rgba(52,152,219,0.3); }
-  .team { display: flex; align-items: center; justify-content: space-between; margin: 8px 0; }
+  .match-date{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    gap:6px;
+    color:#4DB8FF !important;
+    font-size:15px;
+    font-weight:700;
+    margin-bottom:14px;
+    text-transform:uppercase;
+    letter-spacing:.5px;
+    user-select:none;
+    border-bottom:1px solid rgba(77,184,255,.35);
+    padding-bottom:8px;
+}
+.match-date.future{color:#4DB8FF!important;}
+.match-date.today{color:#38d46a!important;}
+.match-date.finished{color:#ff4b4b!important;}
+.match-date.live{color:#ff9800!important;}
+
+.team { display: flex; align-items: center; justify-content: space-between; margin: 8px 0; }
   .team-name { font-weight: 700; flex-grow: 1; text-align: left; margin-left: 10px; font-size: 1.05rem; color: #f0f0f0; }
   .flag { width: 32px; height: 20px; border: 1.2px solid #bdc3c7; object-fit: cover; border-radius: 4px; min-width: 32px; min-height: 20px; }
+  .score.winner{ background:#2e7d32 !important;color:#fff;transition:background .25s;}
   .score { font-weight: 700; width: 36px; background: #2a2a2a; border-radius: 50%; box-shadow: 0 0 8px rgba(0,0,0,0.15); line-height: 36px; font-size: 1.3rem; text-align: center; color: #f5f5f5; margin-left: 6px; }
   .score-pen { font-weight: 600; font-size: 0.9rem; color: #7f8c8d; margin-left: 6px; font-style: italic; }
 
@@ -131,7 +152,7 @@
     max-width:340px; width:90%; text-align:center;
     box-shadow: 0 8px 32px rgba(0,0,0,0.5);
   }
-  #loginModal h2 { color:#f0f0f0; margin-top:0; margin-bottom:8px; font-size:1.5rem; }
+  #loginModal h2 { color:#f0f0f0; margin-top:0; margin-bottom:8px; font-size:1.8rem; }
   #loginModal p  { color:#aaa; font-size:0.9rem; margin-bottom:24px; }
 
   /* Botón Google */
@@ -167,7 +188,7 @@
     color: #f0f0f0; font-size: 0.85rem;
   }
   #userChip.visible { display: flex; }
-  #userChip img { width:24px; height:24px; border-radius:50%; }
+  #userChip img { width:30px; height:30px; border-radius:50%; }
 
   /* ── Admin ── */
   .admin-btn {
@@ -205,10 +226,27 @@
 
   @media (max-width: 768px) {
     body { margin:0; display:block; overflow-x:auto; }
-    .container { max-width:none; width:max-content; min-width:100%; padding:12px; box-sizing:border-box; }
+    .container { max-width:none; width:max-content; min-width:100%; padding:16px; box-sizing:border-box; }
     .bracket { width:max-content; min-width:max-content; flex-direction:row; flex-wrap:nowrap; gap:20px; padding:16px; }
     .round { flex:0 0 260px; min-width:260px; width:260px; }
   }
+
+@media (max-width:768px){
+ body{zoom:1.08;margin:24px;}
+ .match-card{transform:scale(1.08);transform-origin:top left;margin-bottom:18px;}
+ .round-title{font-size:1.5rem!important;}
+ .team-name{font-size:1.1rem!important;}
+ .score{font-size:1.3rem!important;}
+}
+
+
+  @media (min-width:769px){
+    body{zoom:1.12;}
+  }
+  @media (max-width:768px){
+    body{zoom:1.22;}
+  }
+
 </style>
 </head>
 <body>
@@ -357,22 +395,22 @@ let ignorarSnapshot = false;
 
 // ─── Datos iniciales ──────────────────────────
 let dieciseisavos = [
-  {id:1,  team1:'México',        flag1:'https://flagcdn.com/w40/mx.png',     team2:'Ecuador',           flag2:'https://flagcdn.com/w40/ec.png',   score1:null,score2:null,pen1:null,pen2:null},
-  {id:2,  team1:'España',        flag1:'https://flagcdn.com/w40/es.png',     team2:'Austria',           flag2:'https://flagcdn.com/w40/at.png',   score1:null,score2:null,pen1:null,pen2:null},
-  {id:3,  team1:'Argentina',     flag1:'https://flagcdn.com/w40/ar.png',     team2:'Cabo Verde',        flag2:'https://flagcdn.com/w40/cv.png',   score1:null,score2:null,pen1:null,pen2:null},
-  {id:4,  team1:'Francia',       flag1:'https://flagcdn.com/w40/fr.png',     team2:'Suecia',            flag2:'https://flagcdn.com/w40/se.png',   score1:null,score2:null,pen1:null,pen2:null},
-  {id:5,  team1:'Brasil',        flag1:'https://flagcdn.com/w40/br.png',     team2:'Japón',             flag2:'https://flagcdn.com/w40/jp.png',   score1:null,score2:null,pen1:null,pen2:null},
-  {id:6,  team1:'Inglaterra',    flag1:'https://flagcdn.com/w40/gb-eng.png', team2:'RD Congo',          flag2:'https://flagcdn.com/w40/cd.png',   score1:null,score2:null,pen1:null,pen2:null},
-  {id:7,  team1:'Países Bajos',  flag1:'https://flagcdn.com/w40/nl.png',     team2:'Marruecos',         flag2:'https://flagcdn.com/w40/ma.png',   score1:null,score2:null,pen1:null,pen2:null},
-  {id:8,  team1:'EE. UU.',       flag1:'https://flagcdn.com/w40/us.png',     team2:'Bosnia-Herzegovina',flag2:'https://flagcdn.com/w40/ba.png',   score1:null,score2:null,pen1:null,pen2:null},
-  {id:9,  team1:'Sudáfrica',     flag1:'https://flagcdn.com/w40/za.png',     team2:'Canadá',            flag2:'https://flagcdn.com/w40/ca.png',   score1:null,score2:null,pen1:null,pen2:null},
-  {id:10, team1:'Portugal',      flag1:'https://flagcdn.com/w40/pt.png',     team2:'Croacia',           flag2:'https://flagcdn.com/w40/hr.png',   score1:null,score2:null,pen1:null,pen2:null},
-  {id:11, team1:'Alemania',      flag1:'https://flagcdn.com/w40/de.png',     team2:'Paraguay',          flag2:'https://flagcdn.com/w40/py.png',   score1:null,score2:null,pen1:null,pen2:null},
-  {id:12, team1:'Bélgica',       flag1:'https://flagcdn.com/w40/be.png',     team2:'Senegal',           flag2:'https://flagcdn.com/w40/sn.png',   score1:null,score2:null,pen1:null,pen2:null},
-  {id:13, team1:'Colombia',      flag1:'https://flagcdn.com/w40/co.png',     team2:'Ghana',             flag2:'https://flagcdn.com/w40/gh.png',   score1:null,score2:null,pen1:null,pen2:null},
-  {id:14, team1:'Suiza',         flag1:'https://flagcdn.com/w40/ch.png',     team2:'Argelia',           flag2:'https://flagcdn.com/w40/dz.png',   score1:null,score2:null,pen1:null,pen2:null},
-  {id:15, team1:'Noruega',       flag1:'https://flagcdn.com/w40/no.png',     team2:'Costa de Marfil',   flag2:'https://flagcdn.com/w40/ci.png',   score1:null,score2:null,pen1:null,pen2:null},
-  {id:16, team1:'Australia',     flag1:'https://flagcdn.com/w40/au.png',     team2:'Egipto',            flag2:'https://flagcdn.com/w40/eg.png',   score1:null,score2:null,pen1:null,pen2:null}
+  {id:1,  team1:'México',        flag1:'https://flagcdn.com/w40/mx.png',     team2:'Ecuador',           flag2:'https://flagcdn.com/w40/ec.png',   date:'Mar 30/06',time:'8:00 PM', score1:null,score2:null,pen1:null,pen2:null},
+  {id:2,  team1:'España',        flag1:'https://flagcdn.com/w40/es.png',     team2:'Austria',           flag2:'https://flagcdn.com/w40/at.png',   date:'Jue 02/07',time:'2:00 PM', score1:null,score2:null,pen1:null,pen2:null},
+  {id:3,  team1:'Argentina',     flag1:'https://flagcdn.com/w40/ar.png',     team2:'Cabo Verde',        flag2:'https://flagcdn.com/w40/cv.png',   date:'Vie 03/07',time:'5:00 PM', score1:null,score2:null,pen1:null,pen2:null},
+  {id:4,  team1:'Francia',       flag1:'https://flagcdn.com/w40/fr.png',     team2:'Suecia',            flag2:'https://flagcdn.com/w40/se.png',   date:'Mar 30/06',time:'4:00 PM', score1:null,score2:null,pen1:null,pen2:null},
+  {id:5,  team1:'Brasil',        flag1:'https://flagcdn.com/w40/br.png',     team2:'Japón',             flag2:'https://flagcdn.com/w40/jp.png',   date:'Lun 29/06',time:'12:00 PM', score1:null,score2:null,pen1:null,pen2:null},
+  {id:6,  team1:'Inglaterra',    flag1:'https://flagcdn.com/w40/gb-eng.png', team2:'RD Congo',          flag2:'https://flagcdn.com/w40/cd.png',   date:'Mié 01/07',time:'11:00 AM', score1:null,score2:null,pen1:null,pen2:null},
+  {id:7,  team1:'Países Bajos',  flag1:'https://flagcdn.com/w40/nl.png',     team2:'Marruecos',         flag2:'https://flagcdn.com/w40/ma.png',   date:'Lun 29/06',time:'8:00 PM', score1:null,score2:null,pen1:null,pen2:null},
+  {id:8,  team1:'EE. UU.',       flag1:'https://flagcdn.com/w40/us.png',     team2:'Bosnia-Herzegovina',flag2:'https://flagcdn.com/w40/ba.png',   date:'Mié 01/07',time:'7:00 PM', score1:null,score2:null,pen1:null,pen2:null},
+  {id:9,  team1:'Sudáfrica',     flag1:'https://flagcdn.com/w40/za.png',     team2:'Canadá',            flag2:'https://flagcdn.com/w40/ca.png',   date:'Dom 28/06',time:'2:00 PM', score1:null,score2:null,pen1:null,pen2:null},
+  {id:10, team1:'Portugal',      flag1:'https://flagcdn.com/w40/pt.png',     team2:'Croacia',           flag2:'https://flagcdn.com/w40/hr.png',   date:'Jue 02/07',time:'6:00 PM', score1:null,score2:null,pen1:null,pen2:null},
+  {id:11, team1:'Alemania',      flag1:'https://flagcdn.com/w40/de.png',     team2:'Paraguay',          flag2:'https://flagcdn.com/w40/py.png',   date:'Lun 29/06',time:'3:30 PM', score1:null,score2:null,pen1:null,pen2:null},
+  {id:12, team1:'Bélgica',       flag1:'https://flagcdn.com/w40/be.png',     team2:'Senegal',           flag2:'https://flagcdn.com/w40/sn.png',   date:'Mié 01/07',time:'3:00 PM', score1:null,score2:null,pen1:null,pen2:null},
+  {id:13, team1:'Colombia',      flag1:'https://flagcdn.com/w40/co.png',     team2:'Ghana',             flag2:'https://flagcdn.com/w40/gh.png',   date:'Vie 03/07',time:'8:30 PM', score1:null,score2:null,pen1:null,pen2:null},
+  {id:14, team1:'Suiza',         flag1:'https://flagcdn.com/w40/ch.png',     team2:'Argelia',           flag2:'https://flagcdn.com/w40/dz.png',   date:'Jue 02/07',time:'10:00 PM', score1:null,score2:null,pen1:null,pen2:null},
+  {id:15, team1:'Noruega',       flag1:'https://flagcdn.com/w40/no.png',     team2:'Costa de Marfil',   flag2:'https://flagcdn.com/w40/ci.png',   date:'Mar 30/06',time:'12:00 PM', score1:null,score2:null,pen1:null,pen2:null},
+  {id:16, team1:'Australia',     flag1:'https://flagcdn.com/w40/au.png',     team2:'Egipto',            flag2:'https://flagcdn.com/w40/eg.png',   date:'Vie 03/07',time:'1:00 PM', score1:null,score2:null,pen1:null,pen2:null}
 ];
 let octavos = [
   {id:101,srcMatches:[11,4], team1:null,flag1:null,team2:null,flag2:null,score1:null,score2:null,pen1:null,pen2:null},
@@ -503,6 +541,10 @@ function getAdvancing(match, type='ganador') {
   }
   return null;
 }
+function shortCode(name){
+  const map={"Países Bajos":"NED","Marruecos":"MAR","Alemania":"ALE","Paraguay":"PAR","Francia":"FRA","Suecia":"SUE","Portugal":"POR","Croacia":"CRO","España":"ESP","Austria":"AUT","Argentina":"ARG","Cabo Verde":"CPV","EE. UU.":"EEU","Bosnia":"BOS","Bélgica":"BEL","Senegal":"SEN","Brasil":"BRA","Japón":"JAP","Noruega":"NOR","Costa de Marfil":"CDM","México":"MEX","Ecuador":"ECU","Inglaterra":"ING","RD Congo":"RDC"};
+  return map[name]||name.slice(0,3).toUpperCase();
+}
 function updateNextRound(nextRound, prevRound) {
   nextRound.forEach(nm => {
     const [s1,s2] = nm.srcMatches;
@@ -510,8 +552,25 @@ function updateNextRound(nextRound, prevRound) {
     const m2=prevRound.find(m=>m.id===s2);
     const adv1=getAdvancing(m1,nm.type||'ganador');
     const adv2=getAdvancing(m2,nm.type||'ganador');
-    nm.team1=adv1?.team??null; nm.flag1=adv1?.flag??null;
-    nm.team2=adv2?.team??null; nm.flag2=adv2?.flag??null;
+
+    const prevIsRound = prevRound !== dieciseisavos;
+
+    if(adv1){
+      nm.team1=adv1.team; nm.flag1=adv1.flag;
+    }else if(prevIsRound){
+      nm.team1=null; nm.flag1=null;
+    }else{
+      nm.team1=`Ganador ${shortCode(m1.team1)} vs ${shortCode(m1.team2)}`; nm.flag1=null;
+    }
+
+    if(adv2){
+      nm.team2=adv2.team; nm.flag2=adv2.flag;
+    }else if(prevIsRound){
+      nm.team2=null; nm.flag2=null;
+    }else{
+      nm.team2=`Ganador ${shortCode(m2.team1)} vs ${shortCode(m2.team2)}`; nm.flag2=null;
+    }
+
     if (!nm.team1||!nm.team2) { nm.score1=nm.score2=nm.pen1=nm.pen2=null; }
   });
 }
@@ -524,6 +583,36 @@ function propagateAll() {
 }
 
 // ─── Render ───────────────────────────────────
+
+function getMatchDateInfo(match){
+ if(!match.date||!match.time) return {cls:'future',label:''};
+ const m=match.date.match(/(\d{2})\/(\d{2})/);
+ const t=match.time.match(/(\d{1,2}):(\d{2})\s*(AM|PM)/i);
+ if(!m||!t) return {cls:'future',label:`🕒 ${match.date} · ${match.time}`};
+ let day=+m[1], month=+m[2]-1, hour=+t[1]%12;
+ if(t[3].toUpperCase()==='PM') hour+=12;
+ const minute=+t[2];
+ const now=new Date();
+ const game=new Date(now.getFullYear(),month,day,hour,minute);
+ const start=new Date(game); start.setHours(0,0,0,0);
+ const end=new Date(game); end.setHours(23,59,59,999);
+ const hasResult = match.score1!==null && match.score2!==null;
+ if(hasResult){
+   return {cls:'finished',label:`🔴 FINALIZADO · ${String(day).padStart(2,'0')}/${String(month+1).padStart(2,'0')}`};
+ }
+ const liveEnd = new Date(game.getTime() + 3*60*60*1000);
+ const today = now>=start && now<=end;
+ if(today){
+   if(now < game){
+     return {cls:'today',label:`🟢 HOY · ${match.time}`};
+   }
+   if(now < liveEnd){
+     return {cls:'live',label:`🟠 EN VIVO`};
+   }
+   return {cls:'finished',label:`🔴 FINALIZADO · ${String(day).padStart(2,'0')}/${String(month+1).padStart(2,'0')}`};
+ }
+ return {cls:'future',label:`🕒 ${match.date} · ${match.time}`};
+}
 function renderMatches(container, matches) {
   container.querySelectorAll('.match').forEach(el=>el.remove());
   matches.forEach(match => {
@@ -534,16 +623,22 @@ function renderMatches(container, matches) {
     const s2=(match.score2!==null&&match.team2)?match.score2:'-';
     const pen1=(match.pen1!==null&&match.pen2!==null)?`<span class="score-pen">(${match.pen1})</span>`:'';
     const pen2=(match.pen1!==null&&match.pen2!==null)?`<span class="score-pen">(${match.pen2})</span>`:'';
-    div.innerHTML=`
+    const w1=(match.score1!==null&&match.score2!==null)&&((match.score1>match.score2)|| (match.score1===match.score2&&match.pen1!==null&&match.pen2!==null&&match.pen1>match.pen2));
+    const w2=(match.score1!==null&&match.score2!==null)&&((match.score2>match.score1)|| (match.score1===match.score2&&match.pen1!==null&&match.pen2!==null&&match.pen2>match.pen1));
+    
+    const dateInfo=getMatchDateInfo(match);
+    const matchDate=dateInfo.label;
+div.innerHTML=`
+${matchDate ? `<div class="match-date ${dateInfo.cls}">${matchDate}</div>` : ""}
       <div class="team">
         ${match.flag1?`<img class="flag" src="${match.flag1}" alt="${match.team1}"/>`:''}
         <span class="team-name">${match.team1||'Por definir'}</span>
-        <span class="score">${s1}</span>${pen1}
+        <span class="score ${w1?'winner':''}">${s1}</span>${pen1}
       </div>
       <div class="team">
         ${match.flag2?`<img class="flag" src="${match.flag2}" alt="${match.team2}"/>`:''}
         <span class="team-name">${match.team2||'Por definir'}</span>
-        <span class="score">${s2}</span>${pen2}
+        <span class="score ${w2?'winner':''}">${s2}</span>${pen2}
       </div>`;
     if (modoEdicion&&match.team1&&match.team2) {
       div.style.cursor='pointer';
