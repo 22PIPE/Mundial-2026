@@ -47,7 +47,6 @@
     user-select: none;
   }
 
-  /* ── Indicador sync ── */
   #syncStatus {
     display: flex;
     align-items: center;
@@ -68,7 +67,6 @@
   #syncDot.saving  { background: #f39c12; box-shadow: 0 0 6px #f39c12; }
   #syncDot.offline { background: #e74c3c; box-shadow: 0 0 6px #e74c3c; }
 
-  /* ── Bracket ── */
   .bracket {
     display:flex; width:max-content; min-width:max-content;
     gap: 30px; background: #1b1b1b;
@@ -106,13 +104,13 @@
     user-select:none;
     border-bottom:1px solid rgba(77,184,255,.35);
     padding-bottom:8px;
-}
-.match-date.future{color:#4DB8FF!important;}
-.match-date.today{color:#38d46a!important;}
-.match-date.finished{color:#ff4b4b!important;}
-.match-date.live{color:#ff9800!important;}
+  }
+  .match-date.future{color:#4DB8FF!important;}
+  .match-date.today{color:#38d46a!important;}
+  .match-date.finished{color:#ff4b4b!important;}
+  .match-date.live{color:#ff9800!important;}
 
-.team { display: flex; align-items: center; justify-content: space-between; margin: 8px 0; }
+  .team { display: flex; align-items: center; justify-content: space-between; margin: 8px 0; }
   .team-name { font-weight: 700; flex-grow: 1; text-align: left; margin-left: 10px; font-size: 1.05rem; color: #f0f0f0; }
   .flag { width: 32px; height: 20px; border: 1.2px solid #bdc3c7; object-fit: cover; border-radius: 4px; min-width: 32px; min-height: 20px; }
   .score.winner{ background:#2e7d32 !important;color:#fff;transition:background .25s;}
@@ -139,6 +137,26 @@
   #resultForm button.cancel { background-color:#c0392b; color:white; }
   #resultForm button.cancel:hover { background-color:#962d22; }
 
+  /* ── Modal confirmación finalización ── */
+  #finishModal {
+    display: none; position: fixed; top:0; left:0; right:0; bottom:0;
+    background: rgba(0,0,0,0.65); z-index: 11000; justify-content: center; align-items: center;
+  }
+  #finishModal.active { display: flex; }
+  #finishModalBox {
+    background: #2a2a2a; max-width: 360px; width: 90%;
+    padding: 28px 30px; border-radius: 14px;
+    box-shadow: 0 0 32px rgba(0,0,0,0.4); text-align: center;
+  }
+  #finishModalBox h3 { color: #f0f0f0; margin: 0 0 10px; font-size: 1.5rem; }
+  #finishModalBox p  { color: #bbb; margin: 0 0 24px; font-size: 0.95rem; line-height: 1.5; }
+  #finishModalBox .btn-row { display: flex; gap: 14px; justify-content: center; }
+  #finishModalBox button { padding: 11px 26px; font-size: 1rem; font-weight: 700; border: none; border-radius: 8px; cursor: pointer; transition: background 0.2s; }
+  #finishYesBtn  { background: #27ae60; color: #fff; }
+  #finishYesBtn:hover  { background: #229954; }
+  #finishNoBtn   { background: #555; color: #fff; }
+  #finishNoBtn:hover   { background: #666; }
+
   /* ── Modal login Google ── */
   #loginModal {
     position: fixed; top:0; left:0; width:100vw; height:100vh;
@@ -155,7 +173,6 @@
   #loginModal h2 { color:#f0f0f0; margin-top:0; margin-bottom:8px; font-size:1.8rem; }
   #loginModal p  { color:#aaa; font-size:0.9rem; margin-bottom:24px; }
 
-  /* Botón Google */
   #googleLoginBtn {
     display: flex; align-items: center; justify-content: center; gap: 12px;
     width: 100%; padding: 12px 16px;
@@ -176,10 +193,8 @@
     transition: background 0.2s;
   }
   #guestBtn:hover { background: #383838; }
-
   #loginError { color:#e74c3c; margin-top:14px; font-size:0.88rem; display:none; }
 
-  /* ── Chip usuario ── */
   #userChip {
     display: none;
     align-items: center; gap: 8px;
@@ -190,7 +205,6 @@
   #userChip.visible { display: flex; }
   #userChip img { width:30px; height:30px; border-radius:50%; }
 
-  /* ── Admin ── */
   .admin-btn {
     position:fixed; top:12px; right:12px; z-index:16000;
     background:#2c3e50; color:#fff; border:none;
@@ -213,7 +227,6 @@
   .admin-menu hr { border-color: #333; margin: 8px 0; }
   .hidden { display:none !important; }
 
-  /* ── Grupos ── */
   .groups-section { margin-top:40px; width:100%; }
   .groups-section > h2 { text-align:center; color:#fff; margin-bottom:20px; }
   .groups-scroll { overflow-x:auto; padding-bottom:10px; -webkit-overflow-scrolling:touch; }
@@ -230,35 +243,24 @@
     .bracket { width:max-content; min-width:max-content; flex-direction:row; flex-wrap:nowrap; gap:20px; padding:16px; }
     .round { flex:0 0 260px; min-width:260px; width:260px; }
   }
-
-@media (max-width:768px){
- body{zoom:1.08;margin:24px;}
- .match-card{transform:scale(1.08);transform-origin:top left;margin-bottom:18px;}
- .round-title{font-size:1.5rem!important;}
- .team-name{font-size:1.1rem!important;}
- .score{font-size:1.3rem!important;}
-}
-
-
-  @media (min-width:769px){
-    body{zoom:1.12;}
-  }
   @media (max-width:768px){
-    body{zoom:1.22;}
+    body{zoom:1.08;margin:24px;}
+    .match-card{transform:scale(1.08);transform-origin:top left;margin-bottom:18px;}
+    .round-title{font-size:1.5rem!important;}
+    .team-name{font-size:1.1rem!important;}
+    .score{font-size:1.3rem!important;}
   }
-
+  @media (min-width:769px){ body{zoom:1.12;} }
+  @media (max-width:768px){ body{zoom:1.22;} }
 </style>
 </head>
 <body>
 
-<!-- ══ Botón admin ══ -->
 <button id="adminToggle" class="admin-btn">⚙️ <span id="adminLabel">Admin</span></button>
 <div id="adminMenu" class="admin-menu">
-  <!-- Estado: no logueado -->
   <div id="menuGuest">
     <button id="openLogin">🔑 Iniciar sesión con Google</button>
   </div>
-  <!-- Estado: logueado como admin -->
   <div id="menuAdmin" class="hidden">
     <div id="userChip" class="visible" style="margin-bottom:10px;">
       <img id="userPhoto" src="" alt="foto"/>
@@ -270,13 +272,10 @@
   </div>
 </div>
 
-<!-- ══ Modal login ══ -->
 <div id="loginModal" class="hidden">
   <div class="modal-content">
     <h2>👋 Acceso al Mundial</h2>
     <p>Inicia sesión con Google para editar resultados,<br>o entra como invitado para solo ver.</p>
-
-    <!-- Botón Google con logo SVG oficial -->
     <button id="googleLoginBtn">
       <svg width="20" height="20" viewBox="0 0 48 48">
         <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
@@ -287,13 +286,11 @@
       </svg>
       Continuar con Google
     </button>
-
     <button id="guestBtn">👁️ Ver como invitado</button>
     <div id="loginError">No tienes permisos de edición con esa cuenta.</div>
   </div>
 </div>
 
-<!-- ══ Contenido principal ══ -->
 <div class="container" id="mainContainer">
   <div class="title-section">
     <img src="Copa.png" alt="Copa Mundial">
@@ -316,7 +313,7 @@
     </div>
   </div>
 
-  <!-- ══ Modal resultado ══ -->
+  <!-- Modal resultado -->
   <div id="resultModal">
     <div id="resultForm">
       <h2>Ingresar Resultado</h2>
@@ -337,7 +334,18 @@
     </div>
   </div>
 
-  <!-- ══ Fase de grupos ══ -->
+  <!-- Modal confirmación finalización -->
+  <div id="finishModal">
+    <div id="finishModalBox">
+      <h3>⚽ ¿Finalizó el partido?</h3>
+      <p>Si confirmas, el ganador avanzará a la siguiente ronda.<br>Si no, el marcador se guarda como parcial y el partido sigue en vivo.</p>
+      <div class="btn-row">
+        <button id="finishYesBtn">✅ Sí, finalizó</button>
+        <button id="finishNoBtn">🔄 No, es parcial</button>
+      </div>
+    </div>
+  </div>
+
   <section class="groups-section">
     <h2>Fase de Grupos</h2>
     <div class="groups-scroll"><div class="groups-row">
@@ -357,9 +365,6 @@
   </section>
 </div>
 
-<!-- ══════════════════════════════════════════
-     FIREBASE
-══════════════════════════════════════════ -->
 <script type="module">
 import { initializeApp }
   from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
@@ -368,7 +373,6 @@ import { getFirestore, doc, setDoc, onSnapshot, deleteDoc }
 import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged }
   from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
-// ─── Config ───────────────────────────────────
 const firebaseConfig = {
   apiKey:            "AIzaSyDk-Www1xEr56x52aGqwpng6djWF6KaU-g",
   authDomain:        "mundial-2026-6fb2d.firebaseapp.com",
@@ -379,7 +383,6 @@ const firebaseConfig = {
   measurementId:     "G-NM32SK2BH9"
 };
 
-// ─── Único correo autorizado para editar ──────
 const ADMIN_EMAIL = "pipedevia22@gmail.com";
 
 const app      = initializeApp(firebaseConfig);
@@ -388,55 +391,54 @@ const auth     = getAuth(app);
 const provider = new GoogleAuthProvider();
 const DOCREF   = doc(db, "mundial2026", "datos");
 
-// ─── Estado ───────────────────────────────────
 let modoEdicion     = false;
 let currentMatch    = null;
 let ignorarSnapshot = false;
 
 // ─── Datos iniciales ──────────────────────────
 let dieciseisavos = [
-  {id:1,  team1:'México',        flag1:'https://flagcdn.com/w40/mx.png',     team2:'Ecuador',           flag2:'https://flagcdn.com/w40/ec.png',   date:'Mar 30/06',time:'8:00 PM', score1:null,score2:null,pen1:null,pen2:null},
-  {id:2,  team1:'España',        flag1:'https://flagcdn.com/w40/es.png',     team2:'Austria',           flag2:'https://flagcdn.com/w40/at.png',   date:'Jue 02/07',time:'2:00 PM', score1:null,score2:null,pen1:null,pen2:null},
-  {id:3,  team1:'Argentina',     flag1:'https://flagcdn.com/w40/ar.png',     team2:'Cabo Verde',        flag2:'https://flagcdn.com/w40/cv.png',   date:'Vie 03/07',time:'5:00 PM', score1:null,score2:null,pen1:null,pen2:null},
-  {id:4,  team1:'Francia',       flag1:'https://flagcdn.com/w40/fr.png',     team2:'Suecia',            flag2:'https://flagcdn.com/w40/se.png',   date:'Mar 30/06',time:'4:00 PM', score1:null,score2:null,pen1:null,pen2:null},
-  {id:5,  team1:'Brasil',        flag1:'https://flagcdn.com/w40/br.png',     team2:'Japón',             flag2:'https://flagcdn.com/w40/jp.png',   date:'Lun 29/06',time:'12:00 PM', score1:null,score2:null,pen1:null,pen2:null},
-  {id:6,  team1:'Inglaterra',    flag1:'https://flagcdn.com/w40/gb-eng.png', team2:'RD Congo',          flag2:'https://flagcdn.com/w40/cd.png',   date:'Mié 01/07',time:'11:00 AM', score1:null,score2:null,pen1:null,pen2:null},
-  {id:7,  team1:'Países Bajos',  flag1:'https://flagcdn.com/w40/nl.png',     team2:'Marruecos',         flag2:'https://flagcdn.com/w40/ma.png',   date:'Lun 29/06',time:'8:00 PM', score1:null,score2:null,pen1:null,pen2:null},
-  {id:8,  team1:'EE. UU.',       flag1:'https://flagcdn.com/w40/us.png',     team2:'Bosnia-Herzegovina',flag2:'https://flagcdn.com/w40/ba.png',   date:'Mié 01/07',time:'7:00 PM', score1:null,score2:null,pen1:null,pen2:null},
-  {id:9,  team1:'Sudáfrica',     flag1:'https://flagcdn.com/w40/za.png',     team2:'Canadá',            flag2:'https://flagcdn.com/w40/ca.png',   date:'Dom 28/06',time:'2:00 PM', score1:null,score2:null,pen1:null,pen2:null},
-  {id:10, team1:'Portugal',      flag1:'https://flagcdn.com/w40/pt.png',     team2:'Croacia',           flag2:'https://flagcdn.com/w40/hr.png',   date:'Jue 02/07',time:'6:00 PM', score1:null,score2:null,pen1:null,pen2:null},
-  {id:11, team1:'Alemania',      flag1:'https://flagcdn.com/w40/de.png',     team2:'Paraguay',          flag2:'https://flagcdn.com/w40/py.png',   date:'Lun 29/06',time:'3:30 PM', score1:null,score2:null,pen1:null,pen2:null},
-  {id:12, team1:'Bélgica',       flag1:'https://flagcdn.com/w40/be.png',     team2:'Senegal',           flag2:'https://flagcdn.com/w40/sn.png',   date:'Mié 01/07',time:'3:00 PM', score1:null,score2:null,pen1:null,pen2:null},
-  {id:13, team1:'Colombia',      flag1:'https://flagcdn.com/w40/co.png',     team2:'Ghana',             flag2:'https://flagcdn.com/w40/gh.png',   date:'Vie 03/07',time:'8:30 PM', score1:null,score2:null,pen1:null,pen2:null},
-  {id:14, team1:'Suiza',         flag1:'https://flagcdn.com/w40/ch.png',     team2:'Argelia',           flag2:'https://flagcdn.com/w40/dz.png',   date:'Jue 02/07',time:'10:00 PM', score1:null,score2:null,pen1:null,pen2:null},
-  {id:15, team1:'Noruega',       flag1:'https://flagcdn.com/w40/no.png',     team2:'Costa de Marfil',   flag2:'https://flagcdn.com/w40/ci.png',   date:'Mar 30/06',time:'12:00 PM', score1:null,score2:null,pen1:null,pen2:null},
-  {id:16, team1:'Australia',     flag1:'https://flagcdn.com/w40/au.png',     team2:'Egipto',            flag2:'https://flagcdn.com/w40/eg.png',   date:'Vie 03/07',time:'1:00 PM', score1:null,score2:null,pen1:null,pen2:null}
+  {id:1,  team1:'México',        flag1:'https://flagcdn.com/w40/mx.png',     team2:'Ecuador',           flag2:'https://flagcdn.com/w40/ec.png',   date:'Mar 30/06',time:'8:00 PM', score1:null,score2:null,pen1:null,pen2:null,finished:false},
+  {id:2,  team1:'España',        flag1:'https://flagcdn.com/w40/es.png',     team2:'Austria',           flag2:'https://flagcdn.com/w40/at.png',   date:'Jue 02/07',time:'2:00 PM', score1:null,score2:null,pen1:null,pen2:null,finished:false},
+  {id:3,  team1:'Argentina',     flag1:'https://flagcdn.com/w40/ar.png',     team2:'Cabo Verde',        flag2:'https://flagcdn.com/w40/cv.png',   date:'Vie 03/07',time:'5:00 PM', score1:null,score2:null,pen1:null,pen2:null,finished:false},
+  {id:4,  team1:'Francia',       flag1:'https://flagcdn.com/w40/fr.png',     team2:'Suecia',            flag2:'https://flagcdn.com/w40/se.png',   date:'Mar 30/06',time:'4:00 PM', score1:null,score2:null,pen1:null,pen2:null,finished:false},
+  {id:5,  team1:'Brasil',        flag1:'https://flagcdn.com/w40/br.png',     team2:'Japón',             flag2:'https://flagcdn.com/w40/jp.png',   date:'Lun 29/06',time:'12:00 PM', score1:null,score2:null,pen1:null,pen2:null,finished:false},
+  {id:6,  team1:'Inglaterra',    flag1:'https://flagcdn.com/w40/gb-eng.png', team2:'RD Congo',          flag2:'https://flagcdn.com/w40/cd.png',   date:'Mié 01/07',time:'11:00 AM', score1:null,score2:null,pen1:null,pen2:null,finished:false},
+  {id:7,  team1:'Países Bajos',  flag1:'https://flagcdn.com/w40/nl.png',     team2:'Marruecos',         flag2:'https://flagcdn.com/w40/ma.png',   date:'Lun 29/06',time:'8:00 PM', score1:null,score2:null,pen1:null,pen2:null,finished:false},
+  {id:8,  team1:'EE. UU.',       flag1:'https://flagcdn.com/w40/us.png',     team2:'Bosnia-Herzegovina',flag2:'https://flagcdn.com/w40/ba.png',   date:'Mié 01/07',time:'7:00 PM', score1:null,score2:null,pen1:null,pen2:null,finished:false},
+  {id:9,  team1:'Sudáfrica',     flag1:'https://flagcdn.com/w40/za.png',     team2:'Canadá',            flag2:'https://flagcdn.com/w40/ca.png',   date:'Dom 28/06',time:'2:00 PM', score1:null,score2:null,pen1:null,pen2:null,finished:false},
+  {id:10, team1:'Portugal',      flag1:'https://flagcdn.com/w40/pt.png',     team2:'Croacia',           flag2:'https://flagcdn.com/w40/hr.png',   date:'Jue 02/07',time:'6:00 PM', score1:null,score2:null,pen1:null,pen2:null,finished:false},
+  {id:11, team1:'Alemania',      flag1:'https://flagcdn.com/w40/de.png',     team2:'Paraguay',          flag2:'https://flagcdn.com/w40/py.png',   date:'Lun 29/06',time:'3:30 PM', score1:null,score2:null,pen1:null,pen2:null,finished:false},
+  {id:12, team1:'Bélgica',       flag1:'https://flagcdn.com/w40/be.png',     team2:'Senegal',           flag2:'https://flagcdn.com/w40/sn.png',   date:'Mié 01/07',time:'3:00 PM', score1:null,score2:null,pen1:null,pen2:null,finished:false},
+  {id:13, team1:'Colombia',      flag1:'https://flagcdn.com/w40/co.png',     team2:'Ghana',             flag2:'https://flagcdn.com/w40/gh.png',   date:'Vie 03/07',time:'8:30 PM', score1:null,score2:null,pen1:null,pen2:null,finished:false},
+  {id:14, team1:'Suiza',         flag1:'https://flagcdn.com/w40/ch.png',     team2:'Argelia',           flag2:'https://flagcdn.com/w40/dz.png',   date:'Jue 02/07',time:'10:00 PM', score1:null,score2:null,pen1:null,pen2:null,finished:false},
+  {id:15, team1:'Noruega',       flag1:'https://flagcdn.com/w40/no.png',     team2:'Costa de Marfil',   flag2:'https://flagcdn.com/w40/ci.png',   date:'Mar 30/06',time:'12:00 PM', score1:null,score2:null,pen1:null,pen2:null,finished:false},
+  {id:16, team1:'Australia',     flag1:'https://flagcdn.com/w40/au.png',     team2:'Egipto',            flag2:'https://flagcdn.com/w40/eg.png',   date:'Vie 03/07',time:'1:00 PM', score1:null,score2:null,pen1:null,pen2:null,finished:false}
 ];
 let octavos = [
-  {id:101,srcMatches:[11,4], team1:null,flag1:null,team2:null,flag2:null,score1:null,score2:null,pen1:null,pen2:null},
-  {id:102,srcMatches:[9,7],  team1:null,flag1:null,team2:null,flag2:null,score1:null,score2:null,pen1:null,pen2:null},
-  {id:103,srcMatches:[10,2], team1:null,flag1:null,team2:null,flag2:null,score1:null,score2:null,pen1:null,pen2:null},
-  {id:104,srcMatches:[8,12], team1:null,flag1:null,team2:null,flag2:null,score1:null,score2:null,pen1:null,pen2:null},
-  {id:105,srcMatches:[5,15], team1:null,flag1:null,team2:null,flag2:null,score1:null,score2:null,pen1:null,pen2:null},
-  {id:106,srcMatches:[1,6],  team1:null,flag1:null,team2:null,flag2:null,score1:null,score2:null,pen1:null,pen2:null},
-  {id:107,srcMatches:[3,16], team1:null,flag1:null,team2:null,flag2:null,score1:null,score2:null,pen1:null,pen2:null},
-  {id:108,srcMatches:[14,13],team1:null,flag1:null,team2:null,flag2:null,score1:null,score2:null,pen1:null,pen2:null}
+  {id:101,srcMatches:[11,4], team1:null,flag1:null,team2:null,flag2:null,score1:null,score2:null,pen1:null,pen2:null,finished:false},
+  {id:102,srcMatches:[9,7],  team1:null,flag1:null,team2:null,flag2:null,score1:null,score2:null,pen1:null,pen2:null,finished:false},
+  {id:103,srcMatches:[10,2], team1:null,flag1:null,team2:null,flag2:null,score1:null,score2:null,pen1:null,pen2:null,finished:false},
+  {id:104,srcMatches:[8,12], team1:null,flag1:null,team2:null,flag2:null,score1:null,score2:null,pen1:null,pen2:null,finished:false},
+  {id:105,srcMatches:[5,15], team1:null,flag1:null,team2:null,flag2:null,score1:null,score2:null,pen1:null,pen2:null,finished:false},
+  {id:106,srcMatches:[1,6],  team1:null,flag1:null,team2:null,flag2:null,score1:null,score2:null,pen1:null,pen2:null,finished:false},
+  {id:107,srcMatches:[3,16], team1:null,flag1:null,team2:null,flag2:null,score1:null,score2:null,pen1:null,pen2:null,finished:false},
+  {id:108,srcMatches:[14,13],team1:null,flag1:null,team2:null,flag2:null,score1:null,score2:null,pen1:null,pen2:null,finished:false}
 ];
 let cuartos = [
-  {id:201,srcMatches:[101,102],team1:null,flag1:null,team2:null,flag2:null,score1:null,score2:null,pen1:null,pen2:null},
-  {id:202,srcMatches:[103,104],team1:null,flag1:null,team2:null,flag2:null,score1:null,score2:null,pen1:null,pen2:null},
-  {id:203,srcMatches:[105,106],team1:null,flag1:null,team2:null,flag2:null,score1:null,score2:null,pen1:null,pen2:null},
-  {id:204,srcMatches:[107,108],team1:null,flag1:null,team2:null,flag2:null,score1:null,score2:null,pen1:null,pen2:null}
+  {id:201,srcMatches:[101,102],team1:null,flag1:null,team2:null,flag2:null,score1:null,score2:null,pen1:null,pen2:null,finished:false},
+  {id:202,srcMatches:[103,104],team1:null,flag1:null,team2:null,flag2:null,score1:null,score2:null,pen1:null,pen2:null,finished:false},
+  {id:203,srcMatches:[105,106],team1:null,flag1:null,team2:null,flag2:null,score1:null,score2:null,pen1:null,pen2:null,finished:false},
+  {id:204,srcMatches:[107,108],team1:null,flag1:null,team2:null,flag2:null,score1:null,score2:null,pen1:null,pen2:null,finished:false}
 ];
 let semifinales = [
-  {id:301,srcMatches:[201,202],team1:null,flag1:null,team2:null,flag2:null,score1:null,score2:null,pen1:null,pen2:null},
-  {id:302,srcMatches:[203,204],team1:null,flag1:null,team2:null,flag2:null,score1:null,score2:null,pen1:null,pen2:null}
+  {id:301,srcMatches:[201,202],team1:null,flag1:null,team2:null,flag2:null,score1:null,score2:null,pen1:null,pen2:null,finished:false},
+  {id:302,srcMatches:[203,204],team1:null,flag1:null,team2:null,flag2:null,score1:null,score2:null,pen1:null,pen2:null,finished:false}
 ];
 let tercerPuesto = [
-  {id:401,srcMatches:[301,302],type:'perdedor',team1:null,flag1:null,team2:null,flag2:null,score1:null,score2:null,pen1:null,pen2:null}
+  {id:401,srcMatches:[301,302],type:'perdedor',team1:null,flag1:null,team2:null,flag2:null,score1:null,score2:null,pen1:null,pen2:null,finished:false}
 ];
 let final = [
-  {id:501,srcMatches:[301,302],type:'ganador',team1:null,flag1:null,team2:null,flag2:null,score1:null,score2:null,pen1:null,pen2:null}
+  {id:501,srcMatches:[301,302],type:'ganador',team1:null,flag1:null,team2:null,flag2:null,score1:null,score2:null,pen1:null,pen2:null,finished:false}
 ];
 
 // ─── UI refs ──────────────────────────────────
@@ -461,6 +463,9 @@ const team2Score     = document.getElementById('team2Score');
 const team1Penalties = document.getElementById('team1Penalties');
 const team2Penalties = document.getElementById('team2Penalties');
 const cancelBtn      = document.getElementById('cancelBtn');
+const finishModal    = document.getElementById('finishModal');
+const finishYesBtn   = document.getElementById('finishYesBtn');
+const finishNoBtn    = document.getElementById('finishNoBtn');
 
 // ─── Sync indicator ───────────────────────────
 function setSyncState(state) {
@@ -475,6 +480,7 @@ function cleanMatch(m) {
     team2:m.team2??null, flag2:m.flag2??null,
     score1:m.score1??null, score2:m.score2??null,
     pen1:m.pen1??null, pen2:m.pen2??null,
+    finished: m.finished ?? false,
     ...(m.srcMatches?{srcMatches:m.srcMatches}:{}),
     ...(m.type?{type:m.type}:{})
   };
@@ -508,6 +514,7 @@ function mergeFromCloud(cloudArr, localArr) {
     lm.team2=cm.team2??lm.team2; lm.flag2=cm.flag2??lm.flag2;
     lm.score1=cm.score1??null;   lm.score2=cm.score2??null;
     lm.pen1=cm.pen1??null;       lm.pen2=cm.pen2??null;
+    lm.finished = cm.finished ?? false;
   });
 }
 function startListening() {
@@ -525,22 +532,60 @@ function startListening() {
   }, err => { console.error(err); setSyncState('offline'); });
 }
 
+// ─── Auto 0-0 al comenzar el partido ─────────
+function parseMatchDateTime(match) {
+  if (!match.date || !match.time) return null;
+  const m = match.date.match(/(\d{2})\/(\d{2})/);
+  const t = match.time.match(/(\d{1,2}):(\d{2})\s*(AM|PM)/i);
+  if (!m || !t) return null;
+  let day = +m[1], month = +m[2] - 1;
+  let hour = +t[1] % 12;
+  if (t[3].toUpperCase() === 'PM') hour += 12;
+  const minute = +t[2];
+  const now = new Date();
+  return new Date(now.getFullYear(), month, day, hour, minute);
+}
+
+// Revisa cada minuto si hay partidos que deben iniciarse con 0-0
+function checkAutoStart() {
+  const now = new Date();
+  let changed = false;
+  // Solo aplica a dieciseisavos (los otros reciben equipos cuando avanza el torneo)
+  dieciseisavos.forEach(match => {
+    if (match.score1 !== null || match.score2 !== null) return; // ya tiene marcador
+    const gameTime = parseMatchDateTime(match);
+    if (!gameTime) return;
+    if (now >= gameTime) {
+      match.score1 = 0;
+      match.score2 = 0;
+      changed = true;
+    }
+  });
+  if (changed) {
+    renderAll();
+    saveToFirebase();
+  }
+}
+
 // ─── Lógica de avance ─────────────────────────
+// Solo avanza si el partido está marcado como finalizado
 function getAdvancing(match, type='ganador') {
-  if (match.score1===null||match.score2===null) return null;
-  if (match.score1>match.score2) return {team:match.team1,flag:match.flag1};
-  if (match.score2>match.score1) return {team:match.team2,flag:match.flag2};
-  if (match.pen1!==null&&match.pen2!==null) {
-    if (type==='ganador') {
-      if (match.pen1>match.pen2) return {team:match.team1,flag:match.flag1};
-      if (match.pen2>match.pen1) return {team:match.team2,flag:match.flag2};
+  if (!match.finished) return null; // ← CAMBIO CLAVE: requiere finished=true
+  if (match.score1 === null || match.score2 === null) return null;
+  if (match.score1 > match.score2) return {team:match.team1, flag:match.flag1};
+  if (match.score2 > match.score1) return {team:match.team2, flag:match.flag2};
+  if (match.pen1 !== null && match.pen2 !== null) {
+    if (type === 'ganador') {
+      if (match.pen1 > match.pen2) return {team:match.team1, flag:match.flag1};
+      if (match.pen2 > match.pen1) return {team:match.team2, flag:match.flag2};
     } else {
-      if (match.pen1<match.pen2) return {team:match.team1,flag:match.flag1};
-      if (match.pen2<match.pen1) return {team:match.team2,flag:match.flag2};
+      if (match.pen1 < match.pen2) return {team:match.team1, flag:match.flag1};
+      if (match.pen2 < match.pen1) return {team:match.team2, flag:match.flag2};
     }
   }
   return null;
 }
+
 function shortCode(name){
   const map={"Países Bajos":"NED","Marruecos":"MAR","Alemania":"ALE","Paraguay":"PAR","Francia":"FRA","Suecia":"SUE","Portugal":"POR","Croacia":"CRO","España":"ESP","Austria":"AUT","Argentina":"ARG","Cabo Verde":"CPV","EE. UU.":"EEU","Bosnia":"BOS","Bélgica":"BEL","Senegal":"SEN","Brasil":"BRA","Japón":"JAP","Noruega":"NOR","Costa de Marfil":"CDM","México":"MEX","Ecuador":"ECU","Inglaterra":"ING","RD Congo":"RDC"};
   return map[name]||name.slice(0,3).toUpperCase();
@@ -571,7 +616,7 @@ function updateNextRound(nextRound, prevRound) {
       nm.team2=`Ganador ${shortCode(m2.team1)} vs ${shortCode(m2.team2)}`; nm.flag2=null;
     }
 
-    if (!nm.team1||!nm.team2) { nm.score1=nm.score2=nm.pen1=nm.pen2=null; }
+    if (!nm.team1||!nm.team2) { nm.score1=nm.score2=nm.pen1=nm.pen2=null; nm.finished=false; }
   });
 }
 function propagateAll() {
@@ -583,36 +628,55 @@ function propagateAll() {
 }
 
 // ─── Render ───────────────────────────────────
-
 function getMatchDateInfo(match){
- if(!match.date||!match.time) return {cls:'future',label:''};
- const m=match.date.match(/(\d{2})\/(\d{2})/);
- const t=match.time.match(/(\d{1,2}):(\d{2})\s*(AM|PM)/i);
- if(!m||!t) return {cls:'future',label:`🕒 ${match.date} · ${match.time}`};
- let day=+m[1], month=+m[2]-1, hour=+t[1]%12;
- if(t[3].toUpperCase()==='PM') hour+=12;
- const minute=+t[2];
- const now=new Date();
- const game=new Date(now.getFullYear(),month,day,hour,minute);
- const start=new Date(game); start.setHours(0,0,0,0);
- const end=new Date(game); end.setHours(23,59,59,999);
- const hasResult = match.score1!==null && match.score2!==null;
- if(hasResult){
-   return {cls:'finished',label:`🔴 FINALIZADO · ${String(day).padStart(2,'0')}/${String(month+1).padStart(2,'0')}`};
- }
- const liveEnd = new Date(game.getTime() + 3*60*60*1000);
- const today = now>=start && now<=end;
- if(today){
-   if(now < game){
-     return {cls:'today',label:`🟢 HOY · ${match.time}`};
-   }
-   if(now < liveEnd){
-     return {cls:'live',label:`🟠 EN VIVO`};
-   }
-   return {cls:'finished',label:`🔴 FINALIZADO · ${String(day).padStart(2,'0')}/${String(month+1).padStart(2,'0')}`};
- }
- return {cls:'future',label:`🕒 ${match.date} · ${match.time}`};
+  if(!match.date&&!match.time) return {cls:'future',label:''};
+
+  const m=match.date ? match.date.match(/(\d{2})\/(\d{2})/) : null;
+  const t=match.time ? match.time.match(/(\d{1,2}):(\d{2})\s*(AM|PM)/i) : null;
+
+  // Partidos de rondas posteriores sin fecha todavía
+  if(!m||!t){
+    if(match.finished) return {cls:'finished',label:'🔴 FINALIZADO'};
+    if(match.score1!==null) return {cls:'live',label:'🟠 EN VIVO'};
+    return {cls:'future',label:''};
+  }
+
+  let day=+m[1], month=+m[2]-1, hour=+t[1]%12;
+  if(t[3].toUpperCase()==='PM') hour+=12;
+  const minute=+t[2];
+  const now=new Date();
+  const game=new Date(now.getFullYear(),month,day,hour,minute);
+  const start=new Date(game); start.setHours(0,0,0,0);
+  const end=new Date(game);   end.setHours(23,59,59,999);
+
+  // Si está explícitamente marcado como finalizado
+  if(match.finished){
+    return {cls:'finished',label:`🔴 FINALIZADO · ${String(day).padStart(2,'0')}/${String(month+1).padStart(2,'0')}`};
+  }
+
+  const liveEnd = new Date(game.getTime() + 3*60*60*1000);
+  const today = now>=start && now<=end;
+
+  if(today){
+    if(now < game) return {cls:'today',label:`🟢 HOY · ${match.time}`};
+    if(now < liveEnd){
+      // Si tiene marcador (auto 0-0 o editado) y no finalizado: EN VIVO
+      if(match.score1!==null) return {cls:'live',label:'🟠 EN VIVO'};
+      return {cls:'live',label:'🟠 EN VIVO'};
+    }
+    // Pasó la ventana de 3h pero no se marcó como finalizado: en vivo aún
+    if(match.score1!==null) return {cls:'live',label:'🟠 EN VIVO'};
+    return {cls:'finished',label:`🔴 FINALIZADO · ${String(day).padStart(2,'0')}/${String(month+1).padStart(2,'0')}`};
+  }
+
+  // Partido pasado con marcador pero no finalizado = En vivo (actualización manual)
+  if(now > game && match.score1!==null && !match.finished){
+    return {cls:'live',label:'🟠 EN VIVO'};
+  }
+
+  return {cls:'future',label:`🕒 ${match.date} · ${match.time}`};
 }
+
 function renderMatches(container, matches) {
   container.querySelectorAll('.match').forEach(el=>el.remove());
   matches.forEach(match => {
@@ -623,12 +687,13 @@ function renderMatches(container, matches) {
     const s2=(match.score2!==null&&match.team2)?match.score2:'-';
     const pen1=(match.pen1!==null&&match.pen2!==null)?`<span class="score-pen">(${match.pen1})</span>`:'';
     const pen2=(match.pen1!==null&&match.pen2!==null)?`<span class="score-pen">(${match.pen2})</span>`:'';
-    const w1=(match.score1!==null&&match.score2!==null)&&((match.score1>match.score2)|| (match.score1===match.score2&&match.pen1!==null&&match.pen2!==null&&match.pen1>match.pen2));
-    const w2=(match.score1!==null&&match.score2!==null)&&((match.score2>match.score1)|| (match.score1===match.score2&&match.pen1!==null&&match.pen2!==null&&match.pen2>match.pen1));
-    
+    // El ganador visual solo se muestra si el partido finalizó
+    const w1=match.finished&&(match.score1!==null&&match.score2!==null)&&((match.score1>match.score2)||(match.score1===match.score2&&match.pen1!==null&&match.pen2!==null&&match.pen1>match.pen2));
+    const w2=match.finished&&(match.score1!==null&&match.score2!==null)&&((match.score2>match.score1)||(match.score1===match.score2&&match.pen1!==null&&match.pen2!==null&&match.pen2>match.pen1));
+
     const dateInfo=getMatchDateInfo(match);
     const matchDate=dateInfo.label;
-div.innerHTML=`
+    div.innerHTML=`
 ${matchDate ? `<div class="match-date ${dateInfo.cls}">${matchDate}</div>` : ""}
       <div class="team">
         ${match.flag1?`<img class="flag" src="${match.flag1}" alt="${match.team1}"/>`:''}
@@ -673,6 +738,10 @@ function closeResultForm() {
   resultModal.style.display='none';
   document.body.style.overflow='auto';
 }
+
+// Datos temporales del marcador antes de la confirmación
+let pendingScore = null;
+
 form.addEventListener('submit', async e => {
   e.preventDefault();
   if (!modoEdicion) return;
@@ -681,28 +750,60 @@ form.addEventListener('submit', async e => {
   const p1=team1Penalties.value===''?null:parseInt(team1Penalties.value);
   const p2=team2Penalties.value===''?null:parseInt(team2Penalties.value);
   if (isNaN(s1)||isNaN(s2)) { alert('Ingresa goles válidos.'); return; }
-  currentMatch.match.score1=s1; currentMatch.match.score2=s2;
-  currentMatch.match.pen1=p1;   currentMatch.match.pen2=p2;
-  renderAll();
+
+  // Guardar datos temporales y mostrar modal de confirmación
+  pendingScore = { s1, s2, p1, p2 };
   closeResultForm();
+  finishModal.style.display = 'flex';
+  document.body.style.overflow = 'hidden';
+});
+
+// Usuario dice: SÍ, finalizó el partido
+finishYesBtn.addEventListener('click', async () => {
+  if (!pendingScore) return;
+  const { s1, s2, p1, p2 } = pendingScore;
+  currentMatch.match.score1   = s1;
+  currentMatch.match.score2   = s2;
+  currentMatch.match.pen1     = p1;
+  currentMatch.match.pen2     = p2;
+  currentMatch.match.finished = true;  // ← marca como finalizado
+  pendingScore = null;
+  finishModal.style.display = 'none';
+  document.body.style.overflow = 'auto';
+  renderAll();
   await saveToFirebase();
 });
+
+// Usuario dice: NO, es marcador parcial
+finishNoBtn.addEventListener('click', async () => {
+  if (!pendingScore) return;
+  const { s1, s2, p1, p2 } = pendingScore;
+  currentMatch.match.score1   = s1;
+  currentMatch.match.score2   = s2;
+  currentMatch.match.pen1     = p1;
+  currentMatch.match.pen2     = p2;
+  currentMatch.match.finished = false; // ← NO finalizado, sigue en vivo
+  pendingScore = null;
+  finishModal.style.display = 'none';
+  document.body.style.overflow = 'auto';
+  renderAll();
+  await saveToFirebase();
+});
+
 cancelBtn.addEventListener('click', closeResultForm);
 resultModal.addEventListener('click', e=>{ if(e.target===resultModal) closeResultForm(); });
+finishModal.addEventListener('click', e=>{ if(e.target===finishModal){ finishModal.style.display='none'; document.body.style.overflow='auto'; } });
 
-// ─── Auth: estado del usuario ─────────────────
+// ─── Auth ─────────────────────────────────────
 function habilitarEdicion(valor) {
   modoEdicion = valor;
   renderAll();
 }
-
 function actualizarMenuAdmin(user) {
   const menuGuest = document.getElementById('menuGuest');
   const menuAdmin = document.getElementById('menuAdmin');
   const adminLabel= document.getElementById('adminLabel');
-
   if (user && user.email === ADMIN_EMAIL) {
-    // Es el admin
     menuGuest.classList.add('hidden');
     menuAdmin.classList.remove('hidden');
     document.getElementById('userPhoto').src = user.photoURL || '';
@@ -710,35 +811,28 @@ function actualizarMenuAdmin(user) {
     adminLabel.textContent = '✏️ Admin';
     habilitarEdicion(true);
   } else {
-    // Invitado o no logueado
     menuGuest.classList.remove('hidden');
     menuAdmin.classList.add('hidden');
     adminLabel.textContent = 'Admin';
     habilitarEdicion(false);
   }
 }
-
-// Escucha cambios de sesión automáticamente
 onAuthStateChanged(auth, user => {
   actualizarMenuAdmin(user);
-  // Si el modal de login está visible y se logueó, cerrarlo
   if (user) loginModal.classList.add('hidden');
 });
 
-// ─── Botón: iniciar sesión Google ─────────────
 document.getElementById('googleLoginBtn').addEventListener('click', async () => {
   loginError.style.display = 'none';
   try {
     const result = await signInWithPopup(auth, provider);
     const user   = result.user;
     if (user.email !== ADMIN_EMAIL) {
-      // No es el admin: cerrar sesión y mostrar error
       await signOut(auth);
       loginError.style.display = 'block';
       loginError.textContent   = `⛔ La cuenta ${user.email} no tiene permisos de edición.`;
       return;
     }
-    // Es el admin: cerrar modal
     loginModal.classList.add('hidden');
   } catch(e) {
     if (e.code !== 'auth/popup-closed-by-user') {
@@ -748,14 +842,10 @@ document.getElementById('googleLoginBtn').addEventListener('click', async () => 
     }
   }
 });
-
-// ─── Botón: invitado ──────────────────────────
 document.getElementById('guestBtn').addEventListener('click', () => {
   loginModal.classList.add('hidden');
   habilitarEdicion(false);
 });
-
-// ─── Admin toggle ─────────────────────────────
 document.getElementById('adminToggle').onclick = () => {
   const m = document.getElementById('adminMenu');
   m.style.display = m.style.display==='block' ? 'none' : 'block';
@@ -783,7 +873,11 @@ document.getElementById('resetBtn').onclick = async () => {
 setSyncState('saving');
 startListening();
 renderAll();
-// Mostrar modal de login al arrancar (el usuario elige Google o invitado)
+
+// Verificar auto-inicio cada minuto
+checkAutoStart();
+setInterval(checkAutoStart, 60000);
+
 loginModal.classList.add('hidden');
 </script>
 
