@@ -822,9 +822,6 @@ clearBtn.style.display = tieneMarcador ? "inline-block" : "none";
   document.body.style.overflow='hidden';
 }
 function closeResultForm() {
-    currentMatch = null;
-    pendingScore = null;
-
     resultModal.style.display = 'none';
     document.body.style.overflow = 'auto';
 }
@@ -862,6 +859,8 @@ finishYesBtn.addEventListener('click', async () => {
   document.body.style.overflow = 'auto';
   renderAll();
   await saveToFirebase();
+  currentMatch = null;
+  pendingScore = null;
 });
 
 // Usuario dice: NO, es marcador parcial
@@ -872,35 +871,14 @@ finishNoBtn.addEventListener('click', async () => {
   currentMatch.match.score2   = s2;
   currentMatch.match.pen1     = p1;
   currentMatch.match.pen2     = p2;
-  document.getElementById("clearResultBtn").addEventListener("click", async () => {
-
-    if (!currentMatch) return;
-
-    if (!confirm("¿Deseas borrar completamente este marcador?")) return;
-
-    currentMatch.match.score1 = null;
-    currentMatch.match.score2 = null;
-    currentMatch.match.pen1 = null;
-    currentMatch.match.pen2 = null;
-
-    currentMatch.match.finished = false;
-    currentMatch.match.autoStarted = false;
-
-    pendingScore = null;
-
-    await saveToFirebase();
-
-    renderAll();
-
-    closeResultForm();
-
-});
   currentMatch.match.finished = false; // ← NO finalizado, sigue en vivo
   pendingScore = null;
   finishModal.style.display = 'none';
   document.body.style.overflow = 'auto';
   renderAll();
   await saveToFirebase();
+  currentMatch = null;
+  pendingScore = null;
 });
 cancelBtn.addEventListener("click", closeResultForm);
 
