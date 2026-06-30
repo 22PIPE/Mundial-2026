@@ -329,6 +329,13 @@
         <div style="text-align:center;">
           <button type="submit" class="save">Guardar Resultado</button>
           <button type="button" id="cancelBtn" class="cancel">Cancelar</button>
+              
+          <br><br>
+
+    <button type="button" id="clearResultBtn" class="danger">
+        🗑 Limpiar marcador
+    </button>
+
         </div>
       </form>
     </div>
@@ -394,6 +401,7 @@ const DOCREF   = doc(db, "mundial2026", "datos");
 let modoEdicion     = false;
 let currentMatch    = null;
 let ignorarSnapshot = false;
+let datosFirebaseCargados = false;
 
 // ─── Datos iniciales ──────────────────────────
 let dieciseisavos = [
@@ -421,14 +429,14 @@ let dieciseisavos = [
   {id:13, team1:'Colombia',      flag1:'https://flagcdn.com/w40/co.png',     team2:'Ghana',             flag2:'https://flagcdn.com/w40/gh.png',   date:'Vie 03/07',time:'8:30 PM',  score1:null,score2:null,pen1:null,pen2:null,finished:false,autoStarted:false}
 ];
 let octavos = [
-  {id:101,srcMatches:[11,4], team1:null,flag1:null,team2:null,flag2:null,score1:null,score2:null,pen1:null,pen2:null,finished:false},
-  {id:102,srcMatches:[9,7],  team1:null,flag1:null,team2:null,flag2:null,score1:null,score2:null,pen1:null,pen2:null,finished:false},
-  {id:103,srcMatches:[10,2], team1:null,flag1:null,team2:null,flag2:null,score1:null,score2:null,pen1:null,pen2:null,finished:false},
-  {id:104,srcMatches:[8,12], team1:null,flag1:null,team2:null,flag2:null,score1:null,score2:null,pen1:null,pen2:null,finished:false},
-  {id:105,srcMatches:[5,15], team1:null,flag1:null,team2:null,flag2:null,score1:null,score2:null,pen1:null,pen2:null,finished:false},
-  {id:106,srcMatches:[1,6],  team1:null,flag1:null,team2:null,flag2:null,score1:null,score2:null,pen1:null,pen2:null,finished:false},
-  {id:107,srcMatches:[3,16], team1:null,flag1:null,team2:null,flag2:null,score1:null,score2:null,pen1:null,pen2:null,finished:false},
-  {id:108,srcMatches:[14,13],team1:null,flag1:null,team2:null,flag2:null,score1:null,score2:null,pen1:null,pen2:null,finished:false}
+  {id:101,srcMatches:[11,4], team1:null,flag1:null,team2:null,flag2:null,date:'Sáb 04/07',time:'4:00 PM',score1:null,score2:null,pen1:null,pen2:null,finished:false},
+  {id:102,srcMatches:[9,7],  team1:null,flag1:null,team2:null,flag2:null,date:'Sáb 04/07',time:'12:00 PM',score1:null,score2:null,pen1:null,pen2:null,finished:false},
+  {id:103,srcMatches:[10,2], team1:null,flag1:null,team2:null,flag2:null,date:'Lun 06/07',time:'2:00 PM',score1:null,score2:null,pen1:null,pen2:null,finished:false},
+  {id:104,srcMatches:[8,12], team1:null,flag1:null,team2:null,flag2:null,date:'Lun 06/07',time:'7:00 PM',score1:null,score2:null,pen1:null,pen2:null,finished:false},
+  {id:105,srcMatches:[5,15], team1:null,flag1:null,team2:null,flag2:null,date:'Dom 05/07',time:'3:00 PM',score1:null,score2:null,pen1:null,pen2:null,finished:false},
+  {id:106,srcMatches:[1,6],  team1:null,flag1:null,team2:null,flag2:null,date:'Dom 05/07',time:'7:00 PM',score1:null,score2:null,pen1:null,pen2:null,finished:false},
+  {id:107,srcMatches:[3,16], team1:null,flag1:null,team2:null,flag2:null,date:'Mar 07/07',time:'11:00 AM',score1:null,score2:null,pen1:null,pen2:null,finished:false},
+  {id:108,srcMatches:[14,13],team1:null,flag1:null,team2:null,flag2:null,date:'Mar 07/07',time:'3:00 PM',score1:null,score2:null,pen1:null,pen2:null,finished:false},
 ];
 let cuartos = [
   {id:201,srcMatches:[101,102],team1:null,flag1:null,team2:null,flag2:null,score1:null,score2:null,pen1:null,pen2:null,finished:false},
@@ -446,6 +454,39 @@ let tercerPuesto = [
 let final = [
   {id:501,srcMatches:[301,302],type:'ganador',team1:null,flag1:null,team2:null,flag2:null,score1:null,score2:null,pen1:null,pen2:null,finished:false}
 ];
+
+// ─── Orden cronológico automático ─────────────
+// Convierte date:'Sáb 04/07' + time:'4:00 PM' en un objeto Date (año 2026).
+// Si a un partido todavía no le has puesto fecha/hora (null), queda al final.
+function parseDateTimeStr(dateStr, timeStr) {
+  if (!dateStr || !timeStr) return null;
+  const m = dateStr.match(/(\d{2})\/(\d{2})/);
+  const t = timeStr.match(/(\d{1,2}):(\d{2})\s*(AM|PM)/i);
+  if (!m || !t) return null;
+  const day = +m[1], month = +m[2] - 1;
+  let hour = +t[1] % 12;
+  if (t[3].toUpperCase() === 'PM') hour += 12;
+  const minute = +t[2];
+  return new Date(2026, month, day, hour, minute);
+}
+function sortByDateTime(arr) {
+  arr.sort((a, b) => {
+    const da = parseDateTimeStr(a.date, a.time);
+    const db = parseDateTimeStr(b.date, b.time);
+    if (!da && !db) return 0;
+    if (!da) return 1;   // sin fecha → al final
+    if (!db) return -1;
+    return da - db;
+  });
+  return arr;
+}
+// Llama esto cada vez que quieras reordenar todas las rondas que ya tengan
+// fecha/hora asignada. Las rondas sin fechas (ej. cuartos sin definir aún)
+// simplemente no se mueven porque parseDateTimeStr devuelve null.
+function sortAllRounds() {
+  [dieciseisavos, octavos, cuartos, semifinales, tercerPuesto, final].forEach(sortByDateTime);
+}
+sortAllRounds();
 
 // ─── UI refs ──────────────────────────────────
 const dot            = document.getElementById('syncDot');
@@ -509,7 +550,11 @@ async function saveToFirebase() {
     setSyncState('online');
   } catch(e) {
     console.error('Error guardando:', e);
-    setSyncState('offline');
+    if (e?.code==='permission-denied' || e?.code==='permission-denied') {
+      setSyncState('online');
+    } else {
+      setSyncState('offline');
+    }
   }
   setTimeout(() => { ignorarSnapshot = false; }, 1500);
 }
@@ -536,7 +581,14 @@ function startListening() {
       Object.keys(map).forEach(k => {
         if (Array.isArray(data[k])) mergeFromCloud(data[k], map[k]);
       });
+      datosFirebaseCargados = true;
       renderAll();
+
+      const user = auth.currentUser;
+
+if (user && user.email === ADMIN_EMAIL) {
+    checkAutoStart();
+}
     }
     setSyncState('online');
   }, err => { console.error(err); setSyncState('offline'); });
@@ -552,30 +604,43 @@ function parseMatchDateTime(match) {
   let hour = +t[1] % 12;
   if (t[3].toUpperCase() === 'PM') hour += 12;
   const minute = +t[2];
+  if (!datosFirebaseCargados) return;
+  const user = auth.currentUser;
+  if (!user || user.email !== ADMIN_EMAIL) return;
+
   const now = new Date();
   return new Date(now.getFullYear(), month, day, hour, minute);
 }
 
 // Revisa cada minuto si hay partidos que deben iniciarse con 0-0
-function checkAutoStart() {
+async function checkAutoStart() {
+  
   const now = new Date();
   let changed = false;
-  const autoWindow = 2 * 60 * 1000;
+
   dieciseisavos.forEach(match => {
     if (match.autoStarted) return;
+    if (match.finished) return;
     if (match.score1 !== null || match.score2 !== null) return;
+
     const gameTime = parseMatchDateTime(match);
     if (!gameTime) return;
-    if (now >= gameTime && now < new Date(gameTime.getTime()+autoWindow)) {
-      match.score1=0;
-      match.score2=0;
-      match.autoStarted=true;
-      changed=true;
+
+    if (now >= gameTime) {
+      match.score1 = 0;
+      match.score2 = 0;
+      match.autoStarted = true;
+      changed = true;
     }
   });
-  if(changed){
+
+  if (changed) {
     renderAll();
-    saveToFirebase();
+    try{
+      await saveToFirebase();
+    } catch(_) {}
+    // Si no hubo permisos, evitamos reintentar continuamente desde este navegador.
+    dieciseisavos.forEach(m=>{ if(m.score1===0&&m.score2===0&&m.autoStarted){} });
   }
 }
 
@@ -725,6 +790,7 @@ ${matchDate ? `<div class="match-date ${dateInfo.cls}">${matchDate}</div>` : ""}
   });
 }
 function renderAll() {
+  sortAllRounds();
   propagateAll();
   renderMatches(round32Div,    dieciseisavos);
   renderMatches(round16Div,    octavos);
@@ -743,12 +809,24 @@ function openResultForm(match, container) {
   team2Score.value    = match.score2!==null?match.score2:'';
   team1Penalties.value= match.pen1!==null?match.pen1:'';
   team2Penalties.value= match.pen2!==null?match.pen2:'';
+  const clearBtn = document.getElementById("clearResultBtn");
+
+const tieneMarcador =
+    match.score1 !== null ||
+    match.score2 !== null ||
+    match.pen1 !== null ||
+    match.pen2 !== null;
+
+clearBtn.style.display = tieneMarcador ? "inline-block" : "none";
   resultModal.style.display='flex';
   document.body.style.overflow='hidden';
 }
 function closeResultForm() {
-  resultModal.style.display='none';
-  document.body.style.overflow='auto';
+    currentMatch = null;
+    pendingScore = null;
+
+    resultModal.style.display = 'none';
+    document.body.style.overflow = 'auto';
 }
 
 // Datos temporales del marcador antes de la confirmación
@@ -794,6 +872,29 @@ finishNoBtn.addEventListener('click', async () => {
   currentMatch.match.score2   = s2;
   currentMatch.match.pen1     = p1;
   currentMatch.match.pen2     = p2;
+  document.getElementById("clearResultBtn").addEventListener("click", async () => {
+
+    if (!currentMatch) return;
+
+    if (!confirm("¿Deseas borrar completamente este marcador?")) return;
+
+    currentMatch.match.score1 = null;
+    currentMatch.match.score2 = null;
+    currentMatch.match.pen1 = null;
+    currentMatch.match.pen2 = null;
+
+    currentMatch.match.finished = false;
+    currentMatch.match.autoStarted = false;
+
+    pendingScore = null;
+
+    await saveToFirebase();
+
+    renderAll();
+
+    closeResultForm();
+
+});
   currentMatch.match.finished = false; // ← NO finalizado, sigue en vivo
   pendingScore = null;
   finishModal.style.display = 'none';
@@ -801,10 +902,42 @@ finishNoBtn.addEventListener('click', async () => {
   renderAll();
   await saveToFirebase();
 });
+cancelBtn.addEventListener("click", closeResultForm);
 
-cancelBtn.addEventListener('click', closeResultForm);
-resultModal.addEventListener('click', e=>{ if(e.target===resultModal) closeResultForm(); });
-finishModal.addEventListener('click', e=>{ if(e.target===finishModal){ finishModal.style.display='none'; document.body.style.overflow='auto'; } });
+document.getElementById("clearResultBtn").addEventListener("click", async () => {
+
+    if (!currentMatch) return;
+
+    if (!confirm("¿Deseas borrar completamente este marcador?")) return;
+
+    currentMatch.match.score1 = null;
+    currentMatch.match.score2 = null;
+    currentMatch.match.pen1 = null;
+    currentMatch.match.pen2 = null;
+
+    currentMatch.match.finished = false;
+    currentMatch.match.autoStarted = false;
+
+    pendingScore = null;
+
+    renderAll();
+
+    await saveToFirebase();
+
+    closeResultForm();
+
+});
+
+resultModal.addEventListener('click', e=>{
+    if(e.target===resultModal) closeResultForm();
+});
+
+finishModal.addEventListener('click', e=>{
+    if(e.target===finishModal){
+        finishModal.style.display='none';
+        document.body.style.overflow='auto';
+    }
+});
 
 // ─── Auth ─────────────────────────────────────
 function habilitarEdicion(valor) {
@@ -829,9 +962,12 @@ function actualizarMenuAdmin(user) {
     habilitarEdicion(false);
   }
 }
-onAuthStateChanged(auth, user => {
+onAuthStateChanged(auth, async user => {
   actualizarMenuAdmin(user);
-  if (user) loginModal.classList.add('hidden');
+  if (user) {
+    loginModal.classList.add('hidden');
+    await checkAutoStart();
+  }
 });
 
 document.getElementById('googleLoginBtn').addEventListener('click', async () => {
@@ -846,7 +982,7 @@ document.getElementById('googleLoginBtn').addEventListener('click', async () => 
       return;
     }
     loginModal.classList.add('hidden');
-  } catch(e) {
+    } catch(e) {
     if (e.code !== 'auth/popup-closed-by-user') {
       loginError.style.display='block';
       loginError.textContent='Error al iniciar sesión. Intenta de nuevo.';
@@ -856,7 +992,7 @@ document.getElementById('googleLoginBtn').addEventListener('click', async () => 
 });
 document.getElementById('guestBtn').addEventListener('click', () => {
   loginModal.classList.add('hidden');
-  habilitarEdicion(false);
+    habilitarEdicion(false);
 });
 document.getElementById('adminToggle').onclick = () => {
   const m = document.getElementById('adminMenu');
@@ -881,17 +1017,16 @@ document.getElementById('resetBtn').onclick = async () => {
   }
 };
 
-// ─── Arranque ─────────────────────────────────
+// —— Arranque ———————————————
 setSyncState('saving');
 startListening();
 renderAll();
 
 // Verificar auto-inicio cada minuto
-checkAutoStart();
 setInterval(checkAutoStart, 60000);
 
 loginModal.classList.add('hidden');
-</script>
+    </script>
 
 </body>
 </html>
