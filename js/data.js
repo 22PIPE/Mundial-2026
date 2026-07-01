@@ -25,7 +25,7 @@ export let dieciseisavos = [
   // Mar 30/06
   {id:15, team1:'Noruega',       flag1:'https://flagcdn.com/w40/no.png',     team2:'Costa de Marfil',   flag2:'https://flagcdn.com/w40/ci.png',   date:'Mar 30/06',time:'12:00 PM', score1:null,score2:null,pen1:null,pen2:null,finished:false,autoStarted:false},
   {id:4,  team1:'Francia',       flag1:'https://flagcdn.com/w40/fr.png',     team2:'Suecia',            flag2:'https://flagcdn.com/w40/se.png',   date:'Mar 30/06',time:'4:00 PM',  score1:null,score2:null,pen1:null,pen2:null,finished:false,autoStarted:false},
-  {id:1,  team1:'México',        flag1:'https://flagcdn.com/w40/mx.png',     team2:'Ecuador',           flag2:'https://flagcdn.com/w40/ec.png',   date:'Mar 30/06',time:'8:00 PM',  score1:null,score2:null,pen1:null,pen2:null,finished:false,autoStarted:false},
+  {id:1,  team1:'México',        flag1:'https://flagcdn.com/w40/mx.png',     team2:'Ecuador',           flag2:'https://flagcdn.com/w40/ec.png',   date:'Mar 30/06',time:'9:00 PM',  score1:null,score2:null,pen1:null,pen2:null,finished:false,autoStarted:false},
   // Mié 01/07
   {id:6,  team1:'Inglaterra',    flag1:'https://flagcdn.com/w40/gb-eng.png', team2:'RD Congo',          flag2:'https://flagcdn.com/w40/cd.png',   date:'Mié 01/07',time:'11:00 AM', score1:null,score2:null,pen1:null,pen2:null,finished:false,autoStarted:false},
   {id:12, team1:'Bélgica',       flag1:'https://flagcdn.com/w40/be.png',     team2:'Senegal',           flag2:'https://flagcdn.com/w40/sn.png',   date:'Mié 01/07',time:'3:00 PM',  score1:null,score2:null,pen1:null,pen2:null,finished:false,autoStarted:false},
