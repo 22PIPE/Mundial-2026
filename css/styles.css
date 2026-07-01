@@ -86,23 +86,33 @@
   .match:hover:not(.disabled) { background-color: #3a3a3a; box-shadow: 0 4px 14px rgba(52,152,219,0.3); }
   .match-date{
     display:flex;
+    flex-direction:column;
     justify-content:center;
     align-items:center;
-    gap:6px;
+    gap:2px;
     color:#4DB8FF !important;
-    font-size:15px;
-    font-weight:700;
     margin-bottom:14px;
-    text-transform:uppercase;
-    letter-spacing:.5px;
     user-select:none;
     border-bottom:1px solid rgba(77,184,255,.35);
     padding-bottom:8px;
+  }
+  .match-date-main{
+    font-size:15px;
+    font-weight:700;
+    text-transform:uppercase;
+    letter-spacing:.5px;
+  }
+  .match-date-sub{
+    font-size:13px;
+    font-weight:600;
+    opacity:.95;
   }
   .match-date.future{color:#4DB8FF!important;}
   .match-date.today{color:#38d46a!important;}
   .match-date.finished{color:#ff4b4b!important;}
   .match-date.live{color:#ff9800!important;}
+  .match-date.retrasado{color:#a855f7!important;}
+  .match-date.suspendido{color:#9ca3af!important;}
 
   .team { display: flex; align-items: center; justify-content: space-between; margin: 8px 0; }
   .team-name { font-weight: 700; flex-grow: 1; text-align: left; margin-left: 10px; font-size: 1.05rem; color: #f0f0f0; }
@@ -130,6 +140,10 @@
   #resultForm button.save:hover { background-color:#229954; }
   #resultForm button.cancel { background-color:#c0392b; color:white; }
   #resultForm button.cancel:hover { background-color:#962d22; }
+  #resultForm button.danger { background-color:#7f1d1d; color:white; }
+  #resultForm button.danger:hover { background-color:#991b1b; }
+  #resultForm button.warning { background-color:#a855f7; color:white; }
+  #resultForm button.warning:hover { background-color:#9333ea; }
 
   /* ── Modal confirmación finalización ── */
   #finishModal {
@@ -150,6 +164,34 @@
   #finishYesBtn:hover  { background: #229954; }
   #finishNoBtn   { background: #555; color: #fff; }
   #finishNoBtn:hover   { background: #666; }
+
+  /* ── Modal estado especial (retrasado / suspendido) ── */
+  #estadoModal {
+    display: none; position: fixed; top:0; left:0; right:0; bottom:0;
+    background: rgba(0,0,0,0.65); z-index: 11500; justify-content: center; align-items: center;
+  }
+  #estadoModalBox {
+    background: #2a2a2a; max-width: 380px; width: 90%;
+    padding: 26px 28px; border-radius: 14px;
+    box-shadow: 0 0 32px rgba(0,0,0,0.4); text-align: center;
+  }
+  #estadoModalBox h3 { color: #f0f0f0; margin: 0 0 6px; font-size: 1.4rem; }
+  #estadoModalTeams { color: #bbb; margin: 0 0 18px; font-size: 0.95rem; font-weight: 700; }
+  .estado-options { display: flex; flex-direction: column; gap: 10px; text-align: left; margin-bottom: 6px; }
+  .estado-options label { color: #f0f0f0; font-size: 0.98rem; display: flex; align-items: center; gap: 8px; cursor: pointer; }
+  #estadoFechaHoraFields { display: none; text-align: left; margin-top: 14px; }
+  #estadoFechaHoraFields label { color: #ccc; font-size: 0.88rem; display: block; margin-top: 10px; }
+  #estadoFechaHoraFields input[type="text"] {
+    width: 100%; box-sizing: border-box; margin-top: 6px; padding: 8px 10px;
+    font-size: 0.95rem; border: 1.5px solid #444; border-radius: 6px; background: #1e1e1e; color: #f0f0f0;
+  }
+  #estadoFechaHoraFields small { display: block; color: #888; margin-top: 8px; font-size: 0.8rem; }
+  #estadoModalBox .btn-row { display: flex; gap: 14px; justify-content: center; margin-top: 22px; }
+  #estadoModalBox button { padding: 11px 24px; font-size: 1rem; font-weight: 700; border: none; border-radius: 8px; cursor: pointer; transition: background 0.2s; }
+  #estadoGuardarBtn.save { background: #27ae60; color: #fff; }
+  #estadoGuardarBtn.save:hover { background: #229954; }
+  #estadoCancelarBtn.cancel { background: #c0392b; color: #fff; }
+  #estadoCancelarBtn.cancel:hover { background: #962d22; }
 
   /* ── Modal login Google ── */
   #loginModal {
@@ -243,6 +285,7 @@
     .round-title{font-size:1.5rem!important;}
     .team-name{font-size:1.1rem!important;}
     .score{font-size:1.3rem!important;}
+    .match-date-sub{font-size:14px;}
   }
   @media (min-width:769px){ body{zoom:1.12;} }
   @media (max-width:768px){ body{zoom:1.22;} }

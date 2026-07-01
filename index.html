@@ -86,6 +86,9 @@
     <button type="button" id="clearResultBtn" class="danger">
         🗑 Limpiar marcador
     </button>
+    <button type="button" id="estadoEspecialBtn" class="warning">
+        ⚠️ Retrasado / Suspendido
+    </button>
 
         </div>
       </form>
@@ -100,6 +103,30 @@
       <div class="btn-row">
         <button id="finishYesBtn">✅ Sí, finalizó</button>
         <button id="finishNoBtn">🔄 No, es parcial</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal estado especial (retrasado / suspendido) -->
+  <div id="estadoModal">
+    <div id="estadoModalBox">
+      <h3>⚠️ Estado especial del partido</h3>
+      <p id="estadoModalTeams"></p>
+      <div class="estado-options">
+        <label><input type="radio" name="estadoOpcion" id="estadoAutomatico" value="automatico"> 🔄 Automático (normal)</label>
+        <label><input type="radio" name="estadoOpcion" id="estadoRetrasado" value="retrasado"> ⏸️ Retrasado</label>
+        <label><input type="radio" name="estadoOpcion" id="estadoSuspendido" value="suspendido"> ⛔ Suspendido</label>
+      </div>
+      <div id="estadoFechaHoraFields">
+        <label for="estadoNuevaFecha">Nueva fecha (opcional)</label>
+        <input type="text" id="estadoNuevaFecha" placeholder="Ej: Sáb 04/07">
+        <label for="estadoNuevaHora">Nueva hora (opcional)</label>
+        <input type="text" id="estadoNuevaHora" placeholder="Ej: 9:00 PM">
+        <small>Si los dejas vacíos, se mostrará "Por definir".</small>
+      </div>
+      <div class="btn-row">
+        <button type="button" id="estadoGuardarBtn" class="save">Guardar</button>
+        <button type="button" id="estadoCancelarBtn" class="cancel">Cancelar</button>
       </div>
     </div>
   </div>

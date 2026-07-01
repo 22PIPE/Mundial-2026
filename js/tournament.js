@@ -64,6 +64,64 @@ function parseMatchDateTime(match) {
   return new Date(now.getFullYear(), month, day, hour, minute);
 }
 
+// Calcula la nueva hora de un partido marcado "Retrasado" cuando el admin
+// definió una hora nueva (la fecha es opcional: si no se puso, se asume hoy).
+// Si no hay hora nueva definida, devuelve null (sigue pausado indefinidamente).
+function parseEstadoDateTime(match) {
+  if (!match.estadoManualHora) return null;
+  const t = match.estadoManualHora.match(/(\d{1,2}):(\d{2})\s*(AM|PM)/i);
+  if (!t) return null;
+  let hour = +t[1] % 12;
+  if (t[3].toUpperCase() === 'PM') hour += 12;
+  const minute = +t[2];
+
+  if (!datosFirebaseCargados) return;
+  const user = auth.currentUser;
+  if (!user || user.email !== ADMIN_EMAIL) return;
+
+  const now = new Date();
+  if (match.estadoManualFecha) {
+    const m = match.estadoManualFecha.match(/(\d{2})\/(\d{2})/);
+    if (m) {
+      const day = +m[1], month = +m[2] - 1;
+      return new Date(now.getFullYear(), month, day, hour, minute);
+    }
+  }
+  // Sin fecha (o fecha en formato libre) → se asume el mismo día de hoy.
+  return new Date(now.getFullYear(), now.getMonth(), now.getDate(), hour, minute);
+}
+
+// Revisa partidos "Retrasado" con hora nueva definida y, al llegar esa hora,
+// los reactiva automáticamente (0-0) y los devuelve a estado automático.
+// "Suspendido" nunca se auto-reanuda: siempre requiere confirmación manual.
+function checkRetrasados() {
+  const now = new Date();
+  let changed = false;
+  // Se arma aquí adentro (no a nivel de módulo) para evitar el mismo error
+  // de dependencia circular con data.js que ya tenían mapeado en este archivo.
+  const todasLasRondas = [dieciseisavos, octavos, cuartos, semifinales, tercerPuesto, final];
+
+  todasLasRondas.forEach(ronda => {
+    ronda.forEach(match => {
+      if (match.estadoManual !== 'retrasado') return;
+      const nuevaHora = parseEstadoDateTime(match);
+      if (!nuevaHora) return;
+
+      if (now >= nuevaHora) {
+        if (match.score1 === null) match.score1 = 0;
+        if (match.score2 === null) match.score2 = 0;
+        match.autoStarted = true;
+        match.estadoManual = null;
+        match.estadoManualFecha = null;
+        match.estadoManualHora = null;
+        changed = true;
+      }
+    });
+  });
+
+  return changed;
+}
+
 // Revisa cada minuto si hay partidos que deben iniciarse con 0-0
 export async function checkAutoStart() {
 
@@ -74,6 +132,7 @@ export async function checkAutoStart() {
     if (match.autoStarted) return;
     if (match.finished) return;
     if (match.score1 !== null || match.score2 !== null) return;
+    if (match.estadoManual) return; // retrasado/suspendido: pausa el auto-inicio
 
     const gameTime = parseMatchDateTime(match);
     if (!gameTime) return;
@@ -85,6 +144,8 @@ export async function checkAutoStart() {
       changed = true;
     }
   });
+
+  if (checkRetrasados()) changed = true;
 
   if (changed) {
     renderAll();

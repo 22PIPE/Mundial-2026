@@ -77,6 +77,9 @@ function cleanMatch(m) {
     autoStarted: m.autoStarted ?? false,
     date:m.date??null,
     time:m.time??null,
+    estadoManual: m.estadoManual ?? null,
+    estadoManualFecha: m.estadoManualFecha ?? null,
+    estadoManualHora: m.estadoManualHora ?? null,
     ...(m.srcMatches?{srcMatches:m.srcMatches}:{}),
     ...(m.type?{type:m.type}:{})
   };
@@ -117,6 +120,9 @@ function mergeFromCloud(cloudArr, localArr) {
     lm.pen1=cm.pen1??null;       lm.pen2=cm.pen2??null;
     lm.finished = cm.finished ?? false;
     lm.autoStarted = cm.autoStarted ?? lm.autoStarted ?? false;
+    lm.estadoManual = cm.estadoManual ?? null;
+    lm.estadoManualFecha = cm.estadoManualFecha ?? null;
+    lm.estadoManualHora = cm.estadoManualHora ?? null;
   });
 }
 

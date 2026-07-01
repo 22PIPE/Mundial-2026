@@ -17,6 +17,7 @@ const team2Score     = document.getElementById('team2Score');
 const team1Penalties = document.getElementById('team1Penalties');
 const team2Penalties = document.getElementById('team2Penalties');
 const cancelBtn      = document.getElementById('cancelBtn');
+const estadoEspecialBtn = document.getElementById('estadoEspecialBtn');
 const finishModal    = document.getElementById('finishModal');
 const finishYesBtn   = document.getElementById('finishYesBtn');
 const finishNoBtn    = document.getElementById('finishNoBtn');
@@ -104,6 +105,12 @@ finishNoBtn.addEventListener('click', async () => {
   pendingScore = null;
 });
 cancelBtn.addEventListener("click", closeResultForm);
+estadoEspecialBtn.addEventListener("click", () => {
+  if (!currentMatch) return;
+  const match = currentMatch.match;
+  closeResultForm();
+  openEstadoModal(match);
+});
 
 document.getElementById("clearResultBtn").addEventListener("click", async () => {
 
@@ -138,4 +145,71 @@ finishModal.addEventListener('click', e=>{
         finishModal.style.display='none';
         document.body.style.overflow='auto';
     }
+});
+
+// ─── Modal estado especial (retrasado / suspendido) ──
+const estadoModal          = document.getElementById('estadoModal');
+const estadoModalTeams     = document.getElementById('estadoModalTeams');
+const estadoAutomatico     = document.getElementById('estadoAutomatico');
+const estadoRetrasado      = document.getElementById('estadoRetrasado');
+const estadoSuspendido     = document.getElementById('estadoSuspendido');
+const estadoFechaHoraDiv   = document.getElementById('estadoFechaHoraFields');
+const estadoNuevaFecha     = document.getElementById('estadoNuevaFecha');
+const estadoNuevaHora      = document.getElementById('estadoNuevaHora');
+const estadoGuardarBtn     = document.getElementById('estadoGuardarBtn');
+const estadoCancelarBtn    = document.getElementById('estadoCancelarBtn');
+
+let estadoMatch = null;
+
+function toggleEstadoFechaHora() {
+  const mostrar = estadoRetrasado.checked || estadoSuspendido.checked;
+  estadoFechaHoraDiv.style.display = mostrar ? 'block' : 'none';
+}
+[estadoAutomatico, estadoRetrasado, estadoSuspendido].forEach(r =>
+  r.addEventListener('change', toggleEstadoFechaHora)
+);
+
+export function openEstadoModal(match) {
+  if (!modoEdicion) return;
+  estadoMatch = match;
+  estadoModalTeams.textContent = `${match.team1} vs ${match.team2}`;
+
+  if (match.estadoManual === 'retrasado') estadoRetrasado.checked = true;
+  else if (match.estadoManual === 'suspendido') estadoSuspendido.checked = true;
+  else estadoAutomatico.checked = true;
+
+  estadoNuevaFecha.value = match.estadoManualFecha || '';
+  estadoNuevaHora.value  = match.estadoManualHora  || '';
+  toggleEstadoFechaHora();
+
+  estadoModal.style.display = 'flex';
+  document.body.style.overflow = 'hidden';
+}
+function closeEstadoModal() {
+  estadoModal.style.display = 'none';
+  document.body.style.overflow = 'auto';
+  estadoMatch = null;
+}
+
+estadoGuardarBtn.addEventListener('click', async () => {
+  if (!estadoMatch) return;
+  const opcion = document.querySelector('input[name="estadoOpcion"]:checked')?.value || 'automatico';
+
+  if (opcion === 'automatico') {
+    estadoMatch.estadoManual = null;
+    estadoMatch.estadoManualFecha = null;
+    estadoMatch.estadoManualHora  = null;
+  } else {
+    estadoMatch.estadoManual = opcion; // 'retrasado' | 'suspendido'
+    estadoMatch.estadoManualFecha = estadoNuevaFecha.value.trim() || null;
+    estadoMatch.estadoManualHora  = estadoNuevaHora.value.trim()  || null;
+  }
+
+  closeEstadoModal();
+  renderAll();
+  await saveToFirebase();
+});
+estadoCancelarBtn.addEventListener('click', closeEstadoModal);
+estadoModal.addEventListener('click', e => {
+  if (e.target === estadoModal) closeEstadoModal();
 });

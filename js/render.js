@@ -32,7 +32,37 @@ const thirdPlaceDiv  = document.getElementById('thirdPlace');
 const finalDiv       = document.getElementById('final');
 
 // ─── Render ───────────────────────────────────
+// Compara una fecha escrita por el admin (ej: "Mar 30/06") con la fecha real de hoy.
+// Si no se escribió fecha, se asume que sigue siendo el mismo día (hoy).
+function formatFechaCorta(date) {
+  const dias = ['Dom','Lun','Mar','Mié','Jue','Vie','Sáb'];
+  const dd = String(date.getDate()).padStart(2,'0');
+  const mm = String(date.getMonth()+1).padStart(2,'0');
+  return `${dias[date.getDay()]} ${dd}/${mm}`;
+}
+function fechaEsHoy(fechaStr) {
+  if (!fechaStr) return true;
+  return fechaStr.trim().toLowerCase() === formatFechaCorta(new Date()).toLowerCase();
+}
+function formatEstadoCuando(match) {
+  if (!match.estadoManualFecha && !match.estadoManualHora) return null;
+  if (fechaEsHoy(match.estadoManualFecha)) {
+    return match.estadoManualHora ? `Hoy · ${match.estadoManualHora}` : 'Hoy';
+  }
+  return [match.estadoManualFecha, match.estadoManualHora].filter(Boolean).join(' · ');
+}
+
 function getMatchDateInfo(match){
+  // ── Estado manual (retrasado/suspendido) tiene prioridad sobre todo lo demás ──
+  if (match.estadoManual === 'retrasado') {
+    const cuando = formatEstadoCuando(match);
+    return {cls:'retrasado', label: cuando ? `⏸️ RETRASADO · Nueva hora: ${cuando}` : '⏸️ RETRASADO · Por definir'};
+  }
+  if (match.estadoManual === 'suspendido') {
+    const cuando = formatEstadoCuando(match);
+    return {cls:'suspendido', label: cuando ? `⛔ SUSPENDIDO · Reprogramado: ${cuando}` : '⛔ SUSPENDIDO · Por definir'};
+  }
+
   if(!match.date&&!match.time) return {cls:'future',label:''};
 
   const m=match.date ? match.date.match(/(\d{2})\/(\d{2})/) : null;
@@ -81,6 +111,14 @@ function getMatchDateInfo(match){
   return {cls:'future',label:`🕒 ${match.date} · ${match.time}`};
 }
 
+// Divide la etiqueta en 2 líneas (estado arriba, detalle abajo) para
+// que la tarjeta no se alargue horizontalmente.
+function splitLabel(label) {
+  const idx = label.indexOf(' · ');
+  if (idx === -1) return {main: label, sub: ''};
+  return {main: label.slice(0, idx), sub: label.slice(idx + 3)};
+}
+
 function renderMatches(container, matches) {
   container.querySelectorAll('.match').forEach(el=>el.remove());
   matches.forEach(match => {
@@ -96,9 +134,9 @@ function renderMatches(container, matches) {
     const w2=match.finished&&(match.score1!==null&&match.score2!==null)&&((match.score2>match.score1)||(match.score1===match.score2&&match.pen1!==null&&match.pen2!==null&&match.pen2>match.pen1));
 
     const dateInfo=getMatchDateInfo(match);
-    const matchDate=dateInfo.label;
+    const {main:dateMain, sub:dateSub} = splitLabel(dateInfo.label);
     div.innerHTML=`
-${matchDate ? `<div class="match-date ${dateInfo.cls}">${matchDate}</div>` : ""}
+${dateInfo.label ? `<div class="match-date ${dateInfo.cls}"><span class="match-date-main">${dateMain}</span>${dateSub?`<span class="match-date-sub">${dateSub}</span>`:''}</div>` : ""}
       <div class="team">
         ${match.flag1?`<img class="flag" src="${match.flag1}" alt="${match.team1}"/>`:''}
         <span class="team-name">${match.team1||'Por definir'}</span>
