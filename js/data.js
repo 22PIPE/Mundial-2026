@@ -50,10 +50,10 @@ export let octavos = [
   {id:108,srcMatches:[14,13],team1:null,flag1:null,team2:null,flag2:null,date:'Mar 07/07',time:'3:00 PM',score1:null,score2:null,pen1:null,pen2:null,finished:false},
 ];
 export let cuartos = [
-  {id:201,srcMatches:[101,102],team1:null,flag1:null,team2:null,flag2:null,score1:null,score2:null,pen1:null,pen2:null,finished:false},
-  {id:202,srcMatches:[103,104],team1:null,flag1:null,team2:null,flag2:null,score1:null,score2:null,pen1:null,pen2:null,finished:false},
-  {id:203,srcMatches:[105,106],team1:null,flag1:null,team2:null,flag2:null,score1:null,score2:null,pen1:null,pen2:null,finished:false},
-  {id:204,srcMatches:[107,108],team1:null,flag1:null,team2:null,flag2:null,score1:null,score2:null,pen1:null,pen2:null,finished:false}
+  {id:201,srcMatches:[101,102],team1:null,flag1:null,team2:null,flag2:null,date:'Jue 09/07',time:'3:00 PM',score1:null,score2:null,pen1:null,pen2:null,finished:false},
+  {id:202,srcMatches:[103,104],team1:null,flag1:null,team2:null,flag2:null,date:'Vie 10/07',time:'2:00 PM',score1:null,score2:null,pen1:null,pen2:null,finished:false},
+  {id:203,srcMatches:[105,106],team1:null,flag1:null,team2:null,flag2:null,date:'Sáb 11/07',time:'4:00 PM',score1:null,score2:null,pen1:null,pen2:null,finished:false},
+  {id:204,srcMatches:[107,108],team1:null,flag1:null,team2:null,flag2:null,date:'Sáb 11/07',time:'8:00 PM',score1:null,score2:null,pen1:null,pen2:null,finished:false}
 ];
 export let semifinales = [
   {id:301,srcMatches:[201,202],team1:null,flag1:null,team2:null,flag2:null,score1:null,score2:null,pen1:null,pen2:null,finished:false},

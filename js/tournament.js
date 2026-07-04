@@ -176,6 +176,19 @@ function getAdvancing(match, type='ganador') {
   return null;
 }
 
+// Genera el texto "Ganador X vs Y" para un partido previo del que ya se
+// conocen ambos equipos pero que todavía no ha finalizado. Si el partido
+// previo aún no tiene ambos equipos definidos, devuelve null (se mostrará
+// "Por definir" en el render).
+function pendingLabel(m) {
+  // Solo generamos el texto si el partido previo tiene equipos REALES
+  // (con bandera). Si team1/team2 ya son un placeholder tipo
+  // "Ganador X vs Y" (flag null), no seguimos encadenando el texto:
+  // mostramos "Por definir" en su lugar.
+  if (!m || !m.team1 || !m.team2 || !m.flag1 || !m.flag2) return null;
+  return `Ganador ${shortCode(m.team1)} vs ${shortCode(m.team2)}`;
+}
+
 function updateNextRound(nextRound, prevRound) {
   nextRound.forEach(nm => {
     const [s1,s2] = nm.srcMatches;
@@ -184,22 +197,16 @@ function updateNextRound(nextRound, prevRound) {
     const adv1=getAdvancing(m1,nm.type||'ganador');
     const adv2=getAdvancing(m2,nm.type||'ganador');
 
-    const prevIsRound = prevRound !== dieciseisavos;
-
     if(adv1){
       nm.team1=adv1.team; nm.flag1=adv1.flag;
-    }else if(prevIsRound){
-      nm.team1=null; nm.flag1=null;
     }else{
-      nm.team1=`Ganador ${shortCode(m1.team1)} vs ${shortCode(m1.team2)}`; nm.flag1=null;
+      nm.team1=pendingLabel(m1); nm.flag1=null;
     }
 
     if(adv2){
       nm.team2=adv2.team; nm.flag2=adv2.flag;
-    }else if(prevIsRound){
-      nm.team2=null; nm.flag2=null;
     }else{
-      nm.team2=`Ganador ${shortCode(m2.team1)} vs ${shortCode(m2.team2)}`; nm.flag2=null;
+      nm.team2=pendingLabel(m2); nm.flag2=null;
     }
 
     if (!nm.team1||!nm.team2) { nm.score1=nm.score2=nm.pen1=nm.pen2=null; nm.finished=false; }
