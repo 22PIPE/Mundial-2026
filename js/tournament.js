@@ -128,21 +128,25 @@ export async function checkAutoStart() {
   const now = new Date();
   let changed = false;
 
-  dieciseisavos.forEach(match => {
-    if (match.autoStarted) return;
-    if (match.finished) return;
-    if (match.score1 !== null || match.score2 !== null) return;
-    if (match.estadoManual) return; // retrasado/suspendido: pausa el auto-inicio
+  const todasLasRondas = [dieciseisavos, octavos, cuartos, semifinales, tercerPuesto, final];
 
-    const gameTime = parseMatchDateTime(match);
-    if (!gameTime) return;
+  todasLasRondas.forEach(ronda => {
+    ronda.forEach(match => {
+      if (match.autoStarted) return;
+      if (match.finished) return;
+      if (match.score1 !== null || match.score2 !== null) return;
+      if (match.estadoManual) return; // retrasado/suspendido: pausa el auto-inicio
 
-    if (now >= gameTime) {
-      match.score1 = 0;
-      match.score2 = 0;
-      match.autoStarted = true;
-      changed = true;
-    }
+      const gameTime = parseMatchDateTime(match);
+      if (!gameTime) return;
+
+      if (now >= gameTime) {
+        match.score1 = 0;
+        match.score2 = 0;
+        match.autoStarted = true;
+        changed = true;
+      }
+    });
   });
 
   if (checkRetrasados()) changed = true;
@@ -152,8 +156,6 @@ export async function checkAutoStart() {
     try{
       await saveToFirebase();
     } catch(_) {}
-    // Si no hubo permisos, evitamos reintentar continuamente desde este navegador.
-    dieciseisavos.forEach(m=>{ if(m.score1===0&&m.score2===0&&m.autoStarted){} });
   }
 }
 
