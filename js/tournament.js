@@ -164,31 +164,41 @@ export async function checkAutoStart() {
 function getAdvancing(match, type='ganador') {
   if (!match.finished) return null; // ← CAMBIO CLAVE: requiere finished=true
   if (match.score1 === null || match.score2 === null) return null;
-  if (match.score1 > match.score2) return {team:match.team1, flag:match.flag1};
-  if (match.score2 > match.score1) return {team:match.team2, flag:match.flag2};
-  if (match.pen1 !== null && match.pen2 !== null) {
-    if (type === 'ganador') {
-      if (match.pen1 > match.pen2) return {team:match.team1, flag:match.flag1};
-      if (match.pen2 > match.pen1) return {team:match.team2, flag:match.flag2};
-    } else {
-      if (match.pen1 < match.pen2) return {team:match.team1, flag:match.flag1};
-      if (match.pen2 < match.pen1) return {team:match.team2, flag:match.flag2};
+
+  let winner = null, loser = null;
+
+  if (match.score1 > match.score2) {
+    winner = {team:match.team1, flag:match.flag1};
+    loser  = {team:match.team2, flag:match.flag2};
+  } else if (match.score2 > match.score1) {
+    winner = {team:match.team2, flag:match.flag2};
+    loser  = {team:match.team1, flag:match.flag1};
+  } else if (match.pen1 !== null && match.pen2 !== null) {
+    if (match.pen1 > match.pen2) {
+      winner = {team:match.team1, flag:match.flag1};
+      loser  = {team:match.team2, flag:match.flag2};
+    } else if (match.pen2 > match.pen1) {
+      winner = {team:match.team2, flag:match.flag2};
+      loser  = {team:match.team1, flag:match.flag1};
     }
   }
-  return null;
+
+  if (!winner) return null; // empate sin penales aún: no se puede determinar
+  return type === 'ganador' ? winner : loser;
 }
 
 // Genera el texto "Ganador X vs Y" para un partido previo del que ya se
 // conocen ambos equipos pero que todavía no ha finalizado. Si el partido
 // previo aún no tiene ambos equipos definidos, devuelve null (se mostrará
 // "Por definir" en el render).
-function pendingLabel(m) {
+function pendingLabel(m, type='ganador') {
   // Solo generamos el texto si el partido previo tiene equipos REALES
   // (con bandera). Si team1/team2 ya son un placeholder tipo
   // "Ganador X vs Y" (flag null), no seguimos encadenando el texto:
   // mostramos "Por definir" en su lugar.
   if (!m || !m.team1 || !m.team2 || !m.flag1 || !m.flag2) return null;
-  return `Ganador ${shortCode(m.team1)} vs ${shortCode(m.team2)}`;
+  const prefijo = type === 'perdedor' ? 'Perdedor' : 'Ganador';
+  return `${prefijo} ${shortCode(m.team1)} vs ${shortCode(m.team2)}`;
 }
 
 function updateNextRound(nextRound, prevRound) {
@@ -202,13 +212,13 @@ function updateNextRound(nextRound, prevRound) {
     if(adv1){
       nm.team1=adv1.team; nm.flag1=adv1.flag;
     }else{
-      nm.team1=pendingLabel(m1); nm.flag1=null;
+      nm.team1=pendingLabel(m1, nm.type||'ganador'); nm.flag1=null;
     }
 
     if(adv2){
       nm.team2=adv2.team; nm.flag2=adv2.flag;
     }else{
-      nm.team2=pendingLabel(m2); nm.flag2=null;
+      nm.team2=pendingLabel(m2, nm.type||'ganador'); nm.flag2=null;
     }
 
     if (!nm.team1||!nm.team2) { nm.score1=nm.score2=nm.pen1=nm.pen2=null; nm.finished=false; }
